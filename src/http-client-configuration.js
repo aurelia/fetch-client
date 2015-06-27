@@ -27,12 +27,34 @@ export class HttpClientConfiguration {
   interceptors = [];
 
   /**
+   * Sets the baseUrl.
+   * 
+   * @param {String} baseUrl - The base URL.
+   * @chainable
+   */
+  withBaseUrl(baseUrl) {
+    this.baseUrl = baseUrl;
+    return this;
+  }
+
+  /**
+   * Sets the defaults.
+   * 
+   * @param {Object} defaults - The defaults.
+   * @chainable
+   */
+  withDefaults(defaults) {
+    this.defaults = defaults;
+    return this;
+  }
+
+  /**
    * Add an interceptor to be used by the HttpClient.
    * 
    * @param {Object} interceptor - The interceptor.
    * @chainable
    */
-  addInterceptor(interceptor) {
+  withInterceptor(interceptor) {
     this.interceptors.push(interceptor);
     return this;
   }
@@ -46,8 +68,7 @@ export class HttpClientConfiguration {
   useStandardConfiguration() {
     let standardConfig = { credentials: 'same-origin' };
     Object.assign(this.defaults, standardConfig, this.defaults);
-    this.rejectErrorResponses();
-    return this;
+    return this.rejectErrorResponses();
   }
 
   /**
@@ -61,8 +82,7 @@ export class HttpClientConfiguration {
    * @chainable
    */
   rejectErrorResponses() {
-    this.addInterceptor({ response: rejectOnError });
-    return this;
+    return this.withInterceptor({ response: rejectOnError });
   }
 }
 
