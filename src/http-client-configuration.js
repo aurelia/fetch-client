@@ -1,3 +1,5 @@
+import core from 'core-js';
+
 /**
  * A class for configuring HttpClients.
  *

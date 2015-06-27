@@ -1,5 +1,6 @@
 import {HttpClientConfiguration} from './http-client-configuration';
 import {mergeHeaders} from './util';
+import core from 'core-js';
 
 /**
  * An HTTP client based on the Fetch API.
