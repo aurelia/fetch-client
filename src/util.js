@@ -22,9 +22,9 @@ export function json(body) {
  */
 export function mergeHeaders(first, second) {
   let headers = new Headers(first || {});
-  for (let [name, value] of new Headers(second || {})) {
-    headers.append(name, value);
-  }
+  (new Headers(second || {})).forEach((value, name) => {
+    headers.set(name, value);
+  });
 
   return headers;
 }

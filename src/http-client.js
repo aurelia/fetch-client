@@ -141,16 +141,13 @@ function processResponse(response, interceptors) {
 }
 
 function applyInterceptors(input, interceptors, successName, errorName) {
-  let promise = Promise.resolve(input);
+  return (interceptors || [])
+    .reduce((chain, interceptor) => {
+      let successHandler = interceptor[successName];
+      let errorHandler = interceptor[errorName];
 
-  for (let interceptor of interceptors) {
-    let successHandler = interceptor[successName];
-    let errorHandler = interceptor[errorName];
-
-    promise = promise.then(
-      successHandler && interceptor::successHandler,
-      errorHandler && interceptor::errorHandler);
-  }
-
-  return promise;
+      return chain.then(
+        successHandler && interceptor::successHandler,
+        errorHandler && interceptor::errorHandler);
+    }, Promise.resolve(input));
 }
