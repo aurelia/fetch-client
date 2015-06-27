@@ -1,0 +1,21 @@
+{
+  "name": "aurelia-fetch-client",
+  "version": "0.1.0",
+  "description": "A simple client based on the Fetch standard.",
+  "keywords": [
+    "aurelia",
+    "http",
+    "ajax",
+    "fetch"
+  ],
+  "homepage": "http://aurelia.io",
+  "license": "MIT",
+  "authors": [
+    "Rob Eisenberg <rob@bluespire.com> (http://robeisenberg.com/)"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/aurelia/fetch-client"
+  },
+  "dependencies": { }
+}
