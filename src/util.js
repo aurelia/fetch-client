@@ -1,7 +1,7 @@
 /**
  * Create a Blob containing JSON-serialized data.
  * Useful for easily creating JSON fetch request bodies.
- * 
+ *
  * @param {*} body - [description]
  * @return {Blob} - A blob containing the JSON-serialized body.
  */
@@ -11,7 +11,7 @@ export function json(body) {
 
 /**
  * Merges two Headers collections to create a third Headers object.
- * 
+ *
  * @param {Headers|Object} first - The first Headers object, or an
  * object whose key/value pairs correspond to header names and values.
  * @param {Headers|Object} second - The second Headers object, or an

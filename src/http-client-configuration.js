@@ -1,4 +1,4 @@
-import core from 'core-js';
+import 'core-js';
 
 /**
  * A class for configuring HttpClients.
@@ -30,8 +30,9 @@ export class HttpClientConfiguration {
 
   /**
    * Sets the baseUrl.
-   * 
+   *
    * @param {String} baseUrl - The base URL.
+   * @returns {HttpClientConfiguration}
    * @chainable
    */
   withBaseUrl(baseUrl) {
@@ -41,8 +42,9 @@ export class HttpClientConfiguration {
 
   /**
    * Sets the defaults.
-   * 
+   *
    * @param {Object} defaults - The defaults.
+   * @returns {HttpClientConfiguration}
    * @chainable
    */
   withDefaults(defaults) {
@@ -52,8 +54,9 @@ export class HttpClientConfiguration {
 
   /**
    * Add an interceptor to be used by the HttpClient.
-   * 
+   *
    * @param {Object} interceptor - The interceptor.
+   * @returns {HttpClientConfiguration}
    * @chainable
    */
   withInterceptor(interceptor) {
@@ -64,7 +67,8 @@ export class HttpClientConfiguration {
   /**
    * Applies a configuration that addresses common application needs, including
    * configuring same-origin credentials, and using rejectErrorResponses.
-   * 
+   *
+   * @returns {HttpClientConfiguration}
    * @chainable
    */
   useStandardConfiguration() {
@@ -80,7 +84,8 @@ export class HttpClientConfiguration {
    * Promise continuation to determine if the server responded with a success code.
    * This method adds a response interceptor that causes Responses with error codes
    * to be rejected, which is common behavior in HTTP client libraries.
-   * 
+   *
+   * @returns {HttpClientConfiguration}
    * @chainable
    */
   rejectErrorResponses() {
