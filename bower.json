@@ -17,5 +17,5 @@
     "type": "git",
     "url": "http://github.com/aurelia/fetch-client"
   },
-  "dependencies": { }
+  "dependencies": {}
 }
