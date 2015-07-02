@@ -70,9 +70,9 @@ export class HttpClient {
    * @return {Promise} - A Promise that resolves with the Response.
    */
   fetch(input, init) {
-    let request = this::buildRequest(input, init, this.defaults);
     this::trackRequestStart();
 
+    let request = Promise.resolve().then(() => this::buildRequest(input, init, this.defaults));
     let promise = processRequest(request, this.interceptors)
       .then(result => {
         let response = null;
