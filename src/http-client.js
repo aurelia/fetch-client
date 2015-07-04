@@ -1,6 +1,9 @@
 import {HttpClientConfiguration} from './http-client-configuration';
 import {mergeHeaders} from './util';
+import {IRequestInit, IInterceptor} from './interfaces';
 import 'core-js';
+
+type ConfigOrCallback = IRequestInit|(config: HttpClientConfiguration) => void|string;
 
 /**
 * An HTTP client based on the Fetch API.
@@ -9,12 +12,17 @@ import 'core-js';
 * @constructor
 */
 export class HttpClient {
-  activeRequestCount = 0;
-  isRequesting = false;
-  interceptors = [];
-  isConfigured = false;
-  baseUrl = '';
-  defaults = null;
+  activeRequestCount: number = 0;
+
+  isRequesting: boolean = false;
+
+  interceptors: IInterceptor[] = [];
+
+  isConfigured: boolean = false;
+
+  baseUrl: string = '';
+
+  defaults: IRequestInit = null;
 
   /**
   * Configure this client with default settings to be used by all requests.
@@ -24,7 +32,7 @@ export class HttpClient {
   * @returns {HttpClient}
   * @chainable
   */
-  configure(config) {
+  configure(config: ConfigOrCallback): HttpClient {
     let normalizedConfig;
 
     if (typeof config === 'string') {
@@ -60,7 +68,7 @@ export class HttpClient {
   * the Request.
   * @return {Promise} - A Promise that resolves with the Response.
   */
-  fetch(input, init) {
+  fetch(input: Request|string, init?: IRequestInit): Promise<Response> {
     this::trackRequestStart();
 
     let request = Promise.resolve().then(() => this::buildRequest(input, init, this.defaults));

@@ -12,7 +12,7 @@ var tools = require('aurelia-tools');
 
 gulp.task('build-index', function(){
   var importsToAdd = [];
-  var files = ['util.js', 'http-client-configuration.js', 'http-client.js'].map(function(file){
+  var files = ['util.js', 'http-client-configuration.js', 'http-client.js', 'interfaces.js'].map(function(file){
     return paths.root + file;
   });
 

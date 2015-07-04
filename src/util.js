@@ -5,7 +5,7 @@
 * @param {*} body - [description]
 * @return {Blob} - A blob containing the JSON-serialized body.
 */
-export function json(body) {
+export function json(body: any): Blob {
   return new Blob([JSON.stringify(body)], { type: 'application/json' });
 }
 
@@ -20,7 +20,7 @@ export function json(body) {
 * @return {Headers} - A Headers instance containing the headers from
 * both objects.
 */
-export function mergeHeaders(first, second) {
+export function mergeHeaders(first: Headers|Object, second: Headers|Object): Headers {
   let headers = new Headers(first || {});
   (new Headers(second || {})).forEach((value, name) => {
     headers.set(name, value);
