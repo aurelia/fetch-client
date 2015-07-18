@@ -3,11 +3,11 @@ import {mergeHeaders} from './util';
 import 'core-js';
 
 /**
- * An HTTP client based on the Fetch API.
- *
- * @class HttpClient
- * @constructor
- */
+* An HTTP client based on the Fetch API.
+*
+* @class HttpClient
+* @constructor
+*/
 export class HttpClient {
   activeRequestCount = 0;
   isRequesting = false;
@@ -17,11 +17,11 @@ export class HttpClient {
   defaults = null;
 
   /**
-   * Configure this client with default settings to be used by all requests.
-   *
-   * @param {Function|Object|String} config - A function that takes a config argument,
-   * or a config object, or a string to use as the client's baseUrl.
-   */
+  * Configure this client with default settings to be used by all requests.
+  *
+  * @param {Function|Object|String} config - A function that takes a config argument,
+  * or a config object, or a string to use as the client's baseUrl.
+  */
   configure(config) {
     let normalizedConfig;
 
@@ -43,32 +43,32 @@ export class HttpClient {
   }
 
   /**
-   * Adds an interceptor to be run on all requests or responses.
-   *
-   * @param {object} interceptor - An object with request, requestError,
-   * response, or responseError methods. request and requestError act as
-   * resolve and reject handlers for the Request before it is sent.
-   * response and responseError act as resolve and reject handlers for
-   * the Response after it has been received.
-   */
+  * Adds an interceptor to be run on all requests or responses.
+  *
+  * @param {object} interceptor - An object with request, requestError,
+  * response, or responseError methods. request and requestError act as
+  * resolve and reject handlers for the Request before it is sent.
+  * response and responseError act as resolve and reject handlers for
+  * the Response after it has been received.
+  */
   addInterceptor(interceptor) {
     this.interceptors.push(interceptor);
   }
 
   /**
-   * Starts the process of fetching a resource. Default configuration parameters
-   * will be applied to the Request. The constructed Request will be passed to
-   * registered request interceptors before being sent. The Response will be passed
-   * to registered Response interceptors before it is returned.
-   *
-   * See also https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
-   *
-   * @param {Request|String} input - The resource that you wish to fetch. Either a
-   * Request object, or a string containing the URL of the resource.
-   * @param {Object} [init] - An options object containing settings to be applied to
-   * the Request.
-   * @return {Promise} - A Promise that resolves with the Response.
-   */
+  * Starts the process of fetching a resource. Default configuration parameters
+  * will be applied to the Request. The constructed Request will be passed to
+  * registered request interceptors before being sent. The Response will be passed
+  * to registered Response interceptors before it is returned.
+  *
+  * See also https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
+  *
+  * @param {Request|String} input - The resource that you wish to fetch. Either a
+  * Request object, or a string containing the URL of the resource.
+  * @param {Object} [init] - An options object containing settings to be applied to
+  * the Request.
+  * @return {Promise} - A Promise that resolves with the Response.
+  */
   fetch(input, init) {
     this::trackRequestStart();
 
