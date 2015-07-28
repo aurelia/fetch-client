@@ -40,23 +40,10 @@ export class HttpClient {
 
     this.baseUrl = normalizedConfig.baseUrl;
     this.defaults = normalizedConfig.defaults;
-    (normalizedConfig.interceptors || []).forEach(::this.addInterceptor);
+    this.interceptors.push(...normalizedConfig.interceptors || []);
     this.isConfigured = true;
 
     return this;
-  }
-
-  /**
-  * Adds an interceptor to be run on all requests or responses.
-  *
-  * @param {object} interceptor - An object with request, requestError,
-  * response, or responseError methods. request and requestError act as
-  * resolve and reject handlers for the Request before it is sent.
-  * response and responseError act as resolve and reject handlers for
-  * the Response after it has been received.
-  */
-  addInterceptor(interceptor) {
-    this.interceptors.push(interceptor);
   }
 
   /**

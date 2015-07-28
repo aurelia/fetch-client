@@ -44,7 +44,7 @@ describe('HttpClient', () => {
       spyOn(interceptor, 'request').and.callThrough();
       spyOn(interceptor, 'requestError').and.callThrough();
 
-      client.addInterceptor(interceptor);
+      client.interceptors.push(interceptor);
 
       client.fetch('path')
         .then(() => {
@@ -60,8 +60,8 @@ describe('HttpClient', () => {
       spyOn(interceptor, 'request').and.callThrough();
       spyOn(interceptor, 'requestError').and.callThrough();
 
-      client.addInterceptor({ request() { return Promise.reject(new Error('test')); }});
-      client.addInterceptor(interceptor);
+      client.interceptors.push({ request() { return Promise.reject(new Error('test')); }});
+      client.interceptors.push(interceptor);
 
       client.fetch()
         .catch(() => {
@@ -77,7 +77,7 @@ describe('HttpClient', () => {
       spyOn(interceptor, 'response').and.callThrough();
       spyOn(interceptor, 'responseError').and.callThrough();
 
-      client.addInterceptor(interceptor);
+      client.interceptors.push(interceptor);
 
       client.fetch('path')
         .then(() => {
@@ -93,7 +93,7 @@ describe('HttpClient', () => {
       spyOn(interceptor, 'response').and.callThrough();
       spyOn(interceptor, 'responseError').and.callThrough();
 
-      client.addInterceptor(interceptor);
+      client.interceptors.push(interceptor);
 
       client.fetch('path')
         .catch(() => {
@@ -106,7 +106,7 @@ describe('HttpClient', () => {
     it('normalizes input for interceptors', (done) => {
       fetch.and.returnValue(emptyResponse(200));
       let request;
-      client.addInterceptor({ request(r) { request = r; return r; } });
+      client.interceptors.push({ request(r) { request = r; return r; } });
 
       client
         .fetch('http://example.com/some/cool/path')
@@ -123,8 +123,8 @@ describe('HttpClient', () => {
       spyOn(first, 'request').and.callThrough();
       spyOn(second, 'request').and.callThrough();
 
-      client.addInterceptor(first);
-      client.addInterceptor(second);
+      client.interceptors.push(first);
+      client.interceptors.push(second);
 
       client.fetch('path')
         .then(() => {
@@ -138,7 +138,7 @@ describe('HttpClient', () => {
       fetch.and.returnValue(emptyResponse(200));
       let interceptor = { request() { return new Request('http://aurelia.io/'); } };
 
-      client.addInterceptor(interceptor);
+      client.interceptors.push(interceptor);
 
       client.fetch('first')
         .then(() => {
@@ -151,7 +151,7 @@ describe('HttpClient', () => {
       let response = new Response();
       let interceptor = { request() { return response; } };
 
-      client.addInterceptor(interceptor);
+      client.interceptors.push(interceptor);
 
       client.fetch('path')
         .then((response) => {

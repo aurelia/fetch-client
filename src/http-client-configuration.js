@@ -53,9 +53,13 @@ export class HttpClientConfiguration {
   }
 
   /**
-  * Add an interceptor to be used by the HttpClient.
+  * Adds an interceptor to be run on all requests or responses.
   *
-  * @param {Object} interceptor - The interceptor.
+  * @param {Object} interceptor - An object with request, requestError,
+  * response, or responseError methods. request and requestError act as
+  * resolve and reject handlers for the Request before it is sent.
+  * response and responseError act as resolve and reject handlers for
+  * the Response after it has been received.
   * @returns {HttpClientConfiguration}
   * @chainable
   */
