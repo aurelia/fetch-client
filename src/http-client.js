@@ -21,6 +21,8 @@ export class HttpClient {
   *
   * @param {Function|Object|String} config - A function that takes a config argument,
   * or a config object, or a string to use as the client's baseUrl.
+  * @returns {HttpClient}
+  * @chainable
   */
   configure(config) {
     let normalizedConfig;
@@ -40,6 +42,8 @@ export class HttpClient {
     this.defaults = normalizedConfig.defaults;
     (normalizedConfig.interceptors || []).forEach(::this.addInterceptor);
     this.isConfigured = true;
+
+    return this;
   }
 
   /**
