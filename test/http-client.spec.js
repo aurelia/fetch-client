@@ -161,6 +161,79 @@ describe('HttpClient', () => {
         });
     });
   });
+
+  describe('default request parameters', () => {
+    setUpTests();
+
+    it('applies baseUrl to requests', (done) => {
+      fetch.and.returnValue(emptyResponse(200));
+      client.baseUrl = 'http://aurelia.io/';
+
+      client.fetch('path')
+        .then(() => {
+          let [request] = fetch.calls.first().args;
+          expect(request.url).toBe('http://aurelia.io/path');
+          done();
+        });
+    });
+
+    it('applies default headers to requests with no headers', (done) => {
+      fetch.and.returnValue(emptyResponse(200));
+      client.defaults = { headers: { 'x-foo': 'bar' } };
+
+      client.fetch('path')
+        .then(() => {
+          let [request] = fetch.calls.first().args;
+          expect(request.headers.has('x-foo')).toBe(true);
+          expect(request.headers.get('x-foo')).toBe('bar');
+          done();
+        });
+    });
+
+    it('applies default headers to requests with other headers', (done) => {
+      fetch.and.returnValue(emptyResponse(200));
+      client.defaults = { headers: { 'x-foo': 'bar' } };
+
+      client.fetch('path', { headers: { 'x-baz': 'bat' } })
+        .then(() => {
+          let [request] = fetch.calls.first().args;
+          expect(request.headers.has('x-foo')).toBe(true);
+          expect(request.headers.has('x-baz')).toBe(true);
+          expect(request.headers.get('x-foo')).toBe('bar');
+          expect(request.headers.get('x-baz')).toBe('bat');
+          done();
+        });
+    });
+
+    it('applies default headers to requests using Headers instance', (done) => {
+      fetch.and.returnValue(emptyResponse(200));
+      client.defaults = { headers: { 'x-foo': 'bar' } };
+
+      client.fetch('path', { headers: new Headers({ 'x-baz': 'bat' }) })
+        .then(() => {
+          let [request] = fetch.calls.first().args;
+          expect(request.headers.has('x-foo')).toBe(true);
+          expect(request.headers.has('x-baz')).toBe(true);
+          expect(request.headers.get('x-foo')).toBe('bar');
+          expect(request.headers.get('x-baz')).toBe('bat');
+          done();
+        });
+    });
+
+    it('does not overwrite request headers with default headers', (done) => {
+      fetch.and.returnValue(emptyResponse(200));
+      client.defaults = { headers: { 'x-foo': 'bar' } };
+
+      client.fetch('path', { headers: { 'x-foo': 'baz' } })
+        .then(() => {
+          let [request] = fetch.calls.first().args;
+          expect(request.headers.has('x-foo')).toBe(true);
+          expect(request.headers.get('x-foo')).toBe('baz');
+          expect(request.headers.getAll('x-foo').length).toBe(1);
+          done();
+        });
+    });
+  });
 });
 
 function emptyResponse(status) {
