@@ -1,25 +1,14 @@
-System.register([], function (_export) {
+System.register(['core-js'], function (_export) {
   'use strict';
 
   var HttpClientConfiguration, HttpClient;
 
   _export('json', json);
 
-  _export('mergeHeaders', mergeHeaders);
-
   function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
   function json(body) {
     return new Blob([JSON.stringify(body)], { type: 'application/json' });
-  }
-
-  function mergeHeaders(first, second) {
-    var headers = new Headers(first || {});
-    new Headers(second || {}).forEach(function (value, name) {
-      headers.set(name, value);
-    });
-
-    return headers;
   }
 
   function rejectOnError(response) {
@@ -34,7 +23,7 @@ System.register([], function (_export) {
     this.isRequesting = !! ++this.activeRequestCount;
   }
 
-  function trackRequestEnd(client) {
+  function trackRequestEnd() {
     this.isRequesting = !! --this.activeRequestCount;
   }
 
@@ -66,10 +55,19 @@ System.register([], function (_export) {
       body = init.body;
     }
 
-    var headers = mergeHeaders(defaults.headers, source.headers);
-    var requestInit = Object.assign({}, defaults, source, { body: body, headers: headers });
+    var requestInit = Object.assign({}, defaults, source, { body: body });
+    var request = new Request((this.baseUrl || '') + url, requestInit);
+    setDefaultHeaders(request.headers, defaults.headers);
 
-    return new Request((this.baseUrl || '') + url, requestInit);
+    return request;
+  }
+
+  function setDefaultHeaders(headers, defaultHeaders) {
+    for (var _name in defaultHeaders || {}) {
+      if (defaultHeaders.hasOwnProperty(_name) && !headers.has(_name)) {
+        headers.set(_name, defaultHeaders[_name]);
+      }
+    }
   }
 
   function processRequest(request, interceptors) {
@@ -88,8 +86,9 @@ System.register([], function (_export) {
       return chain.then(successHandler && successHandler.bind(interceptor), errorHandler && errorHandler.bind(interceptor));
     }, Promise.resolve(input));
   }
+
   return {
-    setters: [],
+    setters: [function (_coreJs) {}],
     execute: function () {
       HttpClientConfiguration = (function () {
         function HttpClientConfiguration() {
@@ -143,6 +142,8 @@ System.register([], function (_export) {
         }
 
         HttpClient.prototype.configure = function configure(config) {
+          var _interceptors;
+
           var normalizedConfig = undefined;
 
           if (typeof config === 'string') {
@@ -156,14 +157,17 @@ System.register([], function (_export) {
             throw new Error('invalid config');
           }
 
-          this.baseUrl = normalizedConfig.baseUrl;
-          this.defaults = normalizedConfig.defaults;
-          (normalizedConfig.interceptors || []).forEach(this.addInterceptor.bind(this));
-          this.isConfigured = true;
-        };
+          var defaults = normalizedConfig.defaults;
+          if (defaults && defaults.headers instanceof Headers) {
+            throw new Error('Default headers must be a plain object.');
+          }
 
-        HttpClient.prototype.addInterceptor = function addInterceptor(interceptor) {
-          this.interceptors.push(interceptor);
+          this.baseUrl = normalizedConfig.baseUrl;
+          this.defaults = defaults;
+          (_interceptors = this.interceptors).push.apply(_interceptors, normalizedConfig.interceptors || []);
+          this.isConfigured = true;
+
+          return this;
         };
 
         HttpClient.prototype.fetch = (function (_fetch) {
@@ -179,9 +183,11 @@ System.register([], function (_export) {
         })(function (input, init) {
           var _this = this;
 
-          var request = buildRequest.call(this, input, init, this.defaults);
           trackRequestStart.call(this);
 
+          var request = Promise.resolve().then(function () {
+            return buildRequest.call(_this, input, init, _this.defaults);
+          });
           var promise = processRequest(request, this.interceptors).then(function (result) {
             var response = null;
 

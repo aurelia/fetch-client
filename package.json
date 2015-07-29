@@ -14,13 +14,13 @@
   },
   "license": "MIT",
   "author": "Rob Eisenberg <rob@bluespire.com> (http://robeisenberg.com/)",
-  "main": "dist/commonjs/index.js",
+  "main": "dist/commonjs/aurelia-fetch-client.js",
   "repository": {
     "type": "git",
     "url": "http://github.com/aurelia/fetch-client"
   },
   "jspm": {
-    "main": "index",
+    "main": "aurelia-fetch-client",
     "format": "amd",
     "directories": {
       "lib": "dist/amd"
