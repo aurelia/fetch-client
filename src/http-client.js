@@ -1,5 +1,4 @@
 import {HttpClientConfiguration} from './http-client-configuration';
-import {mergeHeaders} from './util';
 import {IRequestInit, IInterceptor} from './interfaces';
 import 'core-js';
 
@@ -46,8 +45,15 @@ export class HttpClient {
       throw new Error('invalid config');
     }
 
+    let defaults = normalizedConfig.defaults;
+    if (defaults && defaults.headers instanceof Headers) {
+      // Headers instances are not iterable in all browsers. Require a plain
+      // object here to allow default headers to be merged into request headers.
+      throw new Error('Default headers must be a plain object.');
+    }
+
     this.baseUrl = normalizedConfig.baseUrl;
-    this.defaults = normalizedConfig.defaults;
+    this.defaults = defaults;
     this.interceptors.push(...normalizedConfig.interceptors || []);
     this.isConfigured = true;
 
@@ -126,10 +132,19 @@ function buildRequest(input, init = {}) {
     body = init.body;
   }
 
-  let headers = mergeHeaders(defaults.headers, source.headers);
-  let requestInit = Object.assign({}, defaults, source, { body, headers });
+  let requestInit = Object.assign({}, defaults, source, { body });
+  let request = new Request((this.baseUrl || '') + url, requestInit);
+  setDefaultHeaders(request.headers, defaults.headers);
 
-  return new Request((this.baseUrl || '') + url, requestInit);
+  return request;
+}
+
+function setDefaultHeaders(headers, defaultHeaders) {
+  for (let name in defaultHeaders || {}) {
+    if (defaultHeaders.hasOwnProperty(name) && !headers.has(name)) {
+      headers.set(name, defaultHeaders[name]);
+    }
+  }
 }
 
 function processRequest(request, interceptors) {
