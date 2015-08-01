@@ -35,7 +35,7 @@
     }
   },
   "devDependencies": {
-    "aurelia-tools": "^0.1.7",
+    "aurelia-tools": "^0.1.9",
     "babel-dts-generator": "^0.2.6",
     "babel-eslint": "^3.1.19",
     "conventional-changelog": "0.0.11",
