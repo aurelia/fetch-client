@@ -2,8 +2,6 @@ import {HttpClientConfiguration} from './http-client-configuration';
 import {IRequestInit, IInterceptor} from './interfaces';
 import 'core-js';
 
-type ConfigOrCallback = IRequestInit|(config: HttpClientConfiguration) => void|string;
-
 /**
 * An HTTP client based on the Fetch API.
 *
@@ -31,7 +29,7 @@ export class HttpClient {
   * @returns {HttpClient}
   * @chainable
   */
-  configure(config: ConfigOrCallback): HttpClient {
+  configure(config: string|IRequestInit|(config: HttpClientConfiguration) => void): HttpClient {
     let normalizedConfig;
 
     if (typeof config === 'string') {
