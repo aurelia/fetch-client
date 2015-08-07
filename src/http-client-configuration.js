@@ -1,4 +1,4 @@
-import {IRequestInit, IInterceptor} from './interfaces';
+import {RequestInit, Interceptor} from './interfaces';
 import 'core-js';
 
 /**
@@ -21,13 +21,13 @@ export class HttpClientConfiguration {
   * See also https://developer.mozilla.org/en-US/docs/Web/API/Request/Request
   * @type {Object}
   */
-  defaults: IRequestInit = {};
+  defaults: RequestInit = {};
 
   /**
   * Interceptors to be added to the HttpClient.
   * @type {Array}
   */
-  interceptors: IInterceptor[] = [];
+  interceptors: Interceptor[] = [];
 
   /**
   * Sets the baseUrl.
@@ -48,7 +48,7 @@ export class HttpClientConfiguration {
   * @returns {HttpClientConfiguration}
   * @chainable
   */
-  withDefaults(defaults: IRequestInit): HttpClientConfiguration {
+  withDefaults(defaults: RequestInit): HttpClientConfiguration {
     this.defaults = defaults;
     return this;
   }
@@ -64,7 +64,7 @@ export class HttpClientConfiguration {
   * @returns {HttpClientConfiguration}
   * @chainable
   */
-  withInterceptor(interceptor: IInterceptor): HttpClientConfiguration {
+  withInterceptor(interceptor: Interceptor): HttpClientConfiguration {
     this.interceptors.push(interceptor);
     return this;
   }

@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-interface IInterceptor {
+interface Interceptor {
   request?: (request: Request) => Request|Response|Promise<Request|Response>;
 
   requestError?: (error: any) => Request|Response|Promise<Request|Response>;
@@ -10,7 +10,7 @@ interface IInterceptor {
   responseError?: (error: any) => Response|Promise<Response>;
 }
 
-interface IRequestInit {
+interface RequestInit {
   method?: string;
 
   headers?: Headers;

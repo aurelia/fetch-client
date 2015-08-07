@@ -1,5 +1,5 @@
 import {HttpClientConfiguration} from './http-client-configuration';
-import {IRequestInit, IInterceptor} from './interfaces';
+import {RequestInit, Interceptor} from './interfaces';
 import 'core-js';
 
 /**
@@ -13,13 +13,13 @@ export class HttpClient {
 
   isRequesting: boolean = false;
 
-  interceptors: IInterceptor[] = [];
+  interceptors: Interceptor[] = [];
 
   isConfigured: boolean = false;
 
   baseUrl: string = '';
 
-  defaults: IRequestInit = null;
+  defaults: RequestInit = null;
 
   /**
   * Configure this client with default settings to be used by all requests.
@@ -29,7 +29,7 @@ export class HttpClient {
   * @returns {HttpClient}
   * @chainable
   */
-  configure(config: string|IRequestInit|(config: HttpClientConfiguration) => void): HttpClient {
+  configure(config: string|RequestInit|(config: HttpClientConfiguration) => void): HttpClient {
     let normalizedConfig;
 
     if (typeof config === 'string') {
@@ -72,7 +72,7 @@ export class HttpClient {
   * the Request.
   * @return {Promise} - A Promise that resolves with the Response.
   */
-  fetch(input: Request|string, init?: IRequestInit): Promise<Response> {
+  fetch(input: Request|string, init?: RequestInit): Promise<Response> {
     this::trackRequestStart();
 
     let request = Promise.resolve().then(() => this::buildRequest(input, init, this.defaults));
