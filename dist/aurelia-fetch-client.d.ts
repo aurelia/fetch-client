@@ -1,15 +1,14 @@
 declare module 'aurelia-fetch-client' {
   import  from 'core-js';
-  import  from 'core-js';
   
   /* eslint-disable */
-  export interface IInterceptor {
+  export interface Interceptor {
     request(request: Request): undefined;
     requestError(error: any): undefined;
     response(response: Response): undefined;
     responseError(error: any): undefined;
   }
-  export interface IRequestInit {
+  export interface RequestInit {
     method?: string;
     headers?: Headers;
     body?: Blob | BufferSource | FormData | URLSearchParams | string;
@@ -48,13 +47,13 @@ declare module 'aurelia-fetch-client' {
       * See also https://developer.mozilla.org/en-US/docs/Web/API/Request/Request
       * @type {Object}
       */
-    defaults: IRequestInit;
+    defaults: RequestInit;
     
     /**
       * Interceptors to be added to the HttpClient.
       * @type {Array}
       */
-    interceptors: IInterceptor[];
+    interceptors: Interceptor[];
     
     /**
       * Sets the baseUrl.
@@ -72,7 +71,7 @@ declare module 'aurelia-fetch-client' {
       * @returns {HttpClientConfiguration}
       * @chainable
       */
-    withDefaults(defaults: IRequestInit): HttpClientConfiguration;
+    withDefaults(defaults: RequestInit): HttpClientConfiguration;
     
     /**
       * Adds an interceptor to be run on all requests or responses.
@@ -85,7 +84,7 @@ declare module 'aurelia-fetch-client' {
       * @returns {HttpClientConfiguration}
       * @chainable
       */
-    withInterceptor(interceptor: IInterceptor): HttpClientConfiguration;
+    withInterceptor(interceptor: Interceptor): HttpClientConfiguration;
     
     /**
       * Applies a configuration that addresses common application needs, including
@@ -119,10 +118,10 @@ declare module 'aurelia-fetch-client' {
   export class HttpClient {
     activeRequestCount: number;
     isRequesting: boolean;
-    interceptors: IInterceptor[];
+    interceptors: Interceptor[];
     isConfigured: boolean;
     baseUrl: string;
-    defaults: IRequestInit;
+    defaults: RequestInit;
     
     /**
       * Configure this client with default settings to be used by all requests.
@@ -132,7 +131,7 @@ declare module 'aurelia-fetch-client' {
       * @returns {HttpClient}
       * @chainable
       */
-    configure(config: ConfigOrCallback): HttpClient;
+    configure(config: string | RequestInit | ((config: HttpClientConfiguration) => void)): HttpClient;
     
     /**
       * Starts the process of fetching a resource. Default configuration parameters
@@ -148,6 +147,6 @@ declare module 'aurelia-fetch-client' {
       * the Request.
       * @return {Promise} - A Promise that resolves with the Response.
       */
-    fetch(input: Request | string, init?: IRequestInit): Promise<Response>;
+    fetch(input: Request | string, init?: RequestInit): Promise<Response>;
   }
 }

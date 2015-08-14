@@ -153,7 +153,7 @@ define(['exports', 'core-js'], function (exports, _coreJs) {
   }
 
   function buildRequest(input) {
-    var init = arguments[1] === undefined ? {} : arguments[1];
+    var init = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
     var defaults = this.defaults || {};
     var source = undefined;

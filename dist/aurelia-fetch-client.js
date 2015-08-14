@@ -1,3 +1,4 @@
+import 'core-js';
 
 /**
 * Create a Blob containing JSON-serialized data.
@@ -11,7 +12,31 @@ export function json(body: any): Blob {
 }
 
 
-import 'core-js';
+/* eslint-disable */
+
+interface Interceptor {
+  request?: (request: Request) => Request|Response|Promise<Request|Response>;
+
+  requestError?: (error: any) => Request|Response|Promise<Request|Response>;
+
+  response?: (response: Response) => Response|Promise<Response>;
+
+  responseError?: (error: any) => Response|Promise<Response>;
+}
+
+interface RequestInit {
+  method?: string;
+
+  headers?: Headers;
+
+  body?: Blob|BufferSource|FormData|URLSearchParams|string;
+
+  mode?: string;
+
+  credentials?: string;
+
+  cache?: string;
+}
 
 /**
 * A class for configuring HttpClients.
@@ -33,13 +58,13 @@ export class HttpClientConfiguration {
   * See also https://developer.mozilla.org/en-US/docs/Web/API/Request/Request
   * @type {Object}
   */
-  defaults: IRequestInit = {};
+  defaults: RequestInit = {};
 
   /**
   * Interceptors to be added to the HttpClient.
   * @type {Array}
   */
-  interceptors: IInterceptor[] = [];
+  interceptors: Interceptor[] = [];
 
   /**
   * Sets the baseUrl.
@@ -60,7 +85,7 @@ export class HttpClientConfiguration {
   * @returns {HttpClientConfiguration}
   * @chainable
   */
-  withDefaults(defaults: IRequestInit): HttpClientConfiguration {
+  withDefaults(defaults: RequestInit): HttpClientConfiguration {
     this.defaults = defaults;
     return this;
   }
@@ -76,7 +101,7 @@ export class HttpClientConfiguration {
   * @returns {HttpClientConfiguration}
   * @chainable
   */
-  withInterceptor(interceptor: IInterceptor): HttpClientConfiguration {
+  withInterceptor(interceptor: Interceptor): HttpClientConfiguration {
     this.interceptors.push(interceptor);
     return this;
   }
@@ -118,10 +143,6 @@ function rejectOnError(response) {
   return response;
 }
 
-import 'core-js';
-
-type ConfigOrCallback = IRequestInit|(config: HttpClientConfiguration) => void|string;
-
 /**
 * An HTTP client based on the Fetch API.
 *
@@ -133,13 +154,13 @@ export class HttpClient {
 
   isRequesting: boolean = false;
 
-  interceptors: IInterceptor[] = [];
+  interceptors: Interceptor[] = [];
 
   isConfigured: boolean = false;
 
   baseUrl: string = '';
 
-  defaults: IRequestInit = null;
+  defaults: RequestInit = null;
 
   /**
   * Configure this client with default settings to be used by all requests.
@@ -149,7 +170,7 @@ export class HttpClient {
   * @returns {HttpClient}
   * @chainable
   */
-  configure(config: ConfigOrCallback): HttpClient {
+  configure(config: string|RequestInit|(config: HttpClientConfiguration) => void): HttpClient {
     let normalizedConfig;
 
     if (typeof config === 'string') {
@@ -192,7 +213,7 @@ export class HttpClient {
   * the Request.
   * @return {Promise} - A Promise that resolves with the Response.
   */
-  fetch(input: Request|string, init?: IRequestInit): Promise<Response> {
+  fetch(input: Request|string, init?: RequestInit): Promise<Response> {
     this::trackRequestStart();
 
     let request = Promise.resolve().then(() => this::buildRequest(input, init, this.defaults));
@@ -283,30 +304,4 @@ function applyInterceptors(input, interceptors, successName, errorName) {
         successHandler && interceptor::successHandler,
         errorHandler && interceptor::errorHandler);
     }, Promise.resolve(input));
-}
-
-/* eslint-disable */
-
-interface IInterceptor {
-  request?: (request: Request) => Request|Response|Promise<Request|Response>;
-
-  requestError?: (error: any) => Request|Response|Promise<Request|Response>;
-
-  response?: (response: Response) => Response|Promise<Response>;
-
-  responseError?: (error: any) => Response|Promise<Response>;
-}
-
-interface IRequestInit {
-  method?: string;
-
-  headers?: Headers;
-
-  body?: Blob|BufferSource|FormData|URLSearchParams|string;
-
-  mode?: string;
-
-  credentials?: string;
-
-  cache?: string;
 }

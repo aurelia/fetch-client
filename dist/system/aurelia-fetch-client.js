@@ -34,7 +34,7 @@ System.register(['core-js'], function (_export) {
   }
 
   function buildRequest(input) {
-    var init = arguments[1] === undefined ? {} : arguments[1];
+    var init = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
     var defaults = this.defaults || {};
     var source = undefined;
@@ -86,7 +86,6 @@ System.register(['core-js'], function (_export) {
       return chain.then(successHandler && successHandler.bind(interceptor), errorHandler && errorHandler.bind(interceptor));
     }, Promise.resolve(input));
   }
-
   return {
     setters: [function (_coreJs) {}],
     execute: function () {

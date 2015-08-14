@@ -1,3 +1,11 @@
+### 0.1.2 (2015-08-14)
+
+
+#### Bug Fixes
+
+* **http-client:** inline ConfigOrCallback type definition ([6a062601](http://github.com/aurelia/fetch-client/commit/6a062601904d66b12d02290ee7ca7bfb3892bf8a))
+
+
 ### 0.1.1 (2015-07-29)
 
 

@@ -7,8 +7,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 require('core-js');
 
-require('core-js');
-
 function json(body) {
   return new Blob([JSON.stringify(body)], { type: 'application/json' });
 }
@@ -156,7 +154,7 @@ function trackRequestEndWith(promise) {
 }
 
 function buildRequest(input) {
-  var init = arguments[1] === undefined ? {} : arguments[1];
+  var init = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
   var defaults = this.defaults || {};
   var source = undefined;
