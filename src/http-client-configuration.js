@@ -67,7 +67,7 @@ export class HttpClientConfiguration {
   */
   withDefaults(defaults: RequestInit): HttpClientConfiguration {
     return new HttpClientConfiguration({
-      defaults: defaults,
+      defaults: { ...defaults, ...this._options.defaults },
       ...this._options
     });
   }
