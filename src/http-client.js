@@ -5,7 +5,6 @@ import 'core-js';
 /**
 * An HTTP client based on the Fetch API.
 *
-* @class HttpClient
 * @constructor
 */
 export class HttpClient {
@@ -24,9 +23,8 @@ export class HttpClient {
   /**
   * Configure this client with default settings to be used by all requests.
   *
-  * @param {Function|Object|String} config - A function that takes a config argument,
+  * @param config - A function that takes a config argument,
   * or a config object, or a string to use as the client's baseUrl.
-  * @returns {HttpClient}
   * @chainable
   */
   configure(config: string|RequestInit|(config: HttpClientConfiguration) => void): HttpClient {
@@ -66,11 +64,10 @@ export class HttpClient {
   *
   * See also https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
   *
-  * @param {Request|String} input - The resource that you wish to fetch. Either a
+  * @param input - The resource that you wish to fetch. Either a
   * Request object, or a string containing the URL of the resource.
-  * @param {Object} [init] - An options object containing settings to be applied to
+  * @param - An options object containing settings to be applied to
   * the Request.
-  * @return {Promise} - A Promise that resolves with the Response.
   */
   fetch(input: Request|string, init?: RequestInit): Promise<Response> {
     this::trackRequestStart();
