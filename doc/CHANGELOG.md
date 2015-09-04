@@ -1,3 +1,18 @@
+## 0.2.0 (2015-09-04)
+
+
+#### Bug Fixes
+
+* **build:** update linting, testing and tools ([12f0cd93](http://github.com/aurelia/fetch-client/commit/12f0cd93a3c31f3076f2e2c1a1ca1f1f87956d2e))
+
+
+#### Features
+
+* **docs:**
+  * generate api.json from .d.ts file ([80ccb0c2](http://github.com/aurelia/fetch-client/commit/80ccb0c24c6be7f955958a292bef1ca2a8604374))
+  * generate api.json from .d.ts file ([6d1cf4cc](http://github.com/aurelia/fetch-client/commit/6d1cf4cc415f24b4385888107bdc63ff093a1ede))
+
+
 ### 0.1.2 (2015-08-14)
 
 

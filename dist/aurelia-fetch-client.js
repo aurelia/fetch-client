@@ -4,8 +4,7 @@ import 'core-js';
 * Create a Blob containing JSON-serialized data.
 * Useful for easily creating JSON fetch request bodies.
 *
-* @param {*} body - [description]
-* @return {Blob} - A blob containing the JSON-serialized body.
+* @param body - The object to be serialized to JSON.
 */
 export function json(body: any): Blob {
   return new Blob([JSON.stringify(body)], { type: 'application/json' });
@@ -41,13 +40,11 @@ interface RequestInit {
 /**
 * A class for configuring HttpClients.
 *
-* @class HttpClientConfiguration
 * @constructor
 */
 export class HttpClientConfiguration {
   /**
   * The base URL to be prepended to each Request's url before sending.
-  * @type {String}
   */
   baseUrl: string = '';
 
@@ -56,21 +53,18 @@ export class HttpClientConfiguration {
   * defaults cannot be applied when Request objects are manually created because
   * Request provides its own defaults and discards the original init object.
   * See also https://developer.mozilla.org/en-US/docs/Web/API/Request/Request
-  * @type {Object}
   */
   defaults: RequestInit = {};
 
   /**
   * Interceptors to be added to the HttpClient.
-  * @type {Array}
   */
   interceptors: Interceptor[] = [];
 
   /**
   * Sets the baseUrl.
   *
-  * @param {String} baseUrl - The base URL.
-  * @returns {HttpClientConfiguration}
+  * @param baseUrl - The base URL.
   * @chainable
   */
   withBaseUrl(baseUrl: string): HttpClientConfiguration {
@@ -81,8 +75,7 @@ export class HttpClientConfiguration {
   /**
   * Sets the defaults.
   *
-  * @param {Object} defaults - The defaults.
-  * @returns {HttpClientConfiguration}
+  * @param defaults - The defaults.
   * @chainable
   */
   withDefaults(defaults: RequestInit): HttpClientConfiguration {
@@ -93,12 +86,11 @@ export class HttpClientConfiguration {
   /**
   * Adds an interceptor to be run on all requests or responses.
   *
-  * @param {Object} interceptor - An object with request, requestError,
+  * @param interceptor - An object with request, requestError,
   * response, or responseError methods. request and requestError act as
   * resolve and reject handlers for the Request before it is sent.
   * response and responseError act as resolve and reject handlers for
   * the Response after it has been received.
-  * @returns {HttpClientConfiguration}
   * @chainable
   */
   withInterceptor(interceptor: Interceptor): HttpClientConfiguration {
@@ -110,7 +102,6 @@ export class HttpClientConfiguration {
   * Applies a configuration that addresses common application needs, including
   * configuring same-origin credentials, and using rejectErrorResponses.
   *
-  * @returns {HttpClientConfiguration}
   * @chainable
   */
   useStandardConfiguration(): HttpClientConfiguration {
@@ -127,7 +118,6 @@ export class HttpClientConfiguration {
   * This method adds a response interceptor that causes Responses with error codes
   * to be rejected, which is common behavior in HTTP client libraries.
   *
-  * @returns {HttpClientConfiguration}
   * @chainable
   */
   rejectErrorResponses(): HttpClientConfiguration {
@@ -146,7 +136,6 @@ function rejectOnError(response) {
 /**
 * An HTTP client based on the Fetch API.
 *
-* @class HttpClient
 * @constructor
 */
 export class HttpClient {
@@ -165,9 +154,8 @@ export class HttpClient {
   /**
   * Configure this client with default settings to be used by all requests.
   *
-  * @param {Function|Object|String} config - A function that takes a config argument,
+  * @param config - A function that takes a config argument,
   * or a config object, or a string to use as the client's baseUrl.
-  * @returns {HttpClient}
   * @chainable
   */
   configure(config: string|RequestInit|(config: HttpClientConfiguration) => void): HttpClient {
@@ -207,11 +195,10 @@ export class HttpClient {
   *
   * See also https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
   *
-  * @param {Request|String} input - The resource that you wish to fetch. Either a
+  * @param input - The resource that you wish to fetch. Either a
   * Request object, or a string containing the URL of the resource.
-  * @param {Object} [init] - An options object containing settings to be applied to
+  * @param - An options object containing settings to be applied to
   * the Request.
-  * @return {Promise} - A Promise that resolves with the Response.
   */
   fetch(input: Request|string, init?: RequestInit): Promise<Response> {
     this::trackRequestStart();

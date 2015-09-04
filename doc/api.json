@@ -1,1 +1,1078 @@
-{"classes":[{"name":"HttpClientConfiguration","file":"aurelia/fetch-client/src/http-client-configuration.js","line":4,"description":"A class for configuring HttpClients.","is_constructor":1,"methods":[],"properties":[],"events":[]},{"name":"HttpClient","file":"aurelia/fetch-client/src/http-client.js","line":5,"description":"An HTTP client based on the Fetch API.","is_constructor":1,"methods":[],"properties":[],"events":[]}],"methods":[],"properties":[],"events":[]}
+{
+  "id": 2,
+  "name": "\"aurelia-fetch-client\"",
+  "kind": 2,
+  "kindString": "Module",
+  "flags": {},
+  "children": [
+    {
+      "id": 40,
+      "name": "HttpClient",
+      "kind": 128,
+      "kindString": "Class",
+      "flags": {
+        "isExported": true
+      },
+      "comment": {
+        "shortText": "An HTTP client based on the Fetch API.",
+        "tags": [
+          {
+            "tag": "constructor",
+            "text": "\n"
+          }
+        ]
+      },
+      "children": [
+        {
+          "id": 41,
+          "name": "activeRequestCount",
+          "kind": 1024,
+          "kindString": "Property",
+          "flags": {
+            "isExported": true
+          },
+          "type": {
+            "type": "instrinct",
+            "name": "number"
+          }
+        },
+        {
+          "id": 45,
+          "name": "baseUrl",
+          "kind": 1024,
+          "kindString": "Property",
+          "flags": {
+            "isExported": true
+          },
+          "type": {
+            "type": "instrinct",
+            "name": "string"
+          }
+        },
+        {
+          "id": 46,
+          "name": "defaults",
+          "kind": 1024,
+          "kindString": "Property",
+          "flags": {
+            "isExported": true
+          },
+          "type": {
+            "type": "reference",
+            "name": "RequestInit",
+            "id": 16,
+            "moduleName": "\"aurelia-fetch-client\""
+          }
+        },
+        {
+          "id": 43,
+          "name": "interceptors",
+          "kind": 1024,
+          "kindString": "Property",
+          "flags": {
+            "isExported": true
+          },
+          "type": {
+            "type": "reference",
+            "isArray": true,
+            "name": "Interceptor",
+            "id": 3,
+            "moduleName": "\"aurelia-fetch-client\""
+          }
+        },
+        {
+          "id": 44,
+          "name": "isConfigured",
+          "kind": 1024,
+          "kindString": "Property",
+          "flags": {
+            "isExported": true
+          },
+          "type": {
+            "type": "instrinct",
+            "name": "boolean"
+          }
+        },
+        {
+          "id": 42,
+          "name": "isRequesting",
+          "kind": 1024,
+          "kindString": "Property",
+          "flags": {
+            "isExported": true
+          },
+          "type": {
+            "type": "instrinct",
+            "name": "boolean"
+          }
+        },
+        {
+          "id": 47,
+          "name": "configure",
+          "kind": 2048,
+          "kindString": "Method",
+          "flags": {
+            "isExported": true
+          },
+          "signatures": [
+            {
+              "id": 48,
+              "name": "configure",
+              "kind": 4096,
+              "kindString": "Call signature",
+              "flags": {},
+              "comment": {
+                "shortText": "Configure this client with default settings to be used by all requests.",
+                "tags": [
+                  {
+                    "tag": "chainable",
+                    "text": "\n"
+                  }
+                ]
+              },
+              "parameters": [
+                {
+                  "id": 49,
+                  "name": "config",
+                  "kind": 32768,
+                  "kindString": "Parameter",
+                  "flags": {},
+                  "comment": {
+                    "text": "A function that takes a config argument,\nor a config object, or a string to use as the client's baseUrl."
+                  },
+                  "type": {
+                    "type": "union",
+                    "types": [
+                      {
+                        "type": "instrinct",
+                        "name": "string"
+                      },
+                      {
+                        "type": "reference",
+                        "name": "RequestInit",
+                        "id": 16
+                      },
+                      {
+                        "type": "reflection",
+                        "declaration": {
+                          "id": 50,
+                          "name": "__type",
+                          "kind": 65536,
+                          "kindString": "Type literal",
+                          "flags": {},
+                          "signatures": [
+                            {
+                              "id": 51,
+                              "name": "__call",
+                              "kind": 4096,
+                              "kindString": "Call signature",
+                              "flags": {},
+                              "parameters": [
+                                {
+                                  "id": 52,
+                                  "name": "config",
+                                  "kind": 32768,
+                                  "kindString": "Parameter",
+                                  "flags": {},
+                                  "type": {
+                                    "type": "reference",
+                                    "name": "HttpClientConfiguration",
+                                    "id": 23
+                                  }
+                                }
+                              ],
+                              "type": {
+                                "type": "instrinct",
+                                "name": "void"
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ],
+              "type": {
+                "type": "reference",
+                "name": "HttpClient",
+                "id": 40,
+                "moduleName": "\"aurelia-fetch-client\""
+              }
+            }
+          ]
+        },
+        {
+          "id": 53,
+          "name": "fetch",
+          "kind": 2048,
+          "kindString": "Method",
+          "flags": {
+            "isExported": true
+          },
+          "signatures": [
+            {
+              "id": 54,
+              "name": "fetch",
+              "kind": 4096,
+              "kindString": "Call signature",
+              "flags": {},
+              "comment": {
+                "shortText": "Starts the process of fetching a resource. Default configuration parameters\nwill be applied to the Request. The constructed Request will be passed to\nregistered request interceptors before being sent. The Response will be passed\nto registered Response interceptors before it is returned.",
+                "text": "See also https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API\n"
+              },
+              "parameters": [
+                {
+                  "id": 55,
+                  "name": "input",
+                  "kind": 32768,
+                  "kindString": "Parameter",
+                  "flags": {},
+                  "comment": {
+                    "text": "The resource that you wish to fetch. Either a\nRequest object, or a string containing the URL of the resource."
+                  },
+                  "type": {
+                    "type": "union",
+                    "types": [
+                      {
+                        "type": "reference",
+                        "name": "Request",
+                        "id": 66
+                      },
+                      {
+                        "type": "instrinct",
+                        "name": "string"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": 56,
+                  "name": "init",
+                  "kind": 32768,
+                  "kindString": "Parameter",
+                  "flags": {
+                    "isOptional": true
+                  },
+                  "type": {
+                    "type": "reference",
+                    "name": "RequestInit",
+                    "id": 16,
+                    "moduleName": "\"aurelia-fetch-client\""
+                  }
+                }
+              ],
+              "type": {
+                "type": "reference",
+                "name": "Promise",
+                "typeArguments": [
+                  {
+                    "type": "reference",
+                    "name": "Response",
+                    "id": 171
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "groups": [
+        {
+          "title": "Properties",
+          "kind": 1024,
+          "children": [
+            41,
+            45,
+            46,
+            43,
+            44,
+            42
+          ]
+        },
+        {
+          "title": "Methods",
+          "kind": 2048,
+          "children": [
+            47,
+            53
+          ]
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "name": "HttpClientConfiguration",
+      "kind": 128,
+      "kindString": "Class",
+      "flags": {
+        "isExported": true
+      },
+      "comment": {
+        "shortText": "A class for configuring HttpClients.",
+        "tags": [
+          {
+            "tag": "constructor",
+            "text": "\n"
+          }
+        ]
+      },
+      "children": [
+        {
+          "id": 24,
+          "name": "baseUrl",
+          "kind": 1024,
+          "kindString": "Property",
+          "flags": {
+            "isExported": true
+          },
+          "comment": {
+            "shortText": "The base URL to be prepended to each Request's url before sending."
+          },
+          "type": {
+            "type": "instrinct",
+            "name": "string"
+          }
+        },
+        {
+          "id": 25,
+          "name": "defaults",
+          "kind": 1024,
+          "kindString": "Property",
+          "flags": {
+            "isExported": true
+          },
+          "comment": {
+            "shortText": "Default values to apply to init objects when creating Requests. Note that\ndefaults cannot be applied when Request objects are manually created because\nRequest provides its own defaults and discards the original init object.\nSee also https://developer.mozilla.org/en-US/docs/Web/API/Request/Request"
+          },
+          "type": {
+            "type": "reference",
+            "name": "RequestInit",
+            "id": 16,
+            "moduleName": "\"aurelia-fetch-client\""
+          }
+        },
+        {
+          "id": 26,
+          "name": "interceptors",
+          "kind": 1024,
+          "kindString": "Property",
+          "flags": {
+            "isExported": true
+          },
+          "comment": {
+            "shortText": "Interceptors to be added to the HttpClient."
+          },
+          "type": {
+            "type": "reference",
+            "isArray": true,
+            "name": "Interceptor",
+            "id": 3,
+            "moduleName": "\"aurelia-fetch-client\""
+          }
+        },
+        {
+          "id": 38,
+          "name": "rejectErrorResponses",
+          "kind": 2048,
+          "kindString": "Method",
+          "flags": {
+            "isExported": true
+          },
+          "signatures": [
+            {
+              "id": 39,
+              "name": "rejectErrorResponses",
+              "kind": 4096,
+              "kindString": "Call signature",
+              "flags": {},
+              "comment": {
+                "shortText": "Causes Responses whose status codes fall outside the range 200-299 to reject.\nThe fetch API only rejects on network errors or other conditions that prevent\nthe request from completing, meaning consumers must inspect Response.ok in the\nPromise continuation to determine if the server responded with a success code.\nThis method adds a response interceptor that causes Responses with error codes\nto be rejected, which is common behavior in HTTP client libraries.",
+                "tags": [
+                  {
+                    "tag": "chainable",
+                    "text": "\n"
+                  }
+                ]
+              },
+              "type": {
+                "type": "reference",
+                "name": "HttpClientConfiguration",
+                "id": 23,
+                "moduleName": "\"aurelia-fetch-client\""
+              }
+            }
+          ]
+        },
+        {
+          "id": 36,
+          "name": "useStandardConfiguration",
+          "kind": 2048,
+          "kindString": "Method",
+          "flags": {
+            "isExported": true
+          },
+          "signatures": [
+            {
+              "id": 37,
+              "name": "useStandardConfiguration",
+              "kind": 4096,
+              "kindString": "Call signature",
+              "flags": {},
+              "comment": {
+                "shortText": "Applies a configuration that addresses common application needs, including\nconfiguring same-origin credentials, and using rejectErrorResponses.",
+                "tags": [
+                  {
+                    "tag": "chainable",
+                    "text": "\n"
+                  }
+                ]
+              },
+              "type": {
+                "type": "reference",
+                "name": "HttpClientConfiguration",
+                "id": 23,
+                "moduleName": "\"aurelia-fetch-client\""
+              }
+            }
+          ]
+        },
+        {
+          "id": 27,
+          "name": "withBaseUrl",
+          "kind": 2048,
+          "kindString": "Method",
+          "flags": {
+            "isExported": true
+          },
+          "signatures": [
+            {
+              "id": 28,
+              "name": "withBaseUrl",
+              "kind": 4096,
+              "kindString": "Call signature",
+              "flags": {},
+              "comment": {
+                "shortText": "Sets the baseUrl.",
+                "tags": [
+                  {
+                    "tag": "chainable",
+                    "text": "\n"
+                  }
+                ]
+              },
+              "parameters": [
+                {
+                  "id": 29,
+                  "name": "baseUrl",
+                  "kind": 32768,
+                  "kindString": "Parameter",
+                  "flags": {},
+                  "comment": {
+                    "text": "The base URL."
+                  },
+                  "type": {
+                    "type": "instrinct",
+                    "name": "string"
+                  }
+                }
+              ],
+              "type": {
+                "type": "reference",
+                "name": "HttpClientConfiguration",
+                "id": 23,
+                "moduleName": "\"aurelia-fetch-client\""
+              }
+            }
+          ]
+        },
+        {
+          "id": 30,
+          "name": "withDefaults",
+          "kind": 2048,
+          "kindString": "Method",
+          "flags": {
+            "isExported": true
+          },
+          "signatures": [
+            {
+              "id": 31,
+              "name": "withDefaults",
+              "kind": 4096,
+              "kindString": "Call signature",
+              "flags": {},
+              "comment": {
+                "shortText": "Sets the defaults.",
+                "tags": [
+                  {
+                    "tag": "chainable",
+                    "text": "\n"
+                  }
+                ]
+              },
+              "parameters": [
+                {
+                  "id": 32,
+                  "name": "defaults",
+                  "kind": 32768,
+                  "kindString": "Parameter",
+                  "flags": {},
+                  "comment": {
+                    "text": "The defaults."
+                  },
+                  "type": {
+                    "type": "reference",
+                    "name": "RequestInit",
+                    "id": 16,
+                    "moduleName": "\"aurelia-fetch-client\""
+                  }
+                }
+              ],
+              "type": {
+                "type": "reference",
+                "name": "HttpClientConfiguration",
+                "id": 23,
+                "moduleName": "\"aurelia-fetch-client\""
+              }
+            }
+          ]
+        },
+        {
+          "id": 33,
+          "name": "withInterceptor",
+          "kind": 2048,
+          "kindString": "Method",
+          "flags": {
+            "isExported": true
+          },
+          "signatures": [
+            {
+              "id": 34,
+              "name": "withInterceptor",
+              "kind": 4096,
+              "kindString": "Call signature",
+              "flags": {},
+              "comment": {
+                "shortText": "Adds an interceptor to be run on all requests or responses.",
+                "tags": [
+                  {
+                    "tag": "chainable",
+                    "text": "\n"
+                  }
+                ]
+              },
+              "parameters": [
+                {
+                  "id": 35,
+                  "name": "interceptor",
+                  "kind": 32768,
+                  "kindString": "Parameter",
+                  "flags": {},
+                  "comment": {
+                    "text": "An object with request, requestError,\nresponse, or responseError methods. request and requestError act as\nresolve and reject handlers for the Request before it is sent.\nresponse and responseError act as resolve and reject handlers for\nthe Response after it has been received."
+                  },
+                  "type": {
+                    "type": "reference",
+                    "name": "Interceptor",
+                    "id": 3,
+                    "moduleName": "\"aurelia-fetch-client\""
+                  }
+                }
+              ],
+              "type": {
+                "type": "reference",
+                "name": "HttpClientConfiguration",
+                "id": 23,
+                "moduleName": "\"aurelia-fetch-client\""
+              }
+            }
+          ]
+        }
+      ],
+      "groups": [
+        {
+          "title": "Properties",
+          "kind": 1024,
+          "children": [
+            24,
+            25,
+            26
+          ]
+        },
+        {
+          "title": "Methods",
+          "kind": 2048,
+          "children": [
+            38,
+            36,
+            27,
+            30,
+            33
+          ]
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Interceptor",
+      "kind": 256,
+      "kindString": "Interface",
+      "flags": {
+        "isExported": true
+      },
+      "children": [
+        {
+          "id": 4,
+          "name": "request",
+          "kind": 2048,
+          "kindString": "Method",
+          "flags": {
+            "isExported": true
+          },
+          "signatures": [
+            {
+              "id": 5,
+              "name": "request",
+              "kind": 4096,
+              "kindString": "Call signature",
+              "flags": {},
+              "parameters": [
+                {
+                  "id": 6,
+                  "name": "request",
+                  "kind": 32768,
+                  "kindString": "Parameter",
+                  "flags": {},
+                  "type": {
+                    "type": "reference",
+                    "name": "Request",
+                    "id": 66
+                  }
+                }
+              ],
+              "type": {
+                "type": "union",
+                "types": [
+                  {
+                    "type": "reference",
+                    "name": "Request",
+                    "id": 66
+                  },
+                  {
+                    "type": "reference",
+                    "name": "Response",
+                    "id": 171
+                  },
+                  {
+                    "type": "reference",
+                    "name": "Promise",
+                    "typeArguments": [
+                      {
+                        "type": "union",
+                        "types": [
+                          {
+                            "type": "reference",
+                            "name": "Request",
+                            "id": 66
+                          },
+                          {
+                            "type": "reference",
+                            "name": "Response",
+                            "id": 171
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": 7,
+          "name": "requestError",
+          "kind": 2048,
+          "kindString": "Method",
+          "flags": {
+            "isExported": true
+          },
+          "signatures": [
+            {
+              "id": 8,
+              "name": "requestError",
+              "kind": 4096,
+              "kindString": "Call signature",
+              "flags": {},
+              "parameters": [
+                {
+                  "id": 9,
+                  "name": "error",
+                  "kind": 32768,
+                  "kindString": "Parameter",
+                  "flags": {},
+                  "type": {
+                    "type": "instrinct",
+                    "name": "any"
+                  }
+                }
+              ],
+              "type": {
+                "type": "union",
+                "types": [
+                  {
+                    "type": "reference",
+                    "name": "Request",
+                    "id": 66
+                  },
+                  {
+                    "type": "reference",
+                    "name": "Response",
+                    "id": 171
+                  },
+                  {
+                    "type": "reference",
+                    "name": "Promise",
+                    "typeArguments": [
+                      {
+                        "type": "union",
+                        "types": [
+                          {
+                            "type": "reference",
+                            "name": "Request",
+                            "id": 66
+                          },
+                          {
+                            "type": "reference",
+                            "name": "Response",
+                            "id": 171
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": 10,
+          "name": "response",
+          "kind": 2048,
+          "kindString": "Method",
+          "flags": {
+            "isExported": true
+          },
+          "signatures": [
+            {
+              "id": 11,
+              "name": "response",
+              "kind": 4096,
+              "kindString": "Call signature",
+              "flags": {},
+              "parameters": [
+                {
+                  "id": 12,
+                  "name": "response",
+                  "kind": 32768,
+                  "kindString": "Parameter",
+                  "flags": {},
+                  "type": {
+                    "type": "reference",
+                    "name": "Response",
+                    "id": 171
+                  }
+                }
+              ],
+              "type": {
+                "type": "union",
+                "types": [
+                  {
+                    "type": "reference",
+                    "name": "Response",
+                    "id": 171
+                  },
+                  {
+                    "type": "reference",
+                    "name": "Promise",
+                    "typeArguments": [
+                      {
+                        "type": "reference",
+                        "name": "Response",
+                        "id": 171
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": 13,
+          "name": "responseError",
+          "kind": 2048,
+          "kindString": "Method",
+          "flags": {
+            "isExported": true
+          },
+          "signatures": [
+            {
+              "id": 14,
+              "name": "responseError",
+              "kind": 4096,
+              "kindString": "Call signature",
+              "flags": {},
+              "parameters": [
+                {
+                  "id": 15,
+                  "name": "error",
+                  "kind": 32768,
+                  "kindString": "Parameter",
+                  "flags": {},
+                  "type": {
+                    "type": "instrinct",
+                    "name": "any"
+                  }
+                }
+              ],
+              "type": {
+                "type": "union",
+                "types": [
+                  {
+                    "type": "reference",
+                    "name": "Response",
+                    "id": 171
+                  },
+                  {
+                    "type": "reference",
+                    "name": "Promise",
+                    "typeArguments": [
+                      {
+                        "type": "reference",
+                        "name": "Response",
+                        "id": 171
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "groups": [
+        {
+          "title": "Methods",
+          "kind": 2048,
+          "children": [
+            4,
+            7,
+            10,
+            13
+          ]
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "name": "RequestInit",
+      "kind": 256,
+      "kindString": "Interface",
+      "flags": {
+        "isExported": true
+      },
+      "children": [
+        {
+          "id": 19,
+          "name": "body",
+          "kind": 1024,
+          "kindString": "Property",
+          "flags": {
+            "isExported": true,
+            "isOptional": true
+          },
+          "type": {
+            "type": "union",
+            "types": [
+              {
+                "type": "reference",
+                "name": "Blob"
+              },
+              {
+                "type": "reference",
+                "name": "BufferSource",
+                "id": 64
+              },
+              {
+                "type": "reference",
+                "name": "FormData"
+              },
+              {
+                "type": "reference",
+                "name": "URLSearchParams",
+                "id": 65
+              },
+              {
+                "type": "instrinct",
+                "name": "string"
+              }
+            ]
+          }
+        },
+        {
+          "id": 22,
+          "name": "cache",
+          "kind": 1024,
+          "kindString": "Property",
+          "flags": {
+            "isExported": true,
+            "isOptional": true
+          },
+          "type": {
+            "type": "instrinct",
+            "name": "string"
+          }
+        },
+        {
+          "id": 21,
+          "name": "credentials",
+          "kind": 1024,
+          "kindString": "Property",
+          "flags": {
+            "isExported": true,
+            "isOptional": true
+          },
+          "type": {
+            "type": "instrinct",
+            "name": "string"
+          }
+        },
+        {
+          "id": 18,
+          "name": "headers",
+          "kind": 1024,
+          "kindString": "Property",
+          "flags": {
+            "isExported": true,
+            "isOptional": true
+          },
+          "type": {
+            "type": "reference",
+            "name": "Headers",
+            "id": 138
+          }
+        },
+        {
+          "id": 17,
+          "name": "method",
+          "kind": 1024,
+          "kindString": "Property",
+          "flags": {
+            "isExported": true,
+            "isOptional": true
+          },
+          "type": {
+            "type": "instrinct",
+            "name": "string"
+          }
+        },
+        {
+          "id": 20,
+          "name": "mode",
+          "kind": 1024,
+          "kindString": "Property",
+          "flags": {
+            "isExported": true,
+            "isOptional": true
+          },
+          "type": {
+            "type": "instrinct",
+            "name": "string"
+          }
+        }
+      ],
+      "groups": [
+        {
+          "title": "Properties",
+          "kind": 1024,
+          "children": [
+            19,
+            22,
+            21,
+            18,
+            17,
+            20
+          ]
+        }
+      ]
+    },
+    {
+      "id": 57,
+      "name": "json",
+      "kind": 64,
+      "kindString": "Function",
+      "flags": {
+        "isExported": true
+      },
+      "signatures": [
+        {
+          "id": 58,
+          "name": "json",
+          "kind": 4096,
+          "kindString": "Call signature",
+          "flags": {},
+          "comment": {
+            "shortText": "Create a Blob containing JSON-serialized data.\nUseful for easily creating JSON fetch request bodies."
+          },
+          "parameters": [
+            {
+              "id": 59,
+              "name": "body",
+              "kind": 32768,
+              "kindString": "Parameter",
+              "flags": {},
+              "comment": {
+                "text": "The object to be serialized to JSON.\n"
+              },
+              "type": {
+                "type": "instrinct",
+                "name": "any"
+              }
+            }
+          ],
+          "type": {
+            "type": "reference",
+            "name": "Blob"
+          }
+        }
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "title": "Classes",
+      "kind": 128,
+      "children": [
+        40,
+        23
+      ]
+    },
+    {
+      "title": "Interfaces",
+      "kind": 256,
+      "children": [
+        3,
+        16
+      ]
+    },
+    {
+      "title": "Functions",
+      "kind": 64,
+      "children": [
+        57
+      ]
+    }
+  ]
+}
