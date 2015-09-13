@@ -13,7 +13,7 @@ interface Interceptor {
 interface RequestInit {
   method?: string;
 
-  headers?: Headers;
+  headers?: Headers|Object;
 
   body?: Blob|BufferSource|FormData|URLSearchParams|string;
 
