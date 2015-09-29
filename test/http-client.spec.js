@@ -233,6 +233,62 @@ describe('HttpClient', () => {
           done();
         });
     });
+
+    it('evaluates default header function values with no headers', (done) => {
+      fetch.and.returnValue(emptyResponse(200));
+      client.defaults = { headers: { 'x-foo': () => 'bar' } };
+
+      client.fetch('path')
+        .then(() => {
+          let [request] = fetch.calls.first().args;
+          expect(request.headers.has('x-foo')).toBe(true);
+          expect(request.headers.get('x-foo')).toBe('bar');
+          done();
+        });
+    });
+
+    it('evaluates default header function values with other headers', (done) => {
+      fetch.and.returnValue(emptyResponse(200));
+      client.defaults = { headers: { 'x-foo': () => 'bar' } };
+
+      client.fetch('path', { headers: { 'x-baz': 'bat' } })
+        .then(() => {
+          let [request] = fetch.calls.first().args;
+          expect(request.headers.has('x-foo')).toBe(true);
+          expect(request.headers.has('x-baz')).toBe(true);
+          expect(request.headers.get('x-foo')).toBe('bar');
+          expect(request.headers.get('x-baz')).toBe('bat');
+          done();
+        });
+    });
+
+    it('evaluates default header function values on each request', (done) => {
+      fetch.and.returnValue(emptyResponse(200));
+      let value = 0;
+      client.defaults = {
+        headers: {
+          'x-foo': () => {
+            value++;
+            return value;
+          }
+        }
+      };
+
+      let promises = [];
+      promises.push(client.fetch('path1'));
+      promises.push(client.fetch('path2'));
+
+      Promise.all(promises)
+        .then(() => {
+          let [request1] = fetch.calls.first().args;
+          let [request2] = fetch.calls.mostRecent().args;
+          expect(request1.headers.has('x-foo')).toBe(true);
+          expect(request1.headers.get('x-foo')).toBe('1');
+          expect(request2.headers.has('x-foo')).toBe(true);
+          expect(request2.headers.get('x-foo')).toBe('2');
+          done();
+        });
+    });
   });
 });
 
