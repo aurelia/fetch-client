@@ -107,7 +107,7 @@ function trackRequestEndWith(promise) {
 }
 
 function parseHeaderValues(headers) {
-  let parsedHeaders = {}
+  let parsedHeaders = {};
   for (let name in headers || {}) {
     if (headers.hasOwnProperty(name)) {
       parsedHeaders[name] = (typeof headers[name] === 'function') ? headers[name]() : headers[name];
@@ -138,7 +138,7 @@ function buildRequest(input, init = {}) {
   }
 
   let parsedDefaultHeaders = parseHeaderValues(defaults.headers);
-  let requestInit = Object.assign({}, defaults, {headers: parsedDefaultHeaders}, source, { body });
+  let requestInit = Object.assign({}, defaults, { headers: null }, source, { body });
   let request = new Request((this.baseUrl || '') + url, requestInit);
   setDefaultHeaders(request.headers, parsedDefaultHeaders);
 
