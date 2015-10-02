@@ -54,6 +54,7 @@
     "karma-babel-preprocessor": "^5.2.2",
     "karma-chrome-launcher": "^0.1.7",
     "karma-coverage": "^0.3.1",
+    "karma-firefox-launcher": "^0.1.6",
     "karma-jasmine": "^0.3.5",
     "karma-jasmine-ajax": "git://github.com/martingust/karma-jasmine-ajax.git",
     "karma-jspm": "^2.0.1",
