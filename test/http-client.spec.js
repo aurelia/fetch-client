@@ -154,8 +154,8 @@ describe('HttpClient', () => {
       client.interceptors.push(interceptor);
 
       client.fetch('path')
-        .then((response) => {
-          expect(response).toBe(response);
+        .then((r) => {
+          expect(r).toBe(response);
           expect(fetch).not.toHaveBeenCalled();
           done();
         });
