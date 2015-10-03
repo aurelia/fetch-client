@@ -5,12 +5,13 @@ node_js:
 cache:
   directories:
     - node_modules
+    - jspm_packages
 
 before_script:
+  - export CHROME_BIN=chromium-browser
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
-  - npm install -g gulp jspm
-  - jspm install
+  - node_modules/jspm/jspm.js
 
 script:
-  - gulp
+  - node_modules/gulp/bin/gulp.js

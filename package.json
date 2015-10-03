@@ -50,6 +50,7 @@
     "gulp-typedoc": "^1.2.1",
     "gulp-typedoc-extractor": "^0.0.8",
     "jasmine-core": "^2.1.3",
+    "jspm": "^0.16.11",
     "karma": "^0.12.28",
     "karma-babel-preprocessor": "^5.2.2",
     "karma-chrome-launcher": "^0.1.7",
