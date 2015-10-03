@@ -9,7 +9,7 @@ gulp.task('test', function (done) {
         configFile: __dirname + '/../../karma.conf.js',
         singleRun: true
     }, function(e) {
-        done();
+        done(e === 0 ? null : true);
     });
 });
 
