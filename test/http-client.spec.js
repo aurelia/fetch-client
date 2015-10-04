@@ -88,7 +88,7 @@ describe('HttpClient', () => {
     });
 
     it('run on response error', (done) => {
-      fetch.and.returnValue(Promise.reject(Response.error()));
+      fetch.and.returnValue(Promise.reject(new Response(null, { status: 500 })));
       let interceptor = { response(r) { return r; }, responseError(r) { throw r; } };
       spyOn(interceptor, 'response').and.callThrough();
       spyOn(interceptor, 'responseError').and.callThrough();
