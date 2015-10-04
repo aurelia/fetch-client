@@ -8,12 +8,11 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['jspm', 'jasmine-ajax', 'jasmine'],
+    frameworks: ['jspm', 'jasmine'],
 
     jspm: {
       // Edit this to your needs
-      loadFiles: ['test/**/*.js'],
-      serveFiles : ['src/**/*.js']
+      loadFiles: ['src/**/*.js', 'test/**/*.js']
     },
 
 
@@ -86,7 +85,7 @@ module.exports = function(config) {
   };
 
   if (process.env.TRAVIS) {
-    configuration.browsers = ['Chrome_travis_ci'];
+    configuration.browsers = ['Chrome_travis_ci', 'Firefox'];
   }
 
   config.set(configuration);

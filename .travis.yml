@@ -7,11 +7,19 @@ cache:
     - node_modules
     - jspm_packages
 
+env:
+  global:
+    secure: M7GFK3HYbkJQ1ApuMUPCcJ5JVukwiAj1/jkVJkefxlKpnV0MLdRY96S9SArVBxXPRorL+Qz4CkhG4vd833Y/JdKgcTg3EMFEqdctxlJHZJkZPuZhuwMyTmVciihvnJcJGFpEuywAagGPf0NUhb0pIlMpRyGZe0pOlNBLYXt50Z4=
+
+install:
+  - npm install
+  - jspm config endpoints.github.auth $JSPM_GITHUB_AUTH_TOKEN
+  - node_modules/jspm/jspm.js install
+
 before_script:
   - export CHROME_BIN=chromium-browser
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
-  - node_modules/jspm/jspm.js install
 
 script:
   - node_modules/gulp/bin/gulp.js
