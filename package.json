@@ -65,6 +65,7 @@
     "through2": "^2.0.0",
     "vinyl": "^0.5.1",
     "vinyl-paths": "^1.0.0",
+    "whatwg-fetch": "^0.9.0",
     "yargs": "^2.1.1"
   },
   "aurelia": {

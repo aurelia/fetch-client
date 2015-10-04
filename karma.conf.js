@@ -18,7 +18,7 @@ module.exports = function(config) {
 
 
     // list of files / patterns to load in the browser
-    files: [],
+    files: ['node_modules/whatwg-fetch/fetch.js'],
 
 
     // list of files to exclude
