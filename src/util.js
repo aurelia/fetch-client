@@ -7,4 +7,3 @@
 export function json(body: any): Blob {
   return new Blob([JSON.stringify(body)], { type: 'application/json' });
 }
-
