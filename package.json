@@ -1,6 +1,6 @@
 {
   "name": "aurelia-fetch-client",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "A simple client based on the Fetch standard.",
   "keywords": [
     "aurelia",
@@ -66,28 +66,8 @@
     "yargs": "^2.1.1"
   },
   "aurelia": {
-    "usedBy": [],
     "documentation": {
-      "links": [
-        {
-          "rel": "license",
-          "mediaType": "text/plain",
-          "title": "The MIT License (MIT)",
-          "href": "LICENSE"
-        },
-        {
-          "rel": "describedby",
-          "mediaType": "application/aurelia-doc+json",
-          "title": "API",
-          "href": "doc/api.json"
-        },
-        {
-          "rel": "version-history",
-          "mediaType": "text/markdown",
-          "title": "Change Log",
-          "href": "doc/CHANGELOG.md"
-        }
-      ]
+      "articles": []
     }
   }
 }

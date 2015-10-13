@@ -10,7 +10,6 @@ export function json(body: any): Blob {
   return new Blob([JSON.stringify(body)], { type: 'application/json' });
 }
 
-
 /* eslint-disable */
 
 interface Interceptor {
@@ -26,7 +25,7 @@ interface Interceptor {
 interface RequestInit {
   method?: string;
 
-  headers?: Headers;
+  headers?: Headers|Object;
 
   body?: Blob|BufferSource|FormData|URLSearchParams|string;
 
@@ -237,6 +236,16 @@ function trackRequestEndWith(promise) {
   return promise;
 }
 
+function parseHeaderValues(headers) {
+  let parsedHeaders = {};
+  for (let name in headers || {}) {
+    if (headers.hasOwnProperty(name)) {
+      parsedHeaders[name] = (typeof headers[name] === 'function') ? headers[name]() : headers[name];
+    }
+  }
+  return parsedHeaders;
+}
+
 function buildRequest(input, init = {}) {
   let defaults = this.defaults || {};
   let source;
@@ -258,9 +267,10 @@ function buildRequest(input, init = {}) {
     body = init.body;
   }
 
-  let requestInit = Object.assign({}, defaults, source, { body });
+  let parsedDefaultHeaders = parseHeaderValues(defaults.headers);
+  let requestInit = Object.assign({}, defaults, { headers: {} }, source, { body });
   let request = new Request((this.baseUrl || '') + url, requestInit);
-  setDefaultHeaders(request.headers, defaults.headers);
+  setDefaultHeaders(request.headers, parsedDefaultHeaders);
 
   return request;
 }

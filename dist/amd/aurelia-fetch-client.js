@@ -152,6 +152,16 @@ define(['exports', 'core-js'], function (exports, _coreJs) {
     return promise;
   }
 
+  function parseHeaderValues(headers) {
+    var parsedHeaders = {};
+    for (var _name in headers || {}) {
+      if (headers.hasOwnProperty(_name)) {
+        parsedHeaders[_name] = typeof headers[_name] === 'function' ? headers[_name]() : headers[_name];
+      }
+    }
+    return parsedHeaders;
+  }
+
   function buildRequest(input) {
     var init = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
@@ -174,17 +184,18 @@ define(['exports', 'core-js'], function (exports, _coreJs) {
       body = init.body;
     }
 
-    var requestInit = Object.assign({}, defaults, source, { body: body });
+    var parsedDefaultHeaders = parseHeaderValues(defaults.headers);
+    var requestInit = Object.assign({}, defaults, { headers: {} }, source, { body: body });
     var request = new Request((this.baseUrl || '') + url, requestInit);
-    setDefaultHeaders(request.headers, defaults.headers);
+    setDefaultHeaders(request.headers, parsedDefaultHeaders);
 
     return request;
   }
 
   function setDefaultHeaders(headers, defaultHeaders) {
-    for (var _name in defaultHeaders || {}) {
-      if (defaultHeaders.hasOwnProperty(_name) && !headers.has(_name)) {
-        headers.set(_name, defaultHeaders[_name]);
+    for (var _name2 in defaultHeaders || {}) {
+      if (defaultHeaders.hasOwnProperty(_name2) && !headers.has(_name2)) {
+        headers.set(_name2, defaultHeaders[_name2]);
       }
     }
   }

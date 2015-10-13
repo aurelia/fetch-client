@@ -10,7 +10,7 @@ declare module 'aurelia-fetch-client' {
   }
   export interface RequestInit {
     method?: string;
-    headers?: Headers;
+    headers?: Headers | Object;
     body?: Blob | BufferSource | FormData | URLSearchParams | string;
     mode?: string;
     credentials?: string;

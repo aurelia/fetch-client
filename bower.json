@@ -1,6 +1,6 @@
 {
   "name": "aurelia-fetch-client",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "A simple client based on the Fetch standard.",
   "keywords": [
     "aurelia",
@@ -17,5 +17,7 @@
     "type": "git",
     "url": "http://github.com/aurelia/fetch-client"
   },
-  "dependencies": {}
+  "dependencies": {
+    "core-js": "zloirock/core-js"
+  }
 }

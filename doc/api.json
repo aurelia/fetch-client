@@ -959,9 +959,18 @@
             "isOptional": true
           },
           "type": {
-            "type": "reference",
-            "name": "Headers",
-            "id": 138
+            "type": "union",
+            "types": [
+              {
+                "type": "reference",
+                "name": "Headers",
+                "id": 138
+              },
+              {
+                "type": "reference",
+                "name": "Object"
+              }
+            ]
           }
         },
         {
