@@ -4,21 +4,38 @@ import 'core-js';
 
 /**
 * An HTTP client based on the Fetch API.
-*
-* @constructor
 */
 export class HttpClient {
+  /**
+  * The current number of active requests.
+  * Requests being processed by interceptors are considered active.
+  */
   activeRequestCount: number = 0;
 
+  /**
+  * Indicates whether or not the client is currently making one or more requests.
+  */
   isRequesting: boolean = false;
 
-  interceptors: Interceptor[] = [];
-
+  /**
+  * Indicates whether or not thie client has been configured.
+  */
   isConfigured: boolean = false;
 
+  /**
+  * The base URL set by the config.
+  */
   baseUrl: string = '';
 
+  /**
+  * The default request init to merge with values specified at request time.
+  */
   defaults: RequestInit = null;
+
+  /**
+  * The interceptors to be run during requests.
+  */
+  interceptors: Interceptor[] = [];
 
   /**
   * Configure this client with default settings to be used by all requests.

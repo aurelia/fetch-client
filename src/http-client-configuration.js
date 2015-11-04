@@ -3,8 +3,6 @@ import 'core-js';
 
 /**
 * A class for configuring HttpClients.
-*
-* @constructor
 */
 export class HttpClientConfiguration {
   /**
