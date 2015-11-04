@@ -40,20 +40,22 @@ export class HttpClient {
   /**
   * Configure this client with default settings to be used by all requests.
   *
-  * @param config - A function that takes a config argument,
-  * or a config object, or a string to use as the client's baseUrl.
+  * @param config - A configuration object, or a function that takes a config
+  * object and configures it.
+  *
   * @chainable
   */
-  configure(config: string|RequestInit|(config: HttpClientConfiguration) => void): HttpClient {
+  configure(config: RequestInit|(config: HttpClientConfiguration) => void|HttpClientConfiguration): HttpClient {
     let normalizedConfig;
 
-    if (typeof config === 'string') {
-      normalizedConfig = { baseUrl: config };
-    } else if (typeof config === 'object') {
+    if (typeof config === 'object') {
       normalizedConfig = { defaults: config };
     } else if (typeof config === 'function') {
       normalizedConfig = new HttpClientConfiguration();
-      config(normalizedConfig);
+      let c = config(normalizedConfig);
+      if (typeof c === HttpClientConfiguration) {
+        normalizedConfig = c;
+      }
     } else {
       throw new Error('invalid config');
     }
