@@ -18,7 +18,7 @@ export class HttpClient {
   isRequesting: boolean = false;
 
   /**
-  * Indicates whether or not thie client has been configured.
+  * Indicates whether or not the client has been configured.
   */
   isConfigured: boolean = false;
 
