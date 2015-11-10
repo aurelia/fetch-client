@@ -2,12 +2,21 @@ declare module 'aurelia-fetch-client' {
   import 'core-js';
   
   /* eslint-disable */
+  /**
+  * Interceptors can process requests before they are sent, and responses
+  * before they are returned to callers.
+  */
   export interface Interceptor {
     request(request: Request): Request | Response | Promise<Request | Response>;
     requestError(error: any): Request | Response | Promise<Request | Response>;
     response(response: Response): Response | Promise<Response>;
     responseError(error: any): Response | Promise<Response>;
   }
+  
+  /**
+  * The init object used to initialize a fetch Request.
+  * See https://developer.mozilla.org/en-US/docs/Web/API/Request/Request
+  */
   export interface RequestInit {
     method?: string;
     headers?: Headers | Object;
@@ -27,8 +36,6 @@ declare module 'aurelia-fetch-client' {
   
   /**
   * A class for configuring HttpClients.
-  *
-  * @constructor
   */
   export class HttpClientConfiguration {
     
@@ -101,25 +108,49 @@ declare module 'aurelia-fetch-client' {
   
   /**
   * An HTTP client based on the Fetch API.
-  *
-  * @constructor
   */
   export class HttpClient {
+    
+    /**
+      * The current number of active requests.
+      * Requests being processed by interceptors are considered active.
+      */
     activeRequestCount: number;
+    
+    /**
+      * Indicates whether or not the client is currently making one or more requests.
+      */
     isRequesting: boolean;
-    interceptors: Interceptor[];
+    
+    /**
+      * Indicates whether or not the client has been configured.
+      */
     isConfigured: boolean;
+    
+    /**
+      * The base URL set by the config.
+      */
     baseUrl: string;
+    
+    /**
+      * The default request init to merge with values specified at request time.
+      */
     defaults: RequestInit;
+    
+    /**
+      * The interceptors to be run during requests.
+      */
+    interceptors: Interceptor[];
     
     /**
       * Configure this client with default settings to be used by all requests.
       *
-      * @param config - A function that takes a config argument,
-      * or a config object, or a string to use as the client's baseUrl.
+      * @param config - A configuration object, or a function that takes a config
+      * object and configures it.
+      *
       * @chainable
       */
-    configure(config: string | RequestInit | ((config: HttpClientConfiguration) => void)): HttpClient;
+    configure(config: RequestInit | ((config: HttpClientConfiguration) => void | HttpClientConfiguration)): HttpClient;
     
     /**
       * Starts the process of fetching a resource. Default configuration parameters

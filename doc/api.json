@@ -14,13 +14,7 @@
         "isExported": true
       },
       "comment": {
-        "shortText": "An HTTP client based on the Fetch API.",
-        "tags": [
-          {
-            "tag": "constructor",
-            "text": "\n"
-          }
-        ]
+        "shortText": "An HTTP client based on the Fetch API."
       },
       "children": [
         {
@@ -31,18 +25,24 @@
           "flags": {
             "isExported": true
           },
+          "comment": {
+            "shortText": "The current number of active requests.\nRequests being processed by interceptors are considered active."
+          },
           "type": {
             "type": "instrinct",
             "name": "number"
           }
         },
         {
-          "id": 45,
+          "id": 44,
           "name": "baseUrl",
           "kind": 1024,
           "kindString": "Property",
           "flags": {
             "isExported": true
+          },
+          "comment": {
+            "shortText": "The base URL set by the config."
           },
           "type": {
             "type": "instrinct",
@@ -50,12 +50,15 @@
           }
         },
         {
-          "id": 46,
+          "id": 45,
           "name": "defaults",
           "kind": 1024,
           "kindString": "Property",
           "flags": {
             "isExported": true
+          },
+          "comment": {
+            "shortText": "The default request init to merge with values specified at request time."
           },
           "type": {
             "type": "reference",
@@ -65,12 +68,15 @@
           }
         },
         {
-          "id": 43,
+          "id": 46,
           "name": "interceptors",
           "kind": 1024,
           "kindString": "Property",
           "flags": {
             "isExported": true
+          },
+          "comment": {
+            "shortText": "The interceptors to be run during requests."
           },
           "type": {
             "type": "reference",
@@ -81,12 +87,15 @@
           }
         },
         {
-          "id": 44,
+          "id": 43,
           "name": "isConfigured",
           "kind": 1024,
           "kindString": "Property",
           "flags": {
             "isExported": true
+          },
+          "comment": {
+            "shortText": "Indicates whether or not the client has been configured."
           },
           "type": {
             "type": "instrinct",
@@ -100,6 +109,9 @@
           "kindString": "Property",
           "flags": {
             "isExported": true
+          },
+          "comment": {
+            "shortText": "Indicates whether or not the client is currently making one or more requests."
           },
           "type": {
             "type": "instrinct",
@@ -138,15 +150,11 @@
                   "kindString": "Parameter",
                   "flags": {},
                   "comment": {
-                    "text": "A function that takes a config argument,\nor a config object, or a string to use as the client's baseUrl."
+                    "text": "A configuration object, or a function that takes a config\nobject and configures it.\n"
                   },
                   "type": {
                     "type": "union",
                     "types": [
-                      {
-                        "type": "instrinct",
-                        "name": "string"
-                      },
                       {
                         "type": "reference",
                         "name": "RequestInit",
@@ -182,8 +190,18 @@
                                 }
                               ],
                               "type": {
-                                "type": "instrinct",
-                                "name": "void"
+                                "type": "union",
+                                "types": [
+                                  {
+                                    "type": "instrinct",
+                                    "name": "void"
+                                  },
+                                  {
+                                    "type": "reference",
+                                    "name": "HttpClientConfiguration",
+                                    "id": 23
+                                  }
+                                ]
                               }
                             }
                           ]
@@ -283,10 +301,10 @@
           "kind": 1024,
           "children": [
             41,
+            44,
             45,
             46,
             43,
-            44,
             42
           ]
         },
@@ -309,13 +327,7 @@
         "isExported": true
       },
       "comment": {
-        "shortText": "A class for configuring HttpClients.",
-        "tags": [
-          {
-            "tag": "constructor",
-            "text": "\n"
-          }
-        ]
+        "shortText": "A class for configuring HttpClients."
       },
       "children": [
         {
@@ -620,6 +632,9 @@
       "flags": {
         "isExported": true
       },
+      "comment": {
+        "shortText": "Interceptors can process requests before they are sent, and responses\nbefore they are returned to callers."
+      },
       "children": [
         {
           "id": 4,
@@ -882,6 +897,9 @@
       "kindString": "Interface",
       "flags": {
         "isExported": true
+      },
+      "comment": {
+        "shortText": "The init object used to initialize a fetch Request.\nSee https://developer.mozilla.org/en-US/docs/Web/API/Request/Request"
       },
       "children": [
         {

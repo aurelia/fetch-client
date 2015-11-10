@@ -63,10 +63,10 @@ define(['exports', 'core-js'], function (exports, _coreJs) {
 
       this.activeRequestCount = 0;
       this.isRequesting = false;
-      this.interceptors = [];
       this.isConfigured = false;
       this.baseUrl = '';
       this.defaults = null;
+      this.interceptors = [];
     }
 
     HttpClient.prototype.configure = function configure(config) {
@@ -74,13 +74,14 @@ define(['exports', 'core-js'], function (exports, _coreJs) {
 
       var normalizedConfig = undefined;
 
-      if (typeof config === 'string') {
-        normalizedConfig = { baseUrl: config };
-      } else if (typeof config === 'object') {
+      if (typeof config === 'object') {
         normalizedConfig = { defaults: config };
       } else if (typeof config === 'function') {
         normalizedConfig = new HttpClientConfiguration();
-        config(normalizedConfig);
+        var c = config(normalizedConfig);
+        if (typeof c === HttpClientConfiguration) {
+          normalizedConfig = c;
+        }
       } else {
         throw new Error('invalid config');
       }

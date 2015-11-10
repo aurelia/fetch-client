@@ -1,3 +1,11 @@
+## 0.4.0 (2015-11-09)
+
+
+#### Features
+
+* **http-client:** clean up configuration ([48c82048](http://github.com/aurelia/fetch-client/commit/48c8204888a0bdcadffd82a42a3a338549fee1d3))
+
+
 ## 0.3.0 (2015-10-13)
 
 
