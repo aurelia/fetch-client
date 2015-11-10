@@ -26,17 +26,17 @@
       "lib": "dist/amd"
     },
     "dependencies": {
-      "core-js": "npm:core-js@^0.9.5"
+      "core-js": "npm:core-js@^1.2.6"
     },
     "devDependencies": {
       "babel": "npm:babel-core@^5.1.13",
       "babel-runtime": "npm:babel-runtime@^5.1.13",
-      "core-js": "npm:core-js@^0.9.5"
+      "core-js": "npm:core-js@^1.2.6"
     }
   },
   "devDependencies": {
     "aurelia-tools": "^0.1.12",
-    "babel-dts-generator": "^0.2.7",
+    "babel-dts-generator": "^0.2.16",
     "babel-eslint": "^4.1.1",
     "conventional-changelog": "0.0.11",
     "del": "^1.1.0",
