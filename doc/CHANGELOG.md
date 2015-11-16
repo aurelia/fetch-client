@@ -1,3 +1,11 @@
+### 1.0.0-beta.1 (2015-11-16)
+
+
+#### Features
+
+* **http-client:** throw an error with a helpful message when used in an environment with no fetch  ([843451da](http://github.com/aurelia/fetch-client/commit/843451da2aeb166dc25258738351b71c925eeca6), closes [#21](http://github.com/aurelia/fetch-client/issues/21))
+
+
 ## 0.4.0 (2015-11-09)
 
 
@@ -81,4 +89,3 @@
 
 * **all:** add initial implementation ([dd63fb8d](http://github.com/aurelia/fetch-client/commit/dd63fb8dc1a4261c325a7a5f82c1b9b54fb8f000))
 * **http-client-configuration:** add chainable helpers for all configuration properties ([26aa9df8](http://github.com/aurelia/fetch-client/commit/26aa9df81ad24cfb9f05abdbe3341463833478f0))
-

@@ -6,7 +6,7 @@
   "flags": {},
   "children": [
     {
-      "id": 40,
+      "id": 44,
       "name": "HttpClient",
       "kind": 128,
       "kindString": "Class",
@@ -18,7 +18,31 @@
       },
       "children": [
         {
-          "id": 41,
+          "id": 51,
+          "name": "constructor",
+          "kind": 512,
+          "kindString": "Constructor",
+          "flags": {
+            "isExported": true
+          },
+          "signatures": [
+            {
+              "id": 52,
+              "name": "new HttpClient",
+              "kind": 16384,
+              "kindString": "Constructor signature",
+              "flags": {},
+              "type": {
+                "type": "reference",
+                "name": "HttpClient",
+                "id": 44,
+                "moduleName": "\"aurelia-fetch-client\""
+              }
+            }
+          ]
+        },
+        {
+          "id": 45,
           "name": "activeRequestCount",
           "kind": 1024,
           "kindString": "Property",
@@ -34,7 +58,7 @@
           }
         },
         {
-          "id": 44,
+          "id": 48,
           "name": "baseUrl",
           "kind": 1024,
           "kindString": "Property",
@@ -50,7 +74,7 @@
           }
         },
         {
-          "id": 45,
+          "id": 49,
           "name": "defaults",
           "kind": 1024,
           "kindString": "Property",
@@ -63,12 +87,12 @@
           "type": {
             "type": "reference",
             "name": "RequestInit",
-            "id": 16,
+            "id": 20,
             "moduleName": "\"aurelia-fetch-client\""
           }
         },
         {
-          "id": 46,
+          "id": 50,
           "name": "interceptors",
           "kind": 1024,
           "kindString": "Property",
@@ -87,7 +111,7 @@
           }
         },
         {
-          "id": 43,
+          "id": 47,
           "name": "isConfigured",
           "kind": 1024,
           "kindString": "Property",
@@ -103,7 +127,7 @@
           }
         },
         {
-          "id": 42,
+          "id": 46,
           "name": "isRequesting",
           "kind": 1024,
           "kindString": "Property",
@@ -119,7 +143,7 @@
           }
         },
         {
-          "id": 47,
+          "id": 53,
           "name": "configure",
           "kind": 2048,
           "kindString": "Method",
@@ -128,7 +152,7 @@
           },
           "signatures": [
             {
-              "id": 48,
+              "id": 54,
               "name": "configure",
               "kind": 4096,
               "kindString": "Call signature",
@@ -144,7 +168,7 @@
               },
               "parameters": [
                 {
-                  "id": 49,
+                  "id": 55,
                   "name": "config",
                   "kind": 32768,
                   "kindString": "Parameter",
@@ -158,26 +182,26 @@
                       {
                         "type": "reference",
                         "name": "RequestInit",
-                        "id": 16
+                        "id": 20
                       },
                       {
                         "type": "reflection",
                         "declaration": {
-                          "id": 50,
+                          "id": 56,
                           "name": "__type",
                           "kind": 65536,
                           "kindString": "Type literal",
                           "flags": {},
                           "signatures": [
                             {
-                              "id": 51,
+                              "id": 57,
                               "name": "__call",
                               "kind": 4096,
                               "kindString": "Call signature",
                               "flags": {},
                               "parameters": [
                                 {
-                                  "id": 52,
+                                  "id": 58,
                                   "name": "config",
                                   "kind": 32768,
                                   "kindString": "Parameter",
@@ -185,7 +209,7 @@
                                   "type": {
                                     "type": "reference",
                                     "name": "HttpClientConfiguration",
-                                    "id": 23
+                                    "id": 27
                                   }
                                 }
                               ],
@@ -199,7 +223,7 @@
                                   {
                                     "type": "reference",
                                     "name": "HttpClientConfiguration",
-                                    "id": 23
+                                    "id": 27
                                   }
                                 ]
                               }
@@ -214,14 +238,14 @@
               "type": {
                 "type": "reference",
                 "name": "HttpClient",
-                "id": 40,
+                "id": 44,
                 "moduleName": "\"aurelia-fetch-client\""
               }
             }
           ]
         },
         {
-          "id": 53,
+          "id": 59,
           "name": "fetch",
           "kind": 2048,
           "kindString": "Method",
@@ -230,7 +254,7 @@
           },
           "signatures": [
             {
-              "id": 54,
+              "id": 60,
               "name": "fetch",
               "kind": 4096,
               "kindString": "Call signature",
@@ -241,7 +265,7 @@
               },
               "parameters": [
                 {
-                  "id": 55,
+                  "id": 61,
                   "name": "input",
                   "kind": 32768,
                   "kindString": "Parameter",
@@ -255,7 +279,7 @@
                       {
                         "type": "reference",
                         "name": "Request",
-                        "id": 66
+                        "id": 72
                       },
                       {
                         "type": "instrinct",
@@ -265,7 +289,7 @@
                   }
                 },
                 {
-                  "id": 56,
+                  "id": 62,
                   "name": "init",
                   "kind": 32768,
                   "kindString": "Parameter",
@@ -275,7 +299,7 @@
                   "type": {
                     "type": "reference",
                     "name": "RequestInit",
-                    "id": 16,
+                    "id": 20,
                     "moduleName": "\"aurelia-fetch-client\""
                   }
                 }
@@ -287,7 +311,7 @@
                   {
                     "type": "reference",
                     "name": "Response",
-                    "id": 171
+                    "id": 177
                   }
                 ]
               }
@@ -297,29 +321,36 @@
       ],
       "groups": [
         {
+          "title": "Constructors",
+          "kind": 512,
+          "children": [
+            51
+          ]
+        },
+        {
           "title": "Properties",
           "kind": 1024,
           "children": [
-            41,
-            44,
             45,
-            46,
-            43,
-            42
+            48,
+            49,
+            50,
+            47,
+            46
           ]
         },
         {
           "title": "Methods",
           "kind": 2048,
           "children": [
-            47,
-            53
+            53,
+            59
           ]
         }
       ]
     },
     {
-      "id": 23,
+      "id": 27,
       "name": "HttpClientConfiguration",
       "kind": 128,
       "kindString": "Class",
@@ -331,7 +362,7 @@
       },
       "children": [
         {
-          "id": 24,
+          "id": 28,
           "name": "baseUrl",
           "kind": 1024,
           "kindString": "Property",
@@ -347,7 +378,7 @@
           }
         },
         {
-          "id": 25,
+          "id": 29,
           "name": "defaults",
           "kind": 1024,
           "kindString": "Property",
@@ -360,12 +391,12 @@
           "type": {
             "type": "reference",
             "name": "RequestInit",
-            "id": 16,
+            "id": 20,
             "moduleName": "\"aurelia-fetch-client\""
           }
         },
         {
-          "id": 26,
+          "id": 30,
           "name": "interceptors",
           "kind": 1024,
           "kindString": "Property",
@@ -384,7 +415,7 @@
           }
         },
         {
-          "id": 38,
+          "id": 42,
           "name": "rejectErrorResponses",
           "kind": 2048,
           "kindString": "Method",
@@ -393,7 +424,7 @@
           },
           "signatures": [
             {
-              "id": 39,
+              "id": 43,
               "name": "rejectErrorResponses",
               "kind": 4096,
               "kindString": "Call signature",
@@ -410,14 +441,14 @@
               "type": {
                 "type": "reference",
                 "name": "HttpClientConfiguration",
-                "id": 23,
+                "id": 27,
                 "moduleName": "\"aurelia-fetch-client\""
               }
             }
           ]
         },
         {
-          "id": 36,
+          "id": 40,
           "name": "useStandardConfiguration",
           "kind": 2048,
           "kindString": "Method",
@@ -426,7 +457,7 @@
           },
           "signatures": [
             {
-              "id": 37,
+              "id": 41,
               "name": "useStandardConfiguration",
               "kind": 4096,
               "kindString": "Call signature",
@@ -443,14 +474,14 @@
               "type": {
                 "type": "reference",
                 "name": "HttpClientConfiguration",
-                "id": 23,
+                "id": 27,
                 "moduleName": "\"aurelia-fetch-client\""
               }
             }
           ]
         },
         {
-          "id": 27,
+          "id": 31,
           "name": "withBaseUrl",
           "kind": 2048,
           "kindString": "Method",
@@ -459,7 +490,7 @@
           },
           "signatures": [
             {
-              "id": 28,
+              "id": 32,
               "name": "withBaseUrl",
               "kind": 4096,
               "kindString": "Call signature",
@@ -475,7 +506,7 @@
               },
               "parameters": [
                 {
-                  "id": 29,
+                  "id": 33,
                   "name": "baseUrl",
                   "kind": 32768,
                   "kindString": "Parameter",
@@ -492,14 +523,14 @@
               "type": {
                 "type": "reference",
                 "name": "HttpClientConfiguration",
-                "id": 23,
+                "id": 27,
                 "moduleName": "\"aurelia-fetch-client\""
               }
             }
           ]
         },
         {
-          "id": 30,
+          "id": 34,
           "name": "withDefaults",
           "kind": 2048,
           "kindString": "Method",
@@ -508,7 +539,7 @@
           },
           "signatures": [
             {
-              "id": 31,
+              "id": 35,
               "name": "withDefaults",
               "kind": 4096,
               "kindString": "Call signature",
@@ -524,7 +555,7 @@
               },
               "parameters": [
                 {
-                  "id": 32,
+                  "id": 36,
                   "name": "defaults",
                   "kind": 32768,
                   "kindString": "Parameter",
@@ -535,7 +566,7 @@
                   "type": {
                     "type": "reference",
                     "name": "RequestInit",
-                    "id": 16,
+                    "id": 20,
                     "moduleName": "\"aurelia-fetch-client\""
                   }
                 }
@@ -543,14 +574,14 @@
               "type": {
                 "type": "reference",
                 "name": "HttpClientConfiguration",
-                "id": 23,
+                "id": 27,
                 "moduleName": "\"aurelia-fetch-client\""
               }
             }
           ]
         },
         {
-          "id": 33,
+          "id": 37,
           "name": "withInterceptor",
           "kind": 2048,
           "kindString": "Method",
@@ -559,7 +590,7 @@
           },
           "signatures": [
             {
-              "id": 34,
+              "id": 38,
               "name": "withInterceptor",
               "kind": 4096,
               "kindString": "Call signature",
@@ -575,7 +606,7 @@
               },
               "parameters": [
                 {
-                  "id": 35,
+                  "id": 39,
                   "name": "interceptor",
                   "kind": 32768,
                   "kindString": "Parameter",
@@ -594,7 +625,7 @@
               "type": {
                 "type": "reference",
                 "name": "HttpClientConfiguration",
-                "id": 23,
+                "id": 27,
                 "moduleName": "\"aurelia-fetch-client\""
               }
             }
@@ -606,20 +637,20 @@
           "title": "Properties",
           "kind": 1024,
           "children": [
-            24,
-            25,
-            26
+            28,
+            29,
+            30
           ]
         },
         {
           "title": "Methods",
           "kind": 2048,
           "children": [
-            38,
-            36,
-            27,
-            30,
-            33
+            42,
+            40,
+            31,
+            34,
+            37
           ]
         }
       ]
@@ -639,259 +670,341 @@
         {
           "id": 4,
           "name": "request",
-          "kind": 2048,
-          "kindString": "Method",
+          "kind": 1024,
+          "kindString": "Property",
           "flags": {
-            "isExported": true
+            "isExported": true,
+            "isOptional": true
           },
-          "signatures": [
-            {
+          "comment": {
+            "shortText": "Called with the request before it is sent. Request interceptors can modify and\nreturn the request, or return a new one to be sent. If desired, the interceptor\nmay return a Response in order to short-circuit the HTTP request itself."
+          },
+          "type": {
+            "type": "reflection",
+            "declaration": {
               "id": 5,
-              "name": "request",
-              "kind": 4096,
-              "kindString": "Call signature",
+              "name": "__type",
+              "kind": 65536,
+              "kindString": "Type literal",
               "flags": {},
-              "parameters": [
+              "comment": {
+                "text": "The request to be sent.\n"
+              },
+              "signatures": [
                 {
                   "id": 6,
-                  "name": "request",
-                  "kind": 32768,
-                  "kindString": "Parameter",
+                  "name": "__call",
+                  "kind": 4096,
+                  "kindString": "Call signature",
                   "flags": {},
+                  "comment": {
+                    "text": "The request to be sent.\n"
+                  },
+                  "parameters": [
+                    {
+                      "id": 7,
+                      "name": "request",
+                      "kind": 32768,
+                      "kindString": "Parameter",
+                      "flags": {},
+                      "type": {
+                        "type": "reference",
+                        "name": "Request",
+                        "id": 72
+                      }
+                    }
+                  ],
                   "type": {
-                    "type": "reference",
-                    "name": "Request",
-                    "id": 66
-                  }
-                }
-              ],
-              "type": {
-                "type": "union",
-                "types": [
-                  {
-                    "type": "reference",
-                    "name": "Request",
-                    "id": 66
-                  },
-                  {
-                    "type": "reference",
-                    "name": "Response",
-                    "id": 171
-                  },
-                  {
-                    "type": "reference",
-                    "name": "Promise",
-                    "typeArguments": [
+                    "type": "union",
+                    "types": [
                       {
-                        "type": "union",
-                        "types": [
+                        "type": "reference",
+                        "name": "Request",
+                        "id": 72
+                      },
+                      {
+                        "type": "reference",
+                        "name": "Response",
+                        "id": 177
+                      },
+                      {
+                        "type": "reference",
+                        "name": "Promise",
+                        "typeArguments": [
                           {
-                            "type": "reference",
-                            "name": "Request",
-                            "id": 66
-                          },
-                          {
-                            "type": "reference",
-                            "name": "Response",
-                            "id": 171
+                            "type": "union",
+                            "types": [
+                              {
+                                "type": "reference",
+                                "name": "Request",
+                                "id": 72
+                              },
+                              {
+                                "type": "reference",
+                                "name": "Response",
+                                "id": 177
+                              }
+                            ]
                           }
                         ]
                       }
                     ]
                   }
-                ]
-              }
+                }
+              ]
             }
-          ]
+          }
         },
         {
-          "id": 7,
+          "id": 8,
           "name": "requestError",
-          "kind": 2048,
-          "kindString": "Method",
+          "kind": 1024,
+          "kindString": "Property",
           "flags": {
-            "isExported": true
+            "isExported": true,
+            "isOptional": true
           },
-          "signatures": [
-            {
-              "id": 8,
-              "name": "requestError",
-              "kind": 4096,
-              "kindString": "Call signature",
+          "comment": {
+            "shortText": "Handles errors generated by previous request interceptors. This function acts\nas a Promise rejection handler. It may rethrow the error to propagate the\nfailure, or return a new Request or Response to recover.",
+            "tags": [
+              {
+                "tag": "param",
+                "text": "The rejection value from the previous interceptor.\n",
+                "param": "error"
+              }
+            ]
+          },
+          "type": {
+            "type": "reflection",
+            "declaration": {
+              "id": 9,
+              "name": "__type",
+              "kind": 65536,
+              "kindString": "Type literal",
               "flags": {},
-              "parameters": [
+              "signatures": [
                 {
-                  "id": 9,
-                  "name": "error",
-                  "kind": 32768,
-                  "kindString": "Parameter",
+                  "id": 10,
+                  "name": "__call",
+                  "kind": 4096,
+                  "kindString": "Call signature",
                   "flags": {},
+                  "parameters": [
+                    {
+                      "id": 11,
+                      "name": "error",
+                      "kind": 32768,
+                      "kindString": "Parameter",
+                      "flags": {},
+                      "type": {
+                        "type": "instrinct",
+                        "name": "any"
+                      }
+                    }
+                  ],
                   "type": {
-                    "type": "instrinct",
-                    "name": "any"
-                  }
-                }
-              ],
-              "type": {
-                "type": "union",
-                "types": [
-                  {
-                    "type": "reference",
-                    "name": "Request",
-                    "id": 66
-                  },
-                  {
-                    "type": "reference",
-                    "name": "Response",
-                    "id": 171
-                  },
-                  {
-                    "type": "reference",
-                    "name": "Promise",
-                    "typeArguments": [
+                    "type": "union",
+                    "types": [
                       {
-                        "type": "union",
-                        "types": [
+                        "type": "reference",
+                        "name": "Request",
+                        "id": 72
+                      },
+                      {
+                        "type": "reference",
+                        "name": "Response",
+                        "id": 177
+                      },
+                      {
+                        "type": "reference",
+                        "name": "Promise",
+                        "typeArguments": [
                           {
-                            "type": "reference",
-                            "name": "Request",
-                            "id": 66
-                          },
-                          {
-                            "type": "reference",
-                            "name": "Response",
-                            "id": 171
+                            "type": "union",
+                            "types": [
+                              {
+                                "type": "reference",
+                                "name": "Request",
+                                "id": 72
+                              },
+                              {
+                                "type": "reference",
+                                "name": "Response",
+                                "id": 177
+                              }
+                            ]
                           }
                         ]
                       }
                     ]
                   }
-                ]
-              }
+                }
+              ]
             }
-          ]
+          }
         },
         {
-          "id": 10,
+          "id": 12,
           "name": "response",
-          "kind": 2048,
-          "kindString": "Method",
+          "kind": 1024,
+          "kindString": "Property",
           "flags": {
-            "isExported": true
+            "isExported": true,
+            "isOptional": true
           },
-          "signatures": [
-            {
-              "id": 11,
-              "name": "response",
-              "kind": 4096,
-              "kindString": "Call signature",
+          "comment": {
+            "shortText": "Called with the response after it is received. Response interceptors can modify\nand return the Response, or create a new one to be returned to the caller."
+          },
+          "type": {
+            "type": "reflection",
+            "declaration": {
+              "id": 13,
+              "name": "__type",
+              "kind": 65536,
+              "kindString": "Type literal",
               "flags": {},
-              "parameters": [
+              "comment": {
+                "text": "The response.\n"
+              },
+              "signatures": [
                 {
-                  "id": 12,
-                  "name": "response",
-                  "kind": 32768,
-                  "kindString": "Parameter",
+                  "id": 14,
+                  "name": "__call",
+                  "kind": 4096,
+                  "kindString": "Call signature",
                   "flags": {},
-                  "type": {
-                    "type": "reference",
-                    "name": "Response",
-                    "id": 171
-                  }
-                }
-              ],
-              "type": {
-                "type": "union",
-                "types": [
-                  {
-                    "type": "reference",
-                    "name": "Response",
-                    "id": 171
+                  "comment": {
+                    "text": "The response.\n"
                   },
-                  {
-                    "type": "reference",
-                    "name": "Promise",
-                    "typeArguments": [
+                  "parameters": [
+                    {
+                      "id": 15,
+                      "name": "response",
+                      "kind": 32768,
+                      "kindString": "Parameter",
+                      "flags": {},
+                      "type": {
+                        "type": "reference",
+                        "name": "Response",
+                        "id": 177
+                      }
+                    }
+                  ],
+                  "type": {
+                    "type": "union",
+                    "types": [
                       {
                         "type": "reference",
                         "name": "Response",
-                        "id": 171
+                        "id": 177
+                      },
+                      {
+                        "type": "reference",
+                        "name": "Promise",
+                        "typeArguments": [
+                          {
+                            "type": "reference",
+                            "name": "Response",
+                            "id": 177
+                          }
+                        ]
                       }
                     ]
                   }
-                ]
-              }
+                }
+              ]
             }
-          ]
+          }
         },
         {
-          "id": 13,
+          "id": 16,
           "name": "responseError",
-          "kind": 2048,
-          "kindString": "Method",
+          "kind": 1024,
+          "kindString": "Property",
           "flags": {
-            "isExported": true
+            "isExported": true,
+            "isOptional": true
           },
-          "signatures": [
-            {
-              "id": 14,
-              "name": "responseError",
-              "kind": 4096,
-              "kindString": "Call signature",
+          "comment": {
+            "shortText": "Handles fetch errors and errors generated by previous interceptors. This\nfunction acts as a Promise rejection handler. It may rethrow the error\nto propagate the failure, or return a new Response to recover.",
+            "tags": [
+              {
+                "tag": "param",
+                "text": "The rejection value from the fetch request or from a\nprevious interceptor.\n",
+                "param": "error"
+              }
+            ]
+          },
+          "type": {
+            "type": "reflection",
+            "declaration": {
+              "id": 17,
+              "name": "__type",
+              "kind": 65536,
+              "kindString": "Type literal",
               "flags": {},
-              "parameters": [
+              "signatures": [
                 {
-                  "id": 15,
-                  "name": "error",
-                  "kind": 32768,
-                  "kindString": "Parameter",
+                  "id": 18,
+                  "name": "__call",
+                  "kind": 4096,
+                  "kindString": "Call signature",
                   "flags": {},
+                  "parameters": [
+                    {
+                      "id": 19,
+                      "name": "error",
+                      "kind": 32768,
+                      "kindString": "Parameter",
+                      "flags": {},
+                      "type": {
+                        "type": "instrinct",
+                        "name": "any"
+                      }
+                    }
+                  ],
                   "type": {
-                    "type": "instrinct",
-                    "name": "any"
-                  }
-                }
-              ],
-              "type": {
-                "type": "union",
-                "types": [
-                  {
-                    "type": "reference",
-                    "name": "Response",
-                    "id": 171
-                  },
-                  {
-                    "type": "reference",
-                    "name": "Promise",
-                    "typeArguments": [
+                    "type": "union",
+                    "types": [
                       {
                         "type": "reference",
                         "name": "Response",
-                        "id": 171
+                        "id": 177
+                      },
+                      {
+                        "type": "reference",
+                        "name": "Promise",
+                        "typeArguments": [
+                          {
+                            "type": "reference",
+                            "name": "Response",
+                            "id": 177
+                          }
+                        ]
                       }
                     ]
                   }
-                ]
-              }
+                }
+              ]
             }
-          ]
+          }
         }
       ],
       "groups": [
         {
-          "title": "Methods",
-          "kind": 2048,
+          "title": "Properties",
+          "kind": 1024,
           "children": [
             4,
-            7,
-            10,
-            13
+            8,
+            12,
+            16
           ]
         }
       ]
     },
     {
-      "id": 16,
+      "id": 20,
       "name": "RequestInit",
       "kind": 256,
       "kindString": "Interface",
@@ -903,7 +1016,7 @@
       },
       "children": [
         {
-          "id": 19,
+          "id": 23,
           "name": "body",
           "kind": 1024,
           "kindString": "Property",
@@ -921,7 +1034,7 @@
               {
                 "type": "reference",
                 "name": "BufferSource",
-                "id": 64
+                "id": 70
               },
               {
                 "type": "reference",
@@ -930,7 +1043,7 @@
               {
                 "type": "reference",
                 "name": "URLSearchParams",
-                "id": 65
+                "id": 71
               },
               {
                 "type": "instrinct",
@@ -940,7 +1053,7 @@
           }
         },
         {
-          "id": 22,
+          "id": 26,
           "name": "cache",
           "kind": 1024,
           "kindString": "Property",
@@ -954,7 +1067,7 @@
           }
         },
         {
-          "id": 21,
+          "id": 25,
           "name": "credentials",
           "kind": 1024,
           "kindString": "Property",
@@ -968,7 +1081,7 @@
           }
         },
         {
-          "id": 18,
+          "id": 22,
           "name": "headers",
           "kind": 1024,
           "kindString": "Property",
@@ -982,7 +1095,7 @@
               {
                 "type": "reference",
                 "name": "Headers",
-                "id": 138
+                "id": 144
               },
               {
                 "type": "reference",
@@ -992,7 +1105,7 @@
           }
         },
         {
-          "id": 17,
+          "id": 21,
           "name": "method",
           "kind": 1024,
           "kindString": "Property",
@@ -1006,7 +1119,7 @@
           }
         },
         {
-          "id": 20,
+          "id": 24,
           "name": "mode",
           "kind": 1024,
           "kindString": "Property",
@@ -1025,18 +1138,18 @@
           "title": "Properties",
           "kind": 1024,
           "children": [
-            19,
+            23,
+            26,
+            25,
             22,
             21,
-            18,
-            17,
-            20
+            24
           ]
         }
       ]
     },
     {
-      "id": 57,
+      "id": 63,
       "name": "json",
       "kind": 64,
       "kindString": "Function",
@@ -1045,7 +1158,7 @@
       },
       "signatures": [
         {
-          "id": 58,
+          "id": 64,
           "name": "json",
           "kind": 4096,
           "kindString": "Call signature",
@@ -1055,7 +1168,7 @@
           },
           "parameters": [
             {
-              "id": 59,
+              "id": 65,
               "name": "body",
               "kind": 32768,
               "kindString": "Parameter",
@@ -1082,8 +1195,8 @@
       "title": "Classes",
       "kind": 128,
       "children": [
-        40,
-        23
+        44,
+        27
       ]
     },
     {
@@ -1091,14 +1204,14 @@
       "kind": 256,
       "children": [
         3,
-        16
+        20
       ]
     },
     {
       "title": "Functions",
       "kind": 64,
       "children": [
-        57
+        63
       ]
     }
   ]
