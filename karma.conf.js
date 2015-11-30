@@ -1,26 +1,22 @@
 // Karma configuration
-// Generated on Fri Dec 05 2014 16:49:29 GMT-0500 (EST)
 
 module.exports = function(config) {
-  config.set({
-
+  var configuration = {
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: '',
 
-
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['jspm', 'jasmine-ajax', 'jasmine'],
+    frameworks: ['jspm', 'jasmine'],
 
     jspm: {
       // Edit this to your needs
-      loadFiles: ['test/**/*.js'],
-      serveFiles : ['src/**/*.js']
+      loadFiles: ['src/**/*.js', 'test/**/*.js']
     },
 
 
     // list of files / patterns to load in the browser
-    files: [],
+    files: ['node_modules/whatwg-fetch/fetch.js'],
 
 
     // list of files to exclude
@@ -39,11 +35,11 @@ module.exports = function(config) {
         sourceMap: 'inline',
         modules: 'system',
         moduleIds: false,
-        loose: "all",
+        loose: 'all',
         optional: [
-          "es7.decorators",
-          "es7.classProperties",
-          "es7.functionBind"
+          'es7.decorators',
+          'es7.classProperties',
+          'es7.functionBind'
         ]
       }
     },
@@ -71,14 +67,25 @@ module.exports = function(config) {
     // enable / disable watching file and executing tests whenever any file changes
     autoWatch: true,
 
+    customLaunchers: {
+      Chrome_travis_ci: {
+        base: 'Chrome',
+        flags: ['--no-sandbox']
+      }
+    },
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
     browsers: ['Chrome'],
 
-
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
     singleRun: false
-  });
+  };
+
+  if (process.env.TRAVIS) {
+    configuration.browsers = ['Chrome_travis_ci', 'Firefox'];
+  }
+
+  config.set(configuration);
 };
