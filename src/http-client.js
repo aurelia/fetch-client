@@ -46,7 +46,7 @@ export class HttpClient {
   /**
   * Configure this client with default settings to be used by all requests.
   *
-  * @param config - A configuration object, or a function that takes a config
+  * @param config - A configuration object, or a function that takes a configuration
   * object and configures it.
   *
   * @chainable
