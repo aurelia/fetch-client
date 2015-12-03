@@ -1,3 +1,13 @@
+## 1.0.0-beta.1.0.1 (2015-12-03)
+
+
+#### Bug Fixes
+
+* **build:**
+  * fix duplicate type definition error when building docs ([15d7213c](http://github.com/aurelia/fetch-client/commit/15d7213cd2173b3cdb03c9267fb64112d7d978c9))
+  * include fetch API typings with this library's typings ([b2869d57](http://github.com/aurelia/fetch-client/commit/b2869d5741bccbea1e12a8d40e19d5f1fa1aedfa), closes [#15](http://github.com/aurelia/fetch-client/issues/15), [#23](http://github.com/aurelia/fetch-client/issues/23))
+
+
 ### 1.0.0-beta.1 (2015-11-16)
 
 
