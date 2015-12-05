@@ -1,4 +1,5 @@
 import {HttpClient} from '../src/http-client';
+import {HttpClientConfiguration} from '../src/http-client-configuration';
 
 describe('HttpClient', () => {
   let originalFetch = window.fetch;
@@ -17,6 +18,58 @@ describe('HttpClient', () => {
   }
 
   setUpTests();
+
+  it('errors on missing fetch implementation', () => {
+    window.fetch = undefined;
+    expect(() => new HttpClient()).toThrow();
+  });
+
+  describe('configure', () => {
+    it('accepts plain objects', () => {
+      let defaults = {};
+      client.configure(defaults);
+
+      expect(client.isConfigured).toBe(true);
+      expect(client.defaults).toBe(defaults);
+    });
+
+    it('accepts configuration callbacks', () => {
+      let defaults = { foo: true };
+      let baseUrl = '/test';
+      let interceptor = {};
+
+      client.configure(config => {
+        expect(config).toEqual(jasmine.any(HttpClientConfiguration));
+
+        return config
+          .withDefaults(defaults)
+          .withBaseUrl(baseUrl)
+          .withInterceptor(interceptor);
+      });
+
+      expect(client.isConfigured).toBe(true);
+      expect(client.defaults.foo).toBe(true);
+      expect(client.baseUrl).toBe(baseUrl);
+      expect(client.interceptors.indexOf(interceptor)).toBe(0);
+    });
+
+    it('rejects invalid configs', () => {
+      expect(() => client.configure(1)).toThrow();
+    });
+
+    it('applies standard configuration', () => {
+      client.configure(config => config.useStandardConfiguration());
+
+      expect(client.defaults.credentials).toBe('same-origin');
+      expect(client.interceptors.length).toBe(1);
+    });
+
+    it('rejects error responses', () => {
+      client.configure(config => config.rejectErrorResponses());
+
+      expect(client.interceptors.length).toBe(1);
+    });
+  });
 
   it('makes requests', (done) => {
     fetch.and.returnValue(emptyResponse(200));
@@ -157,6 +210,22 @@ describe('HttpClient', () => {
         .then((r) => {
           expect(r).toBe(response);
           expect(fetch).not.toHaveBeenCalled();
+          done();
+        });
+    });
+
+    it('can reject error responses', (done) => {
+      let response = new Response(null, { status: 500 });
+      fetch.and.returnValue(Promise.reject(response));
+
+      client.configure(config => config.rejectErrorResponses());
+
+      client.fetch('path')
+        .then((r) => {
+          expect(r).not.toBe(r);
+        })
+        .catch((r) => {
+          expect(r).toBe(response);
           done();
         });
     });
