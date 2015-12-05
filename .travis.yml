@@ -9,7 +9,6 @@ cache:
 
 install:
   - npm install
-  - node_modules/.bin/jspm install
 
 before_script:
   - export CHROME_BIN=chromium-browser
@@ -17,4 +16,4 @@ before_script:
   - sh -e /etc/init.d/xvfb start
 
 script:
-  - node_modules/.bin/gulp
+  - npm run ci

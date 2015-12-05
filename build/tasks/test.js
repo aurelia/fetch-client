@@ -1,5 +1,6 @@
 var gulp = require('gulp');
 var karma = require('karma').server;
+var coveralls = require('gulp-coveralls');
 
 /**
  * Run test once and exit
@@ -9,7 +10,7 @@ gulp.task('test', function (done) {
         configFile: __dirname + '/../../karma.conf.js',
         singleRun: true
     }, function(e) {
-        done(e === 0 ? null : true);
+        done(e === 0 ? null : 'karma exited with status ' + e);
     });
 });
 
@@ -25,22 +26,9 @@ gulp.task('tdd', function (done) {
 });
 
 /**
- * Run test once with code coverage and exit
+ * Report coverage to coveralls
  */
-gulp.task('cover', function (done) {
-  karma.start({
-    configFile: __dirname + '/../../karma.conf.js',
-    singleRun: true,
-    reporters: ['coverage'],
-    preprocessors: {
-      'test/**/*.js': ['babel'],
-      'src/**/*.js': ['babel', 'coverage']
-    },
-    coverageReporter: {
-      type: 'html',
-      dir: 'build/reports/coverage'
-    }
-  }, function (e) {
-    done(e === 0 ? null : true);
-  });
+gulp.task('coveralls', ['test'], function (done) {
+  gulp.src('build/reports/coverage/lcov/report-lcovonly.txt')
+    .pipe(coveralls());
 });
