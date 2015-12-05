@@ -1,6 +1,7 @@
 # aurelia-fetch-client
 
 [![Build Status](https://travis-ci.org/aurelia/fetch-client.svg?branch=master)](https://travis-ci.org/aurelia/fetch-client)
+[![Coverage Status](https://coveralls.io/repos/aurelia/fetch-client/badge.svg?branch=master&service=github)](https://coveralls.io/github/aurelia/fetch-client?branch=master)
 [![ZenHub](https://raw.githubusercontent.com/ZenHubIO/support/master/zenhub-badge.png)](https://zenhub.io)
 [![Join the chat at https://gitter.im/aurelia/discuss](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/aurelia/discuss?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
