@@ -155,15 +155,18 @@ function buildRequest(input, init = {}) {
 
     source = input;
     url = input.url;
-    body = input.blob();
+    if (input.method !== 'GET' && input.method !== 'HEAD') {
+      body = input.blob();
+    }
   } else {
     source = init;
     url = input;
     body = init.body;
   }
 
+  let bodyObj = body ? { body } : null;
   let parsedDefaultHeaders = parseHeaderValues(defaults.headers);
-  let requestInit = Object.assign({}, defaults, { headers: {} }, source, { body });
+  let requestInit = Object.assign({}, defaults, { headers: {} }, source, bodyObj);
   let request = new Request((this.baseUrl || '') + url, requestInit);
   setDefaultHeaders(request.headers, parsedDefaultHeaders);
 
