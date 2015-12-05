@@ -71,21 +71,59 @@ describe('HttpClient', () => {
     });
   });
 
-  it('makes requests', (done) => {
-    fetch.and.returnValue(emptyResponse(200));
+  describe('fetch', () => {
+    it('makes requests with string inputs', (done) => {
+      fetch.and.returnValue(emptyResponse(200));
 
-    client
-      .fetch('http://example.com/some/cool/path')
-      .then(result => {
-        expect(result.ok).toBe(true);
-      })
-      .catch(result => {
-        expect(result).not.toBe(result);
-      })
-      .then(() => {
-        expect(fetch).toHaveBeenCalled();
-        done();
-      });
+      client
+        .fetch('http://example.com/some/cool/path')
+        .then(result => {
+          expect(result.ok).toBe(true);
+        })
+        .catch(result => {
+          expect(result).not.toBe(result);
+        })
+        .then(() => {
+          expect(fetch).toHaveBeenCalled();
+          done();
+        });
+    });
+
+    it('makes requests with Request inputs', (done) => {
+      fetch.and.returnValue(emptyResponse(200));
+
+      client
+        .fetch(new Request('http://example.com/some/cool/path'))
+        .then(result => {
+          expect(result.ok).toBe(true);
+        })
+        .catch(result => {
+          expect(result).not.toBe(result);
+        })
+        .then(() => {
+          expect(fetch).toHaveBeenCalled();
+          done();
+        });
+    });
+
+    it('makes requests with Request inputs when configured', (done) => {
+      fetch.and.returnValue(emptyResponse(200));
+
+      client.configure(config => config.withBaseUrl('http://example.com/'));
+
+      client
+        .fetch(new Request('some/cool/path'))
+        .then(result => {
+          expect(result.ok).toBe(true);
+        })
+        .catch(result => {
+          expect(result).not.toBe(result);
+        })
+        .then(() => {
+          expect(fetch).toHaveBeenCalled();
+          done();
+        });
+    });
   });
 
   describe('interceptors', () => {
@@ -214,20 +252,49 @@ describe('HttpClient', () => {
         });
     });
 
-    it('can reject error responses', (done) => {
+    it('doesn\'t reject unsuccessful responses', (done) => {
       let response = new Response(null, { status: 500 });
-      fetch.and.returnValue(Promise.reject(response));
-
-      client.configure(config => config.rejectErrorResponses());
+      fetch.and.returnValue(Promise.resolve(response));
 
       client.fetch('path')
-        .then((r) => {
-          expect(r).not.toBe(r);
-        })
         .catch((r) => {
-          expect(r).toBe(response);
+          expect(r).not.toBe(response);
+        })
+        .then((r) => {
+          expect(r.ok).toBe(false);
           done();
         });
+    });
+
+    describe('rejectErrorResponses', () => {
+      it('can reject error responses', (done) => {
+        let response = new Response(null, { status: 500 });
+        fetch.and.returnValue(Promise.resolve(response));
+
+        client.configure(config => config.rejectErrorResponses());
+        client.fetch('path')
+          .then((r) => {
+            expect(r).not.toBe(r);
+          })
+          .catch((r) => {
+            expect(r).toBe(response);
+            done();
+          });
+      });
+
+      it('resolves successful requests', (done) => {
+        fetch.and.returnValue(emptyResponse(200));
+
+        client.configure(config => config.rejectErrorResponses());
+        client.fetch('path')
+          .catch((r) => {
+            expect(r).not.toBe(r);
+          })
+          .then((r) => {
+            expect(r.ok).toBe(true);
+            done();
+          });
+      });
     });
   });
 
