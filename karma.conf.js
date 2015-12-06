@@ -1,5 +1,6 @@
 var isparta = require('isparta');
 var paths = require('./build/paths');
+var babelOptions = require('./build/babel-options');
 
 module.exports = function(config) {
   var configuration = {
@@ -19,15 +20,7 @@ module.exports = function(config) {
     },
 
     babelPreprocessor: {
-      options: {
-        sourceMap: 'inline',
-        loose: 'all',
-        optional: [
-          'es7.decorators',
-          'es7.classProperties',
-          'es7.functionBind'
-        ]
-      }
+      options: { loose: babelOptions.loose, stage: babelOptions.stage, optional: babelOptions.optional }
     },
 
     reporters: ['coverage', 'progress'],
