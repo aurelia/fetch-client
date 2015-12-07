@@ -59,7 +59,7 @@ export class HttpClient {
     } else if (typeof config === 'function') {
       normalizedConfig = new HttpClientConfiguration();
       let c = config(normalizedConfig);
-      if (typeof c === HttpClientConfiguration) {
+      if (c instanceof HttpClientConfiguration) {
         normalizedConfig = c;
       }
     } else {
