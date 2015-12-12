@@ -20,7 +20,12 @@ module.exports = function(config) {
     },
 
     babelPreprocessor: {
-      options: { loose: babelOptions.loose, stage: babelOptions.stage, optional: babelOptions.optional }
+      options: {
+        loose: babelOptions.loose,
+        stage: babelOptions.stage,
+        optional: babelOptions.optional,
+        sourceMap: 'inline'
+      }
     },
 
     reporters: ['coverage', 'progress'],
