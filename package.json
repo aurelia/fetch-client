@@ -20,7 +20,6 @@
     "url": "http://github.com/aurelia/fetch-client"
   },
   "scripts": {
-    "postinstall": "jspm install",
     "test": "gulp test",
     "ci": "gulp ci"
   },
