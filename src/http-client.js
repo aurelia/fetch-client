@@ -59,7 +59,7 @@ export class HttpClient {
     } else if (typeof config === 'function') {
       normalizedConfig = new HttpClientConfiguration();
       let c = config(normalizedConfig);
-      if (c instanceof HttpClientConfiguration) {
+      if (HttpClientConfiguration.prototype.isPrototypeOf(c)) {
         normalizedConfig = c;
       }
     } else {
@@ -67,7 +67,7 @@ export class HttpClient {
     }
 
     let defaults = normalizedConfig.defaults;
-    if (defaults && defaults.headers instanceof Headers) {
+    if (defaults && Headers.prototype.isPrototypeOf(defaults.headers)) {
       // Headers instances are not iterable in all browsers. Require a plain
       // object here to allow default headers to be merged into request headers.
       throw new Error('Default headers must be a plain object.');
@@ -102,9 +102,9 @@ export class HttpClient {
       .then(result => {
         let response = null;
 
-        if (result instanceof Response) {
+        if (Response.prototype.isPrototypeOf(result)) {
           response = result;
-        } else if (result instanceof Request) {
+        } else if (Request.prototype.isPrototypeOf(result)) {
           response = fetch(result);
         } else {
           throw new Error(`An invalid result was returned by the interceptor chain. Expected a Request or Response instance, but got [${result}]`);
@@ -147,7 +147,7 @@ function buildRequest(input, init = {}) {
   let url;
   let body;
 
-  if (input instanceof Request) {
+  if (Request.prototype.isPrototypeOf(input)) {
     if (!this.isConfigured) {
       // don't copy the request if there are no defaults configured
       return input;
