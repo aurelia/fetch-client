@@ -170,6 +170,12 @@ function buildRequest(input, init = {}) {
   let request = new Request((this.baseUrl || '') + url, requestInit);
   setDefaultHeaders(request.headers, parsedDefaultHeaders);
 
+  if (body && Blob.prototype.isPrototypeOf(body) && body.type) {
+    // work around bug in IE & Edge where the Blob type is ignored in the request
+    // https://connect.microsoft.com/IE/feedback/details/2136163
+    request.headers.set('Content-Type', body.type);
+  }
+
   return request;
 }
 
