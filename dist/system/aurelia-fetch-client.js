@@ -51,24 +51,31 @@ System.register(['core-js'], function (_export) {
     var url = undefined;
     var body = undefined;
 
-    if (input instanceof Request) {
+    if (Request.prototype.isPrototypeOf(input)) {
       if (!this.isConfigured) {
         return input;
       }
 
       source = input;
       url = input.url;
-      body = input.blob();
+      if (input.method !== 'GET' && input.method !== 'HEAD') {
+        body = input.blob();
+      }
     } else {
       source = init;
       url = input;
       body = init.body;
     }
 
+    var bodyObj = body ? { body: body } : null;
     var parsedDefaultHeaders = parseHeaderValues(defaults.headers);
-    var requestInit = Object.assign({}, defaults, { headers: {} }, source, { body: body });
+    var requestInit = Object.assign({}, defaults, { headers: {} }, source, bodyObj);
     var request = new Request((this.baseUrl || '') + url, requestInit);
     setDefaultHeaders(request.headers, parsedDefaultHeaders);
+
+    if (body && Blob.prototype.isPrototypeOf(body) && body.type) {
+      request.headers.set('Content-Type', body.type);
+    }
 
     return request;
   }
@@ -165,7 +172,7 @@ System.register(['core-js'], function (_export) {
           } else if (typeof config === 'function') {
             normalizedConfig = new HttpClientConfiguration();
             var c = config(normalizedConfig);
-            if (typeof c === HttpClientConfiguration) {
+            if (HttpClientConfiguration.prototype.isPrototypeOf(c)) {
               normalizedConfig = c;
             }
           } else {
@@ -173,7 +180,7 @@ System.register(['core-js'], function (_export) {
           }
 
           var defaults = normalizedConfig.defaults;
-          if (defaults && defaults.headers instanceof Headers) {
+          if (defaults && Headers.prototype.isPrototypeOf(defaults.headers)) {
             throw new Error('Default headers must be a plain object.');
           }
 
@@ -206,9 +213,9 @@ System.register(['core-js'], function (_export) {
           var promise = processRequest(request, this.interceptors).then(function (result) {
             var response = null;
 
-            if (result instanceof Response) {
+            if (Response.prototype.isPrototypeOf(result)) {
               response = result;
-            } else if (result instanceof Request) {
+            } else if (Request.prototype.isPrototypeOf(result)) {
               response = fetch(result);
             } else {
               throw new Error('An invalid result was returned by the interceptor chain. Expected a Request or Response instance, but got [' + result + ']');

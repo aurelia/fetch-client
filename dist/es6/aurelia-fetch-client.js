@@ -223,7 +223,7 @@ export class HttpClient {
     } else if (typeof config === 'function') {
       normalizedConfig = new HttpClientConfiguration();
       let c = config(normalizedConfig);
-      if (typeof c === HttpClientConfiguration) {
+      if (HttpClientConfiguration.prototype.isPrototypeOf(c)) {
         normalizedConfig = c;
       }
     } else {
@@ -231,7 +231,7 @@ export class HttpClient {
     }
 
     let defaults = normalizedConfig.defaults;
-    if (defaults && defaults.headers instanceof Headers) {
+    if (defaults && Headers.prototype.isPrototypeOf(defaults.headers)) {
       // Headers instances are not iterable in all browsers. Require a plain
       // object here to allow default headers to be merged into request headers.
       throw new Error('Default headers must be a plain object.');
@@ -266,9 +266,9 @@ export class HttpClient {
       .then(result => {
         let response = null;
 
-        if (result instanceof Response) {
+        if (Response.prototype.isPrototypeOf(result)) {
           response = result;
-        } else if (result instanceof Request) {
+        } else if (Request.prototype.isPrototypeOf(result)) {
           response = fetch(result);
         } else {
           throw new Error(`An invalid result was returned by the interceptor chain. Expected a Request or Response instance, but got [${result}]`);
@@ -311,7 +311,7 @@ function buildRequest(input, init = {}) {
   let url;
   let body;
 
-  if (input instanceof Request) {
+  if (Request.prototype.isPrototypeOf(input)) {
     if (!this.isConfigured) {
       // don't copy the request if there are no defaults configured
       return input;
@@ -319,17 +319,26 @@ function buildRequest(input, init = {}) {
 
     source = input;
     url = input.url;
-    body = input.blob();
+    if (input.method !== 'GET' && input.method !== 'HEAD') {
+      body = input.blob();
+    }
   } else {
     source = init;
     url = input;
     body = init.body;
   }
 
+  let bodyObj = body ? { body } : null;
   let parsedDefaultHeaders = parseHeaderValues(defaults.headers);
-  let requestInit = Object.assign({}, defaults, { headers: {} }, source, { body });
+  let requestInit = Object.assign({}, defaults, { headers: {} }, source, bodyObj);
   let request = new Request((this.baseUrl || '') + url, requestInit);
   setDefaultHeaders(request.headers, parsedDefaultHeaders);
+
+  if (body && Blob.prototype.isPrototypeOf(body) && body.type) {
+    // work around bug in IE & Edge where the Blob type is ignored in the request
+    // https://connect.microsoft.com/IE/feedback/details/2136163
+    request.headers.set('Content-Type', body.type);
+  }
 
   return request;
 }

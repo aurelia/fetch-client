@@ -1,3 +1,13 @@
+### 1.0.0-beta.1.0.2 (2015-12-17)
+
+
+#### Bug Fixes
+
+* **http-client:**
+  * work around bug in IE/Edge where Blob types are ignored ([36407e27](http://github.com/aurelia/fetch-client/commit/36407e27c5b1881473151126fed53f74299ad296))
+  * correct type check ([d38d1b34](http://github.com/aurelia/fetch-client/commit/d38d1b34373c50907e7c7673def8ba0ebc5a5427))
+
+
 ## 1.0.0-beta.1.0.1 (2015-12-03)
 
 
