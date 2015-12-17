@@ -38,25 +38,25 @@ describe('HttpClient', () => {
 
   describe('baseUrl', () => {
     it("Doesn't overwrite baseUrl on second configure.", () => {
-      let client = new HttpClient();
+      let httpClient = new HttpClient();
 
-      client.configure(x => {
+      httpClient.configure(x => {
         x.withBaseUrl('foo');
       });
 
-      expect(client.baseUrl).toBe('foo');
+      expect(httpClient.baseUrl).toBe('foo');
 
-      client.configure(x => {
+      httpClient.configure(x => {
         x.withBaseUrl('bar');
       });
 
-      expect(client.baseUrl).toBe('bar');
+      expect(httpClient.baseUrl).toBe('bar');
 
-      client.configure(x => {
+      httpClient.configure(x => {
         x.withDefaults({headers: {foo: 'bar'}});
       });
 
-      expect(client.baseUrl).toBe('bar');
+      expect(httpClient.baseUrl).toBe('bar');
     });
   });
 
