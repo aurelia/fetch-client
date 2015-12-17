@@ -8,7 +8,7 @@ export class HttpClientConfiguration {
   /**
   * The base URL to be prepended to each Request's url before sending.
   */
-  baseUrl: string = '';
+  baseUrl: string = undefined;
 
   /**
   * Default values to apply to init objects when creating Requests. Note that
