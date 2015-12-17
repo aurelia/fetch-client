@@ -14,7 +14,7 @@ define(['exports', 'core-js'], function (exports, _coreJs) {
     function HttpClientConfiguration() {
       _classCallCheck(this, HttpClientConfiguration);
 
-      this.baseUrl = '';
+      this.baseUrl = undefined;
       this.defaults = {};
       this.interceptors = [];
     }
@@ -64,7 +64,7 @@ define(['exports', 'core-js'], function (exports, _coreJs) {
       this.activeRequestCount = 0;
       this.isRequesting = false;
       this.isConfigured = false;
-      this.baseUrl = '';
+      this.baseUrl = undefined;
       this.defaults = null;
       this.interceptors = [];
 
@@ -95,7 +95,7 @@ define(['exports', 'core-js'], function (exports, _coreJs) {
         throw new Error('Default headers must be a plain object.');
       }
 
-      this.baseUrl = normalizedConfig.baseUrl;
+      this.baseUrl = normalizedConfig.baseUrl || this.baseUrl;
       this.defaults = defaults;
       (_interceptors = this.interceptors).push.apply(_interceptors, normalizedConfig.interceptors || []);
       this.isConfigured = true;

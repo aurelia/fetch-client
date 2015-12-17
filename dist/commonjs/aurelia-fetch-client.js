@@ -15,7 +15,7 @@ var HttpClientConfiguration = (function () {
   function HttpClientConfiguration() {
     _classCallCheck(this, HttpClientConfiguration);
 
-    this.baseUrl = '';
+    this.baseUrl = undefined;
     this.defaults = {};
     this.interceptors = [];
   }
@@ -65,7 +65,7 @@ var HttpClient = (function () {
     this.activeRequestCount = 0;
     this.isRequesting = false;
     this.isConfigured = false;
-    this.baseUrl = '';
+    this.baseUrl = undefined;
     this.defaults = null;
     this.interceptors = [];
 
@@ -96,7 +96,7 @@ var HttpClient = (function () {
       throw new Error('Default headers must be a plain object.');
     }
 
-    this.baseUrl = normalizedConfig.baseUrl;
+    this.baseUrl = normalizedConfig.baseUrl || this.baseUrl;
     this.defaults = defaults;
     (_interceptors = this.interceptors).push.apply(_interceptors, normalizedConfig.interceptors || []);
     this.isConfigured = true;

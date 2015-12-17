@@ -111,7 +111,7 @@ System.register(['core-js'], function (_export) {
         function HttpClientConfiguration() {
           _classCallCheck(this, HttpClientConfiguration);
 
-          this.baseUrl = '';
+          this.baseUrl = undefined;
           this.defaults = {};
           this.interceptors = [];
         }
@@ -153,7 +153,7 @@ System.register(['core-js'], function (_export) {
           this.activeRequestCount = 0;
           this.isRequesting = false;
           this.isConfigured = false;
-          this.baseUrl = '';
+          this.baseUrl = undefined;
           this.defaults = null;
           this.interceptors = [];
 
@@ -184,7 +184,7 @@ System.register(['core-js'], function (_export) {
             throw new Error('Default headers must be a plain object.');
           }
 
-          this.baseUrl = normalizedConfig.baseUrl;
+          this.baseUrl = normalizedConfig.baseUrl || this.baseUrl;
           this.defaults = defaults;
           (_interceptors = this.interceptors).push.apply(_interceptors, normalizedConfig.interceptors || []);
           this.isConfigured = true;

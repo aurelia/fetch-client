@@ -25,7 +25,7 @@ export class HttpClient {
   /**
   * The base URL set by the config.
   */
-  baseUrl: string = '';
+  baseUrl: string = undefined;
 
   /**
   * The default request init to merge with values specified at request time.
@@ -73,7 +73,7 @@ export class HttpClient {
       throw new Error('Default headers must be a plain object.');
     }
 
-    this.baseUrl = normalizedConfig.baseUrl;
+    this.baseUrl = normalizedConfig.baseUrl || this.baseUrl;
     this.defaults = defaults;
     this.interceptors.push(...normalizedConfig.interceptors || []);
     this.isConfigured = true;

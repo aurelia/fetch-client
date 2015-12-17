@@ -1,6 +1,7 @@
 import {HttpClient} from '../src/http-client';
 import {HttpClientConfiguration} from '../src/http-client-configuration';
 
+
 describe('HttpClient', () => {
   let originalFetch = window.fetch;
   let client;
@@ -123,6 +124,30 @@ describe('HttpClient', () => {
           expect(fetch).toHaveBeenCalled();
           done();
         });
+    });
+  });
+
+  describe('baseUrl', () => {
+    it("Doesn't overwrite baseUrl on second configure.", () => {
+      let httpClient = new HttpClient();
+
+      httpClient.configure(x => {
+        x.withBaseUrl('foo');
+      });
+
+      expect(httpClient.baseUrl).toBe('foo');
+
+      httpClient.configure(x => {
+        x.withBaseUrl('bar');
+      });
+
+      expect(httpClient.baseUrl).toBe('bar');
+
+      httpClient.configure(x => {
+        x.withDefaults({headers: {foo: 'bar'}});
+      });
+
+      expect(httpClient.baseUrl).toBe('bar');
     });
   });
 
