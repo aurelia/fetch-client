@@ -79,7 +79,7 @@ export class HttpClientConfiguration {
   /**
   * The base URL to be prepended to each Request's url before sending.
   */
-  baseUrl: string = '';
+  baseUrl: string = undefined;
 
   /**
   * Default values to apply to init objects when creating Requests. Note that
@@ -189,7 +189,7 @@ export class HttpClient {
   /**
   * The base URL set by the config.
   */
-  baseUrl: string = '';
+  baseUrl: string = undefined;
 
   /**
   * The default request init to merge with values specified at request time.
@@ -237,7 +237,7 @@ export class HttpClient {
       throw new Error('Default headers must be a plain object.');
     }
 
-    this.baseUrl = normalizedConfig.baseUrl;
+    this.baseUrl = normalizedConfig.baseUrl || this.baseUrl;
     this.defaults = defaults;
     this.interceptors.push(...normalizedConfig.interceptors || []);
     this.isConfigured = true;
