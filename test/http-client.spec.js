@@ -172,7 +172,7 @@ describe('HttpClient', () => {
 
       client.fetch('path')
         .then(() => {
-          expect(interceptor.response).toHaveBeenCalledWith(jasmine.any(Response), jasmine.any(Request));
+          expect(interceptor.response).toHaveBeenCalledWith(jasmine.any(Response));
           expect(interceptor.responseError).not.toHaveBeenCalled();
           done();
         });
@@ -189,7 +189,7 @@ describe('HttpClient', () => {
       client.fetch('path')
         .catch(() => {
           expect(interceptor.response).not.toHaveBeenCalled();
-          expect(interceptor.responseError).toHaveBeenCalledWith(jasmine.any(Response), jasmine.any(Request));
+          expect(interceptor.responseError).toHaveBeenCalledWith(jasmine.any(Response));
           done();
         });
     });

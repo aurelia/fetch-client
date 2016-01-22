@@ -105,13 +105,12 @@ export class HttpClient {
         if (Response.prototype.isPrototypeOf(result)) {
           response = result;
         } else if (Request.prototype.isPrototypeOf(result)) {
-          request = Promise.resolve(result);
           response = fetch(result);
         } else {
           throw new Error(`An invalid result was returned by the interceptor chain. Expected a Request or Response instance, but got [${result}]`);
         }
 
-        return request.then(_request => processResponse(response, this.interceptors, _request));
+        return processResponse(response, this.interceptors);
       });
 
     return this::trackRequestEndWith(promise);
@@ -192,18 +191,18 @@ function processRequest(request, interceptors) {
   return applyInterceptors(request, interceptors, 'request', 'requestError');
 }
 
-function processResponse(response, interceptors, request) {
-  return applyInterceptors(response, interceptors, 'response', 'responseError', request);
+function processResponse(response, interceptors) {
+  return applyInterceptors(response, interceptors, 'response', 'responseError');
 }
 
-function applyInterceptors(input, interceptors, successName, errorName, ...interceptorArgs) {
+function applyInterceptors(input, interceptors, successName, errorName) {
   return (interceptors || [])
     .reduce((chain, interceptor) => {
       let successHandler = interceptor[successName];
       let errorHandler = interceptor[errorName];
 
       return chain.then(
-        successHandler && (value => interceptor::successHandler(value, ...interceptorArgs)), 
-        errorHandler && (reason => interceptor::errorHandler(reason, ...interceptorArgs)));
+        successHandler && interceptor::successHandler,
+        errorHandler && interceptor::errorHandler);
     }, Promise.resolve(input));
 }

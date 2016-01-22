@@ -127,15 +127,12 @@ define(['exports', 'core-js'], function (exports, _coreJs) {
         if (Response.prototype.isPrototypeOf(result)) {
           response = result;
         } else if (Request.prototype.isPrototypeOf(result)) {
-          request = Promise.resolve(result);
           response = fetch(result);
         } else {
           throw new Error('An invalid result was returned by the interceptor chain. Expected a Request or Response instance, but got [' + result + ']');
         }
 
-        return request.then(function (_request) {
-          return processResponse(response, _this.interceptors, _request);
-        });
+        return processResponse(response, _this.interceptors);
       });
 
       return trackRequestEndWith.call(this, promise);
@@ -219,24 +216,16 @@ define(['exports', 'core-js'], function (exports, _coreJs) {
     return applyInterceptors(request, interceptors, 'request', 'requestError');
   }
 
-  function processResponse(response, interceptors, request) {
-    return applyInterceptors(response, interceptors, 'response', 'responseError', request);
+  function processResponse(response, interceptors) {
+    return applyInterceptors(response, interceptors, 'response', 'responseError');
   }
 
   function applyInterceptors(input, interceptors, successName, errorName) {
-    for (var _len = arguments.length, interceptorArgs = Array(_len > 4 ? _len - 4 : 0), _key = 4; _key < _len; _key++) {
-      interceptorArgs[_key - 4] = arguments[_key];
-    }
-
     return (interceptors || []).reduce(function (chain, interceptor) {
       var successHandler = interceptor[successName];
       var errorHandler = interceptor[errorName];
 
-      return chain.then(successHandler && function (value) {
-        return successHandler.call.apply(successHandler, [interceptor, value].concat(interceptorArgs));
-      }, errorHandler && function (reason) {
-        return errorHandler.call.apply(errorHandler, [interceptor, reason].concat(interceptorArgs));
-      });
+      return chain.then(successHandler && successHandler.bind(interceptor), errorHandler && errorHandler.bind(interceptor));
     }, Promise.resolve(input));
   }
 });
