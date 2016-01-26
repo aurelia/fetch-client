@@ -168,7 +168,11 @@ function buildRequest(input, init = {}) {
   let bodyObj = body ? { body } : null;
   let parsedDefaultHeaders = parseHeaderValues(defaults.headers);
   let requestInit = Object.assign({}, defaults, { headers: {} }, source, bodyObj);
+  let requestContentType = new Headers(requestInit.headers).get('Content-Type');
   let request = new Request((this.baseUrl || '') + url, requestInit);
+  if (!requestContentType && new Headers(parsedDefaultHeaders).has('content-type')) {
+    request.headers.set('Content-Type', new Headers(parsedDefaultHeaders).get('content-type'));
+  }
   setDefaultHeaders(request.headers, parsedDefaultHeaders);
 
   if (body && Blob.prototype.isPrototypeOf(body) && body.type) {

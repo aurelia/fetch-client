@@ -425,6 +425,20 @@ describe('HttpClient', () => {
           done();
         });
     });
+
+    it('uses default content-type header', (done) => {
+      fetch.and.returnValue(emptyResponse(200));
+      let contentType = 'application/json;charset=UTF-8';
+      client.defaults = { method: 'post', body: '{}', headers: { 'content-type': contentType } };
+
+      client.fetch('path')
+        .then(() => {
+          let [request] = fetch.calls.first().args;
+          expect(request.headers.has('content-type')).toBe(true);
+          expect(request.headers.get('content-type')).toBe(contentType);
+          done();
+        });
+    });
   });
 });
 
