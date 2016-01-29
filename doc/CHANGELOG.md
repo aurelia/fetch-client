@@ -1,3 +1,17 @@
+### 1.0.0-beta.1.1.0 (2016-01-29)
+
+
+#### Bug Fixes
+
+* **http-client:** ensure default content-type is respected ([f001ebaf](http://github.com/aurelia/fetch-client/commit/f001ebafe47ecc0ebbc74f597ac7ee904194b734), closes [#32](http://github.com/aurelia/fetch-client/issues/32))
+
+
+#### Features
+
+* **all:** update jspm meta; core-js ([dd62f230](http://github.com/aurelia/fetch-client/commit/dd62f23099f3e6851eb394b57de6d4da121a241c))
+* **interceptors:** provide Request to response interceptors ([2d24beaa](http://github.com/aurelia/fetch-client/commit/2d24beaa39104074a3c094f5544afc3d7d8ace75), closes [#33](http://github.com/aurelia/fetch-client/issues/33))
+
+
 ### 1.0.0-beta.1.0.2 (2015-12-17)
 
 
