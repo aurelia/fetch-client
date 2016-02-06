@@ -142,7 +142,8 @@ function parseHeaderValues(headers) {
   return parsedHeaders;
 }
 
-function buildRequest(input, init = {}) {
+function buildRequest(input, init) {
+  init || (init = {});
   let defaults = this.defaults || {};
   let source;
   let url;

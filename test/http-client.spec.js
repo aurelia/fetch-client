@@ -89,6 +89,23 @@ describe('HttpClient', () => {
         });
     });
 
+    it('makes requests with null RequestInit', (done) => {
+      fetch.and.returnValue(emptyResponse(200));
+
+      client
+        .fetch('http://example.com/some/cool/path', null)
+        .then(result => {
+          expect(result.ok).toBe(true);
+        })
+        .catch(result => {
+          expect(result).not.toBe(result);
+        })
+        .then(() => {
+          expect(fetch).toHaveBeenCalled();
+          done();
+        });
+    });
+
     it('makes requests with Request inputs', (done) => {
       fetch.and.returnValue(emptyResponse(200));
 
