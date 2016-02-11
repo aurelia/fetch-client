@@ -330,6 +330,18 @@ describe('HttpClient', () => {
         });
     });
 
+    it('doesn\'t apply baseUrl to absolute URLs', (done) => {
+      fetch.and.returnValue(emptyResponse(200));
+      client.baseUrl = 'http://aurelia.io/';
+
+      client.fetch('https://example.com/test')
+        .then(() => {
+          let [request] = fetch.calls.first().args;
+          expect(request.url).toBe('https://example.com/test');
+          done();
+        });
+    });
+
     it('applies default headers to requests with no headers', (done) => {
       fetch.and.returnValue(emptyResponse(200));
       client.defaults = { headers: { 'x-foo': 'bar' } };
