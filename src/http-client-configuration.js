@@ -1,5 +1,4 @@
 import {RequestInit, Interceptor} from './interfaces';
-import 'core-js';
 
 /**
 * A class for configuring HttpClients.

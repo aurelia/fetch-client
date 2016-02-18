@@ -16,8 +16,5 @@
   "repository": {
     "type": "git",
     "url": "http://github.com/aurelia/fetch-client"
-  },
-  "dependencies": {
-    "core-js": "zloirock/core-js"
   }
 }

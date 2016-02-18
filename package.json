@@ -31,17 +31,11 @@
     "directories": {
       "dist": "dist/amd"
     },
-    "dependencies": {
-      "core-js": "^2.0.3"
-    },
     "devDependencies": {
       "babel": "^5.1.13",
       "babel-runtime": "^5.1.13",
       "core-js": "^2.0.3"
     }
-  },
-  "dependencies": {
-    "core-js": "^2.0.3"
   },
   "devDependencies": {
     "aurelia-tools": "0.1.16",
