@@ -89,6 +89,23 @@ describe('HttpClient', () => {
         });
     });
 
+    it('makes requests with null RequestInit', (done) => {
+      fetch.and.returnValue(emptyResponse(200));
+
+      client
+        .fetch('http://example.com/some/cool/path', null)
+        .then(result => {
+          expect(result.ok).toBe(true);
+        })
+        .catch(result => {
+          expect(result).not.toBe(result);
+        })
+        .then(() => {
+          expect(fetch).toHaveBeenCalled();
+          done();
+        });
+    });
+
     it('makes requests with Request inputs', (done) => {
       fetch.and.returnValue(emptyResponse(200));
 
@@ -313,6 +330,18 @@ describe('HttpClient', () => {
         });
     });
 
+    it('doesn\'t apply baseUrl to absolute URLs', (done) => {
+      fetch.and.returnValue(emptyResponse(200));
+      client.baseUrl = 'http://aurelia.io/';
+
+      client.fetch('https://example.com/test')
+        .then(() => {
+          let [request] = fetch.calls.first().args;
+          expect(request.url).toBe('https://example.com/test');
+          done();
+        });
+    });
+
     it('applies default headers to requests with no headers', (done) => {
       fetch.and.returnValue(emptyResponse(200));
       client.defaults = { headers: { 'x-foo': 'bar' } };
@@ -422,6 +451,20 @@ describe('HttpClient', () => {
           expect(request1.headers.get('x-foo')).toBe('1');
           expect(request2.headers.has('x-foo')).toBe(true);
           expect(request2.headers.get('x-foo')).toBe('2');
+          done();
+        });
+    });
+
+    it('uses default content-type header', (done) => {
+      fetch.and.returnValue(emptyResponse(200));
+      let contentType = 'application/json;charset=UTF-8';
+      client.defaults = { method: 'post', body: '{}', headers: { 'content-type': contentType } };
+
+      client.fetch('path')
+        .then(() => {
+          let [request] = fetch.calls.first().args;
+          expect(request.headers.has('content-type')).toBe(true);
+          expect(request.headers.get('content-type')).toBe(contentType);
           done();
         });
     });

@@ -6,7 +6,7 @@
   "flags": {},
   "children": [
     {
-      "id": 196,
+      "id": 198,
       "name": "HttpClient",
       "kind": 128,
       "kindString": "Class",
@@ -18,7 +18,7 @@
       },
       "children": [
         {
-          "id": 203,
+          "id": 205,
           "name": "constructor",
           "kind": 512,
           "kindString": "Constructor",
@@ -27,7 +27,7 @@
           },
           "signatures": [
             {
-              "id": 204,
+              "id": 206,
               "name": "new HttpClient",
               "kind": 16384,
               "kindString": "Constructor signature",
@@ -35,14 +35,14 @@
               "type": {
                 "type": "reference",
                 "name": "HttpClient",
-                "id": 196,
+                "id": 198,
                 "moduleName": "\"aurelia-fetch-client\""
               }
             }
           ]
         },
         {
-          "id": 197,
+          "id": 199,
           "name": "activeRequestCount",
           "kind": 1024,
           "kindString": "Property",
@@ -58,7 +58,7 @@
           }
         },
         {
-          "id": 200,
+          "id": 202,
           "name": "baseUrl",
           "kind": 1024,
           "kindString": "Property",
@@ -74,7 +74,7 @@
           }
         },
         {
-          "id": 201,
+          "id": 203,
           "name": "defaults",
           "kind": 1024,
           "kindString": "Property",
@@ -87,12 +87,12 @@
           "type": {
             "type": "reference",
             "name": "RequestInit",
-            "id": 172,
+            "id": 174,
             "moduleName": "\"aurelia-fetch-client\""
           }
         },
         {
-          "id": 202,
+          "id": 204,
           "name": "interceptors",
           "kind": 1024,
           "kindString": "Property",
@@ -111,7 +111,7 @@
           }
         },
         {
-          "id": 199,
+          "id": 201,
           "name": "isConfigured",
           "kind": 1024,
           "kindString": "Property",
@@ -127,7 +127,7 @@
           }
         },
         {
-          "id": 198,
+          "id": 200,
           "name": "isRequesting",
           "kind": 1024,
           "kindString": "Property",
@@ -143,7 +143,7 @@
           }
         },
         {
-          "id": 205,
+          "id": 207,
           "name": "configure",
           "kind": 2048,
           "kindString": "Method",
@@ -152,7 +152,7 @@
           },
           "signatures": [
             {
-              "id": 206,
+              "id": 208,
               "name": "configure",
               "kind": 4096,
               "kindString": "Call signature",
@@ -168,7 +168,7 @@
               },
               "parameters": [
                 {
-                  "id": 207,
+                  "id": 209,
                   "name": "config",
                   "kind": 32768,
                   "kindString": "Parameter",
@@ -182,26 +182,26 @@
                       {
                         "type": "reference",
                         "name": "RequestInit",
-                        "id": 172
+                        "id": 174
                       },
                       {
                         "type": "reflection",
                         "declaration": {
-                          "id": 208,
+                          "id": 210,
                           "name": "__type",
                           "kind": 65536,
                           "kindString": "Type literal",
                           "flags": {},
                           "signatures": [
                             {
-                              "id": 209,
+                              "id": 211,
                               "name": "__call",
                               "kind": 4096,
                               "kindString": "Call signature",
                               "flags": {},
                               "parameters": [
                                 {
-                                  "id": 210,
+                                  "id": 212,
                                   "name": "config",
                                   "kind": 32768,
                                   "kindString": "Parameter",
@@ -209,7 +209,7 @@
                                   "type": {
                                     "type": "reference",
                                     "name": "HttpClientConfiguration",
-                                    "id": 179
+                                    "id": 181
                                   }
                                 }
                               ],
@@ -223,7 +223,7 @@
                                   {
                                     "type": "reference",
                                     "name": "HttpClientConfiguration",
-                                    "id": 179
+                                    "id": 181
                                   }
                                 ]
                               }
@@ -238,14 +238,14 @@
               "type": {
                 "type": "reference",
                 "name": "HttpClient",
-                "id": 196,
+                "id": 198,
                 "moduleName": "\"aurelia-fetch-client\""
               }
             }
           ]
         },
         {
-          "id": 211,
+          "id": 213,
           "name": "fetch",
           "kind": 2048,
           "kindString": "Method",
@@ -254,7 +254,7 @@
           },
           "signatures": [
             {
-              "id": 212,
+              "id": 214,
               "name": "fetch",
               "kind": 4096,
               "kindString": "Call signature",
@@ -265,7 +265,7 @@
               },
               "parameters": [
                 {
-                  "id": 213,
+                  "id": 215,
                   "name": "input",
                   "kind": 32768,
                   "kindString": "Parameter",
@@ -289,7 +289,7 @@
                   }
                 },
                 {
-                  "id": 214,
+                  "id": 216,
                   "name": "init",
                   "kind": 32768,
                   "kindString": "Parameter",
@@ -299,7 +299,7 @@
                   "type": {
                     "type": "reference",
                     "name": "RequestInit",
-                    "id": 172,
+                    "id": 174,
                     "moduleName": "\"aurelia-fetch-client\""
                   }
                 }
@@ -324,33 +324,33 @@
           "title": "Constructors",
           "kind": 512,
           "children": [
-            203
+            205
           ]
         },
         {
           "title": "Properties",
           "kind": 1024,
           "children": [
-            197,
-            200,
-            201,
-            202,
             199,
-            198
+            202,
+            203,
+            204,
+            201,
+            200
           ]
         },
         {
           "title": "Methods",
           "kind": 2048,
           "children": [
-            205,
-            211
+            207,
+            213
           ]
         }
       ]
     },
     {
-      "id": 179,
+      "id": 181,
       "name": "HttpClientConfiguration",
       "kind": 128,
       "kindString": "Class",
@@ -362,7 +362,7 @@
       },
       "children": [
         {
-          "id": 180,
+          "id": 182,
           "name": "baseUrl",
           "kind": 1024,
           "kindString": "Property",
@@ -378,7 +378,7 @@
           }
         },
         {
-          "id": 181,
+          "id": 183,
           "name": "defaults",
           "kind": 1024,
           "kindString": "Property",
@@ -391,12 +391,12 @@
           "type": {
             "type": "reference",
             "name": "RequestInit",
-            "id": 172,
+            "id": 174,
             "moduleName": "\"aurelia-fetch-client\""
           }
         },
         {
-          "id": 182,
+          "id": 184,
           "name": "interceptors",
           "kind": 1024,
           "kindString": "Property",
@@ -415,7 +415,7 @@
           }
         },
         {
-          "id": 194,
+          "id": 196,
           "name": "rejectErrorResponses",
           "kind": 2048,
           "kindString": "Method",
@@ -424,7 +424,7 @@
           },
           "signatures": [
             {
-              "id": 195,
+              "id": 197,
               "name": "rejectErrorResponses",
               "kind": 4096,
               "kindString": "Call signature",
@@ -441,14 +441,14 @@
               "type": {
                 "type": "reference",
                 "name": "HttpClientConfiguration",
-                "id": 179,
+                "id": 181,
                 "moduleName": "\"aurelia-fetch-client\""
               }
             }
           ]
         },
         {
-          "id": 192,
+          "id": 194,
           "name": "useStandardConfiguration",
           "kind": 2048,
           "kindString": "Method",
@@ -457,7 +457,7 @@
           },
           "signatures": [
             {
-              "id": 193,
+              "id": 195,
               "name": "useStandardConfiguration",
               "kind": 4096,
               "kindString": "Call signature",
@@ -474,14 +474,14 @@
               "type": {
                 "type": "reference",
                 "name": "HttpClientConfiguration",
-                "id": 179,
+                "id": 181,
                 "moduleName": "\"aurelia-fetch-client\""
               }
             }
           ]
         },
         {
-          "id": 183,
+          "id": 185,
           "name": "withBaseUrl",
           "kind": 2048,
           "kindString": "Method",
@@ -490,7 +490,7 @@
           },
           "signatures": [
             {
-              "id": 184,
+              "id": 186,
               "name": "withBaseUrl",
               "kind": 4096,
               "kindString": "Call signature",
@@ -506,7 +506,7 @@
               },
               "parameters": [
                 {
-                  "id": 185,
+                  "id": 187,
                   "name": "baseUrl",
                   "kind": 32768,
                   "kindString": "Parameter",
@@ -523,14 +523,14 @@
               "type": {
                 "type": "reference",
                 "name": "HttpClientConfiguration",
-                "id": 179,
+                "id": 181,
                 "moduleName": "\"aurelia-fetch-client\""
               }
             }
           ]
         },
         {
-          "id": 186,
+          "id": 188,
           "name": "withDefaults",
           "kind": 2048,
           "kindString": "Method",
@@ -539,7 +539,7 @@
           },
           "signatures": [
             {
-              "id": 187,
+              "id": 189,
               "name": "withDefaults",
               "kind": 4096,
               "kindString": "Call signature",
@@ -555,7 +555,7 @@
               },
               "parameters": [
                 {
-                  "id": 188,
+                  "id": 190,
                   "name": "defaults",
                   "kind": 32768,
                   "kindString": "Parameter",
@@ -566,7 +566,7 @@
                   "type": {
                     "type": "reference",
                     "name": "RequestInit",
-                    "id": 172,
+                    "id": 174,
                     "moduleName": "\"aurelia-fetch-client\""
                   }
                 }
@@ -574,14 +574,14 @@
               "type": {
                 "type": "reference",
                 "name": "HttpClientConfiguration",
-                "id": 179,
+                "id": 181,
                 "moduleName": "\"aurelia-fetch-client\""
               }
             }
           ]
         },
         {
-          "id": 189,
+          "id": 191,
           "name": "withInterceptor",
           "kind": 2048,
           "kindString": "Method",
@@ -590,7 +590,7 @@
           },
           "signatures": [
             {
-              "id": 190,
+              "id": 192,
               "name": "withInterceptor",
               "kind": 4096,
               "kindString": "Call signature",
@@ -606,7 +606,7 @@
               },
               "parameters": [
                 {
-                  "id": 191,
+                  "id": 193,
                   "name": "interceptor",
                   "kind": 32768,
                   "kindString": "Parameter",
@@ -625,7 +625,7 @@
               "type": {
                 "type": "reference",
                 "name": "HttpClientConfiguration",
-                "id": 179,
+                "id": 181,
                 "moduleName": "\"aurelia-fetch-client\""
               }
             }
@@ -637,20 +637,20 @@
           "title": "Properties",
           "kind": 1024,
           "children": [
-            180,
-            181,
-            182
+            182,
+            183,
+            184
           ]
         },
         {
           "title": "Methods",
           "kind": 2048,
           "children": [
+            196,
             194,
-            192,
-            183,
-            186,
-            189
+            185,
+            188,
+            191
           ]
         }
       ]
@@ -888,6 +888,20 @@
                         "name": "Response",
                         "id": 109
                       }
+                    },
+                    {
+                      "id": 168,
+                      "name": "request",
+                      "kind": 32768,
+                      "kindString": "Parameter",
+                      "flags": {
+                        "isOptional": true
+                      },
+                      "type": {
+                        "type": "reference",
+                        "name": "Request",
+                        "id": 4
+                      }
                     }
                   ],
                   "type": {
@@ -917,7 +931,7 @@
           }
         },
         {
-          "id": 168,
+          "id": 169,
           "name": "responseError",
           "kind": 1024,
           "kindString": "Property",
@@ -938,21 +952,21 @@
           "type": {
             "type": "reflection",
             "declaration": {
-              "id": 169,
+              "id": 170,
               "name": "__type",
               "kind": 65536,
               "kindString": "Type literal",
               "flags": {},
               "signatures": [
                 {
-                  "id": 170,
+                  "id": 171,
                   "name": "__call",
                   "kind": 4096,
                   "kindString": "Call signature",
                   "flags": {},
                   "parameters": [
                     {
-                      "id": 171,
+                      "id": 172,
                       "name": "error",
                       "kind": 32768,
                       "kindString": "Parameter",
@@ -960,6 +974,20 @@
                       "type": {
                         "type": "instrinct",
                         "name": "any"
+                      }
+                    },
+                    {
+                      "id": 173,
+                      "name": "request",
+                      "kind": 32768,
+                      "kindString": "Parameter",
+                      "flags": {
+                        "isOptional": true
+                      },
+                      "type": {
+                        "type": "reference",
+                        "name": "Request",
+                        "id": 4
                       }
                     }
                   ],
@@ -998,13 +1026,13 @@
             156,
             160,
             164,
-            168
+            169
           ]
         }
       ]
     },
     {
-      "id": 172,
+      "id": 174,
       "name": "RequestInit",
       "kind": 256,
       "kindString": "Interface",
@@ -1016,7 +1044,7 @@
       },
       "children": [
         {
-          "id": 175,
+          "id": 177,
           "name": "body",
           "kind": 1024,
           "kindString": "Property",
@@ -1053,7 +1081,7 @@
           }
         },
         {
-          "id": 178,
+          "id": 180,
           "name": "cache",
           "kind": 1024,
           "kindString": "Property",
@@ -1067,7 +1095,7 @@
           }
         },
         {
-          "id": 177,
+          "id": 179,
           "name": "credentials",
           "kind": 1024,
           "kindString": "Property",
@@ -1081,7 +1109,7 @@
           }
         },
         {
-          "id": 174,
+          "id": 176,
           "name": "headers",
           "kind": 1024,
           "kindString": "Property",
@@ -1105,7 +1133,7 @@
           }
         },
         {
-          "id": 173,
+          "id": 175,
           "name": "method",
           "kind": 1024,
           "kindString": "Property",
@@ -1119,7 +1147,7 @@
           }
         },
         {
-          "id": 176,
+          "id": 178,
           "name": "mode",
           "kind": 1024,
           "kindString": "Property",
@@ -1138,18 +1166,18 @@
           "title": "Properties",
           "kind": 1024,
           "children": [
-            175,
-            178,
             177,
-            174,
-            173,
-            176
+            180,
+            179,
+            176,
+            175,
+            178
           ]
         }
       ]
     },
     {
-      "id": 215,
+      "id": 217,
       "name": "json",
       "kind": 64,
       "kindString": "Function",
@@ -1158,7 +1186,7 @@
       },
       "signatures": [
         {
-          "id": 216,
+          "id": 218,
           "name": "json",
           "kind": 4096,
           "kindString": "Call signature",
@@ -1168,7 +1196,7 @@
           },
           "parameters": [
             {
-              "id": 217,
+              "id": 219,
               "name": "body",
               "kind": 32768,
               "kindString": "Parameter",
@@ -1195,8 +1223,8 @@
       "title": "Classes",
       "kind": 128,
       "children": [
-        196,
-        179
+        198,
+        181
       ]
     },
     {
@@ -1204,14 +1232,14 @@
       "kind": 256,
       "children": [
         155,
-        172
+        174
       ]
     },
     {
       "title": "Functions",
       "kind": 64,
       "children": [
-        215
+        217
       ]
     }
   ]
