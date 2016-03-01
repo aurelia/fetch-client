@@ -1,4 +1,4 @@
-define(['exports', 'core-js'], function (exports, _coreJs) {
+define(['exports'], function (exports) {
   'use strict';
 
   exports.__esModule = true;
@@ -146,6 +146,8 @@ define(['exports', 'core-js'], function (exports, _coreJs) {
 
   exports.HttpClient = HttpClient;
 
+  var absoluteUrlRegexp = /^([a-z][a-z0-9+\-.]*:)?\/\//i;
+
   function trackRequestStart() {
     this.isRequesting = !! ++this.activeRequestCount;
   }
@@ -170,9 +172,8 @@ define(['exports', 'core-js'], function (exports, _coreJs) {
     return parsedHeaders;
   }
 
-  function buildRequest(input) {
-    var init = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-
+  function buildRequest(input, init) {
+    init || (init = {});
     var defaults = this.defaults || {};
     var source = undefined;
     var url = undefined;
@@ -198,7 +199,7 @@ define(['exports', 'core-js'], function (exports, _coreJs) {
     var parsedDefaultHeaders = parseHeaderValues(defaults.headers);
     var requestInit = Object.assign({}, defaults, { headers: {} }, source, bodyObj);
     var requestContentType = new Headers(requestInit.headers).get('Content-Type');
-    var request = new Request((this.baseUrl || '') + url, requestInit);
+    var request = new Request(getRequestUrl(this.baseUrl, url), requestInit);
     if (!requestContentType && new Headers(parsedDefaultHeaders).has('content-type')) {
       request.headers.set('Content-Type', new Headers(parsedDefaultHeaders).get('content-type'));
     }
@@ -209,6 +210,14 @@ define(['exports', 'core-js'], function (exports, _coreJs) {
     }
 
     return request;
+  }
+
+  function getRequestUrl(baseUrl, url) {
+    if (absoluteUrlRegexp.test(url)) {
+      return url;
+    }
+
+    return (baseUrl || '') + url;
   }
 
   function setDefaultHeaders(headers, defaultHeaders) {

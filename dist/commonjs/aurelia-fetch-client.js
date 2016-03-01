@@ -5,8 +5,6 @@ exports.json = json;
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-require('core-js');
-
 function json(body) {
   return new Blob([JSON.stringify(body)], { type: 'application/json' });
 }
@@ -147,6 +145,8 @@ var HttpClient = (function () {
 
 exports.HttpClient = HttpClient;
 
+var absoluteUrlRegexp = /^([a-z][a-z0-9+\-.]*:)?\/\//i;
+
 function trackRequestStart() {
   this.isRequesting = !! ++this.activeRequestCount;
 }
@@ -171,9 +171,8 @@ function parseHeaderValues(headers) {
   return parsedHeaders;
 }
 
-function buildRequest(input) {
-  var init = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-
+function buildRequest(input, init) {
+  init || (init = {});
   var defaults = this.defaults || {};
   var source = undefined;
   var url = undefined;
@@ -199,7 +198,7 @@ function buildRequest(input) {
   var parsedDefaultHeaders = parseHeaderValues(defaults.headers);
   var requestInit = Object.assign({}, defaults, { headers: {} }, source, bodyObj);
   var requestContentType = new Headers(requestInit.headers).get('Content-Type');
-  var request = new Request((this.baseUrl || '') + url, requestInit);
+  var request = new Request(getRequestUrl(this.baseUrl, url), requestInit);
   if (!requestContentType && new Headers(parsedDefaultHeaders).has('content-type')) {
     request.headers.set('Content-Type', new Headers(parsedDefaultHeaders).get('content-type'));
   }
@@ -210,6 +209,14 @@ function buildRequest(input) {
   }
 
   return request;
+}
+
+function getRequestUrl(baseUrl, url) {
+  if (absoluteUrlRegexp.test(url)) {
+    return url;
+  }
+
+  return (baseUrl || '') + url;
 }
 
 function setDefaultHeaders(headers, defaultHeaders) {

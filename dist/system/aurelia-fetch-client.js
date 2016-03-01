@@ -1,7 +1,7 @@
-System.register(['core-js'], function (_export) {
+System.register([], function (_export) {
   'use strict';
 
-  var HttpClientConfiguration, HttpClient;
+  var HttpClientConfiguration, HttpClient, absoluteUrlRegexp;
 
   _export('json', json);
 
@@ -43,9 +43,8 @@ System.register(['core-js'], function (_export) {
     return parsedHeaders;
   }
 
-  function buildRequest(input) {
-    var init = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-
+  function buildRequest(input, init) {
+    init || (init = {});
     var defaults = this.defaults || {};
     var source = undefined;
     var url = undefined;
@@ -71,7 +70,7 @@ System.register(['core-js'], function (_export) {
     var parsedDefaultHeaders = parseHeaderValues(defaults.headers);
     var requestInit = Object.assign({}, defaults, { headers: {} }, source, bodyObj);
     var requestContentType = new Headers(requestInit.headers).get('Content-Type');
-    var request = new Request((this.baseUrl || '') + url, requestInit);
+    var request = new Request(getRequestUrl(this.baseUrl, url), requestInit);
     if (!requestContentType && new Headers(parsedDefaultHeaders).has('content-type')) {
       request.headers.set('Content-Type', new Headers(parsedDefaultHeaders).get('content-type'));
     }
@@ -82,6 +81,14 @@ System.register(['core-js'], function (_export) {
     }
 
     return request;
+  }
+
+  function getRequestUrl(baseUrl, url) {
+    if (absoluteUrlRegexp.test(url)) {
+      return url;
+    }
+
+    return (baseUrl || '') + url;
   }
 
   function setDefaultHeaders(headers, defaultHeaders) {
@@ -117,7 +124,7 @@ System.register(['core-js'], function (_export) {
     }, Promise.resolve(input));
   }
   return {
-    setters: [function (_coreJs) {}],
+    setters: [],
     execute: function () {
       HttpClientConfiguration = (function () {
         function HttpClientConfiguration() {
@@ -246,6 +253,8 @@ System.register(['core-js'], function (_export) {
       })();
 
       _export('HttpClient', HttpClient);
+
+      absoluteUrlRegexp = /^([a-z][a-z0-9+\-.]*:)?\/\//i;
     }
   };
 });

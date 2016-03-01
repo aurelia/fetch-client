@@ -1,4 +1,3 @@
-import 'core-js';
 
 /**
 * Create a Blob containing JSON-serialized data.
@@ -282,6 +281,8 @@ export class HttpClient {
   }
 }
 
+const absoluteUrlRegexp = /^([a-z][a-z0-9+\-.]*:)?\/\//i;
+
 function trackRequestStart() {
   this.isRequesting = !!(++this.activeRequestCount);
 }
@@ -306,7 +307,8 @@ function parseHeaderValues(headers) {
   return parsedHeaders;
 }
 
-function buildRequest(input, init = {}) {
+function buildRequest(input, init) {
+  init || (init = {});
   let defaults = this.defaults || {};
   let source;
   let url;
@@ -333,7 +335,7 @@ function buildRequest(input, init = {}) {
   let parsedDefaultHeaders = parseHeaderValues(defaults.headers);
   let requestInit = Object.assign({}, defaults, { headers: {} }, source, bodyObj);
   let requestContentType = new Headers(requestInit.headers).get('Content-Type');
-  let request = new Request((this.baseUrl || '') + url, requestInit);
+  let request = new Request(getRequestUrl(this.baseUrl, url), requestInit);
   if (!requestContentType && new Headers(parsedDefaultHeaders).has('content-type')) {
     request.headers.set('Content-Type', new Headers(parsedDefaultHeaders).get('content-type'));
   }
@@ -346,6 +348,14 @@ function buildRequest(input, init = {}) {
   }
 
   return request;
+}
+
+function getRequestUrl(baseUrl, url) {
+  if (absoluteUrlRegexp.test(url)) {
+    return url;
+  }
+
+  return (baseUrl || '') + url;
 }
 
 function setDefaultHeaders(headers, defaultHeaders) {
