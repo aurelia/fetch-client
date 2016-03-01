@@ -1,3 +1,14 @@
+### 1.0.0-beta.1.1.1 (2016-03-01)
+
+
+#### Bug Fixes
+
+* **all:** remove core-js dependency ([f91bd742](http://github.com/aurelia/fetch-client/commit/f91bd742ebb9377904d202e689af3df6fe1a2a7d))
+* **http-client:**
+  * don't combine request url with base url when request url is absolute ([d1be3b4e](http://github.com/aurelia/fetch-client/commit/d1be3b4e75fd9d65efac2b2b29bb52f5b4959e01))
+  * handle last null param in fetch method ([5b5d1333](http://github.com/aurelia/fetch-client/commit/5b5d13331d425c8988fd28d3b7245734bffa6188))
+
+
 ### 1.0.0-beta.1.1.0 (2016-01-29)
 
 
