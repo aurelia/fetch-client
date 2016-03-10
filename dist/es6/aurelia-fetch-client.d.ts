@@ -1,4 +1,5 @@
 declare module 'aurelia-fetch-client' {
+  import 'core-js';
   
   /* eslint-disable */
   /**
