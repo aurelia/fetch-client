@@ -48,6 +48,10 @@ declare module 'aurelia-fetch-client' {
   * The init object used to initialize a fetch Request.
   * See https://developer.mozilla.org/en-US/docs/Web/API/Request/Request
   */
+  /**
+  * The init object used to initialize a fetch Request.
+  * See https://developer.mozilla.org/en-US/docs/Web/API/Request/Request
+  */
   export interface RequestInit {
     method?: string;
     headers?: Headers | Object;
@@ -65,6 +69,9 @@ declare module 'aurelia-fetch-client' {
   */
   export function json(body: any): Blob;
   
+  /**
+  * A class for configuring HttpClients.
+  */
   /**
   * A class for configuring HttpClients.
   */

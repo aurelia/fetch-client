@@ -1,14 +1,12 @@
-System.register([], function (_export) {
-  'use strict';
+'use strict';
 
-  var HttpClientConfiguration, HttpClient, absoluteUrlRegexp;
+System.register([], function (_export, _context) {
+  var _typeof, HttpClientConfiguration, HttpClient, absoluteUrlRegexp;
 
-  _export('json', json);
-
-  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-  function json(body) {
-    return new Blob([JSON.stringify(body)], { type: 'application/json' });
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
   }
 
   function rejectOnError(response) {
@@ -35,9 +33,9 @@ System.register([], function (_export) {
 
   function parseHeaderValues(headers) {
     var parsedHeaders = {};
-    for (var _name in headers || {}) {
-      if (headers.hasOwnProperty(_name)) {
-        parsedHeaders[_name] = typeof headers[_name] === 'function' ? headers[_name]() : headers[_name];
+    for (var name in headers || {}) {
+      if (headers.hasOwnProperty(name)) {
+        parsedHeaders[name] = typeof headers[name] === 'function' ? headers[name]() : headers[name];
       }
     }
     return parsedHeaders;
@@ -46,9 +44,9 @@ System.register([], function (_export) {
   function buildRequest(input, init) {
     init || (init = {});
     var defaults = this.defaults || {};
-    var source = undefined;
-    var url = undefined;
-    var body = undefined;
+    var source = void 0;
+    var url = void 0;
+    var body = void 0;
 
     if (Request.prototype.isPrototypeOf(input)) {
       if (!this.isConfigured) {
@@ -92,9 +90,9 @@ System.register([], function (_export) {
   }
 
   function setDefaultHeaders(headers, defaultHeaders) {
-    for (var _name2 in defaultHeaders || {}) {
-      if (defaultHeaders.hasOwnProperty(_name2) && !headers.has(_name2)) {
-        headers.set(_name2, defaultHeaders[_name2]);
+    for (var name in defaultHeaders || {}) {
+      if (defaultHeaders.hasOwnProperty(name) && !headers.has(name)) {
+        headers.set(name, defaultHeaders[name]);
       }
     }
   }
@@ -126,7 +124,18 @@ System.register([], function (_export) {
   return {
     setters: [],
     execute: function () {
-      HttpClientConfiguration = (function () {
+      _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+        return typeof obj;
+      } : function (obj) {
+        return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+      };
+      function json(body) {
+        return new Blob([JSON.stringify(body)], { type: 'application/json' });
+      }
+
+      _export('json', json);
+
+      _export('HttpClientConfiguration', HttpClientConfiguration = function () {
         function HttpClientConfiguration() {
           _classCallCheck(this, HttpClientConfiguration);
 
@@ -161,11 +170,11 @@ System.register([], function (_export) {
         };
 
         return HttpClientConfiguration;
-      })();
+      }());
 
       _export('HttpClientConfiguration', HttpClientConfiguration);
 
-      HttpClient = (function () {
+      _export('HttpClient', HttpClient = function () {
         function HttpClient() {
           _classCallCheck(this, HttpClient);
 
@@ -184,9 +193,9 @@ System.register([], function (_export) {
         HttpClient.prototype.configure = function configure(config) {
           var _interceptors;
 
-          var normalizedConfig = undefined;
+          var normalizedConfig = void 0;
 
-          if (typeof config === 'object') {
+          if ((typeof config === 'undefined' ? 'undefined' : _typeof(config)) === 'object') {
             normalizedConfig = { defaults: config };
           } else if (typeof config === 'function') {
             normalizedConfig = new HttpClientConfiguration();
@@ -211,7 +220,7 @@ System.register([], function (_export) {
           return this;
         };
 
-        HttpClient.prototype.fetch = (function (_fetch) {
+        HttpClient.prototype.fetch = function (_fetch) {
           function fetch(_x, _x2) {
             return _fetch.apply(this, arguments);
           }
@@ -221,7 +230,7 @@ System.register([], function (_export) {
           };
 
           return fetch;
-        })(function (input, init) {
+        }(function (input, init) {
           var _this = this;
 
           trackRequestStart.call(this);
@@ -250,7 +259,7 @@ System.register([], function (_export) {
         });
 
         return HttpClient;
-      })();
+      }());
 
       _export('HttpClient', HttpClient);
 

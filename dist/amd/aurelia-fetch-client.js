@@ -1,16 +1,28 @@
 define(['exports'], function (exports) {
   'use strict';
 
-  exports.__esModule = true;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
   exports.json = json;
 
-  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+  var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+    return typeof obj;
+  } : function (obj) {
+    return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+  };
+
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
 
   function json(body) {
     return new Blob([JSON.stringify(body)], { type: 'application/json' });
   }
 
-  var HttpClientConfiguration = (function () {
+  var HttpClientConfiguration = exports.HttpClientConfiguration = function () {
     function HttpClientConfiguration() {
       _classCallCheck(this, HttpClientConfiguration);
 
@@ -45,9 +57,7 @@ define(['exports'], function (exports) {
     };
 
     return HttpClientConfiguration;
-  })();
-
-  exports.HttpClientConfiguration = HttpClientConfiguration;
+  }();
 
   function rejectOnError(response) {
     if (!response.ok) {
@@ -57,7 +67,7 @@ define(['exports'], function (exports) {
     return response;
   }
 
-  var HttpClient = (function () {
+  var HttpClient = exports.HttpClient = function () {
     function HttpClient() {
       _classCallCheck(this, HttpClient);
 
@@ -76,9 +86,9 @@ define(['exports'], function (exports) {
     HttpClient.prototype.configure = function configure(config) {
       var _interceptors;
 
-      var normalizedConfig = undefined;
+      var normalizedConfig = void 0;
 
-      if (typeof config === 'object') {
+      if ((typeof config === 'undefined' ? 'undefined' : _typeof(config)) === 'object') {
         normalizedConfig = { defaults: config };
       } else if (typeof config === 'function') {
         normalizedConfig = new HttpClientConfiguration();
@@ -103,7 +113,7 @@ define(['exports'], function (exports) {
       return this;
     };
 
-    HttpClient.prototype.fetch = (function (_fetch) {
+    HttpClient.prototype.fetch = function (_fetch) {
       function fetch(_x, _x2) {
         return _fetch.apply(this, arguments);
       }
@@ -113,7 +123,7 @@ define(['exports'], function (exports) {
       };
 
       return fetch;
-    })(function (input, init) {
+    }(function (input, init) {
       var _this = this;
 
       trackRequestStart.call(this);
@@ -142,9 +152,7 @@ define(['exports'], function (exports) {
     });
 
     return HttpClient;
-  })();
-
-  exports.HttpClient = HttpClient;
+  }();
 
   var absoluteUrlRegexp = /^([a-z][a-z0-9+\-.]*:)?\/\//i;
 
@@ -164,9 +172,9 @@ define(['exports'], function (exports) {
 
   function parseHeaderValues(headers) {
     var parsedHeaders = {};
-    for (var _name in headers || {}) {
-      if (headers.hasOwnProperty(_name)) {
-        parsedHeaders[_name] = typeof headers[_name] === 'function' ? headers[_name]() : headers[_name];
+    for (var name in headers || {}) {
+      if (headers.hasOwnProperty(name)) {
+        parsedHeaders[name] = typeof headers[name] === 'function' ? headers[name]() : headers[name];
       }
     }
     return parsedHeaders;
@@ -175,9 +183,9 @@ define(['exports'], function (exports) {
   function buildRequest(input, init) {
     init || (init = {});
     var defaults = this.defaults || {};
-    var source = undefined;
-    var url = undefined;
-    var body = undefined;
+    var source = void 0;
+    var url = void 0;
+    var body = void 0;
 
     if (Request.prototype.isPrototypeOf(input)) {
       if (!this.isConfigured) {
@@ -221,9 +229,9 @@ define(['exports'], function (exports) {
   }
 
   function setDefaultHeaders(headers, defaultHeaders) {
-    for (var _name2 in defaultHeaders || {}) {
-      if (defaultHeaders.hasOwnProperty(_name2) && !headers.has(_name2)) {
-        headers.set(_name2, defaultHeaders[_name2]);
+    for (var name in defaultHeaders || {}) {
+      if (defaultHeaders.hasOwnProperty(name) && !headers.has(name)) {
+        headers.set(name, defaultHeaders[name]);
       }
     }
   }
