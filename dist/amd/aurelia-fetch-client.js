@@ -181,42 +181,30 @@ define(['exports'], function (exports) {
   }
 
   function buildRequest(input, init) {
-    init || (init = {});
     var defaults = this.defaults || {};
-    var source = void 0;
-    var url = void 0;
+    var request = void 0;
     var body = void 0;
+    var requestContentType = void 0;
 
-    if (Request.prototype.isPrototypeOf(input)) {
-      if (!this.isConfigured) {
-        return input;
-      }
-
-      source = input;
-      url = input.url;
-      if (input.method !== 'GET' && input.method !== 'HEAD') {
-        body = input.blob();
-      }
-    } else {
-      source = init;
-      url = input;
-      body = init.body;
-    }
-
-    var bodyObj = body ? { body: body } : null;
     var parsedDefaultHeaders = parseHeaderValues(defaults.headers);
-    var requestInit = Object.assign({}, defaults, { headers: {} }, source, bodyObj);
-    var requestContentType = new Headers(requestInit.headers).get('Content-Type');
-    var request = new Request(getRequestUrl(this.baseUrl, url), requestInit);
+    if (Request.prototype.isPrototypeOf(input)) {
+      request = input;
+      requestContentType = new Headers(request.headers).get('Content-Type');
+    } else {
+      init || (init = {});
+      body = init.body;
+      var bodyObj = body ? { body: body } : null;
+      var requestInit = Object.assign({}, defaults, { headers: {} }, init, bodyObj);
+      requestContentType = new Headers(requestInit.headers).get('Content-Type');
+      request = new Request(getRequestUrl(this.baseUrl, input), requestInit);
+    }
     if (!requestContentType && new Headers(parsedDefaultHeaders).has('content-type')) {
       request.headers.set('Content-Type', new Headers(parsedDefaultHeaders).get('content-type'));
     }
     setDefaultHeaders(request.headers, parsedDefaultHeaders);
-
     if (body && Blob.prototype.isPrototypeOf(body) && body.type) {
       request.headers.set('Content-Type', body.type);
     }
-
     return request;
   }
 

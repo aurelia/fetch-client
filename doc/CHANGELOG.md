@@ -1,3 +1,8 @@
+### 1.0.0-beta.1.2.1 (2016-04-08)
+
+#### Bug Fixes
+* **http-client:** Don't create a new request when one is passed to fetch but do apply any default headers
+
 ### 1.0.0-beta.1.2.0 (2016-03-22)
 
 * Update to Babel 6
