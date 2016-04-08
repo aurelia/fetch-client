@@ -1,3 +1,4 @@
+import 'aurelia-polyfills';
 import {HttpClient} from '../src/http-client';
 import {HttpClientConfiguration} from '../src/http-client-configuration';
 

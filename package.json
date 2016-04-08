@@ -32,6 +32,7 @@
       "dist": "dist/amd"
     },
     "devDependencies": {
+      "aurelia-polyfills": "^1.0.0-beta.1.1.1",
       "babel": "^5.1.13",
       "babel-runtime": "^5.1.13",
       "core-js": "^2.0.3"
