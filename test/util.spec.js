@@ -1,3 +1,4 @@
+import 'aurelia-polyfills';
 import {json} from '../src/util';
 
 describe('util', () => {
