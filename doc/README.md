@@ -93,6 +93,7 @@ This example creates a new `HttpClient` and configures it for use with an imagin
 import {HttpClient, json} from 'aurelia-fetch-client';
 
 let httpClient = new HttpClient();
+/* Initialization of the client */
 httpClient.configure(config => {
   config
     .useStandardConfiguration()
@@ -111,6 +112,9 @@ httpClient.configure(config => {
       }
     });
 });
+/* To change selected properties later you can refer to them directly since the supplied methods always are resetting the client to back the defaults first. */ 
+// config.baseUrl = 'other-api/';
+// config.interceptors.push(additionalInterceptor);
 
 let comment = { title: 'Awesome!', content: 'This Fetch client is pretty rad.' };
 httpClient
