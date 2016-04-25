@@ -5,13 +5,13 @@
   "description": "Usually JavaScript applications need to get their data from or communicate with various web services. In this article we'll take a look at the options Aurelia makes available to you.",
   "engines" : { "aurelia-doc" : "^1.0.0" },
   "author": {
-    "name": "Rob Eisenberg",
-    "url": "http://robeisenberg.com"
+    "name": "Bryan Smith",
+    "url": "https://twitter.com/bryanarrsmith"
   },
   "contributors": [
     {
-      "name": "Bryan Smith",
-      "url": "https://twitter.com/bryanarrsmith"
+      "name": "Rob Eisenberg",
+      "url": "http://robeisenberg.com"
     }
   ],
   "translators": [],
@@ -68,7 +68,7 @@ First, install the polyfill using your package manager. Second, make sure to imp
       aurelia.start().then(() => aurelia.setRoot());
     }
   </source-code>
-</code-listing> 
+</code-listing>
 
 > Info: Encapsulate HttpClient Use
 > Generally, we recommend that you don't litter your application code with usage of the HttpClient. Instead, we reccommend that you create one or more service classes that encapsulate all HTTP access behind a friendly, application-specific API. If you do this, we also recommend that you import the `fetch` polyfill inside these service modules rather than in your application's main module. This helps to preserve the encapsulation.
@@ -91,7 +91,7 @@ Below is a simple sample demonstrating a basic `GET` request to a JSON file, inc
         console.log(data.description);
       });
   </source-code>
-</code-listing> 
+</code-listing>
 
 ### Configuration
 
@@ -146,8 +146,8 @@ The Fetch API has a couple gotchas, documented by the [GitHub Fetch polyfill](ht
   <source-code lang="ES 2015/ES 2016/TypeScript">
     import {HttpClient, json} from 'aurelia-fetch-client';
 
-    let comment = { 
-      title: 'Awesome!', 
+    let comment = {
+      title: 'Awesome!',
       content: 'This Fetch client is pretty rad.'
     };
 
@@ -156,7 +156,7 @@ The Fetch API has a couple gotchas, documented by the [GitHub Fetch polyfill](ht
       body: json(comment)
     });
   </source-code>
-</code-listing> 
+</code-listing>
 
 ### A Complete Example
 
@@ -205,7 +205,7 @@ This example creates a new `HttpClient` and configures it for use with an imagin
         alert('Error saving comment!');
       });
   </source-code>
-</code-listing> 
+</code-listing>
 
 ### Limitations
 
@@ -237,7 +237,7 @@ Once installed, you can use it like this:
         console.log(data.description)
       });
   </source-code>
-</code-listing> 
+</code-listing>
 
 The `HttpClient` has a variety of methods. The following is a description of the APIs available.
 
@@ -245,13 +245,13 @@ The `HttpClient` has a variety of methods. The following is a description of the
   <source-code lang="ES 2015/ES 2016/TypeScript">
     export class HttpClient {
       isRequesting: boolean;
-      
+
       constructor();
-      
+
       configure(fn: ((builder: RequestBuilder) => void)): HttpClient;
       createRequest(url: string): RequestBuilder;
       send(requestMessage: RequestMessage, transformers: Array<RequestTransformer>): Promise<HttpResponseMessage>;
-      
+
       delete(url: string): Promise<HttpResponseMessage>;
       get(url: string): Promise<HttpResponseMessage>;
       head(url: string): Promise<HttpResponseMessage>;
@@ -263,7 +263,7 @@ The `HttpClient` has a variety of methods. The following is a description of the
     }
   }
   </source-code>
-</code-listing> 
+</code-listing>
 
 As you can see, the API provides convenience methods for all the standard verbs as well as `jsonp`. Each of these methods sends an `HttpRequestMessage` except `jsonp` which sends a `JSONPRequestMessage`. The result of sending a message is a `Promise` for an `HttpResponseMessage`.
 
@@ -296,7 +296,7 @@ You can use `configure` to access a fluent api for configuring all requests sent
 
     client.get('some/cool/path');
   </source-code>
-</code-listing> 
+</code-listing>
 
 In this case, all requests from the client will have the base url of 'http://aurelia.io' and will have the specified Authorization header. The same API is available via the `RequestBuilder`. So, you can accomplish the same thing on an individual request like this:
 
@@ -310,7 +310,7 @@ In this case, all requests from the client will have the base url of 'http://aur
       .withHeader('Authorization', 'bearer 123')
       .send();
   </source-code>
-</code-listing> 
+</code-listing>
 
 The fluent API has the following chainable methods: `asDelete()`, `asGet()`, `asHead()`, `asOptions()`, `asPatch()`, `asPost()`, `asPut()`, `asJsonp()`, `withUrl()`, `withBaseUrl()`, `withContent()`, `withParams()`, `withResponseType()`, `withTimeout()`, `withHeader()`, `withCredentials()`, `withReviver()`, `withReplacer()`, `withProgressCallback()`, and `withCallbackParameterName()`.
 
@@ -339,6 +339,6 @@ It is possible to hook into requests and responses with interceptors as well. He
         });
       });
   </source-code>
-</code-listing> 
+</code-listing>
 
 All interceptors used with a client form a chain. The return value of an intercept method is passed on as the argument to the next. Interceptors are called in the order they were added. See the `aurelia-fetch-client` interceptor documentation for more information on interceptors.
