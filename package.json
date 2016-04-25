@@ -87,7 +87,12 @@
   },
   "aurelia": {
     "documentation": {
-      "articles": []
+      "articles": [
+        {
+          "title": "HTTP Services",
+          "href": "doc/article/en-US/http-services.md"
+        }
+      ]
     }
   }
 }
