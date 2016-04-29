@@ -14,7 +14,6 @@ This library is part of the [Aurelia](http://www.aurelia.io/) platform and conta
 
 See the doc folder of this repository for documentation on how to use the fetch client.
 
-
 ## Platform Support
 
 This library can be used in the browser or on the server. A Fetch API polyfill may be needed.
