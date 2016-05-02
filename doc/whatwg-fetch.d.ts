@@ -1,15 +1,9 @@
-﻿// Type definitions for fetch API
+// Type definitions for fetch API
 // Project: https://github.com/github/fetch
 // Definitions by: Ryan Graham <https://github.com/ryan-codingintrigue>
-// Definitions: https://github.com/borisyankov/DefinitelyTyped
+// Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
-// @cmichaelgraham - removed explicit external reference
-
-// @cmichaelgraham - added BufferSource and URLSearchParams interfaces to help compilation
-interface BufferSource {}
-interface URLSearchParams {}
-
-declare class Request {
+declare class Request extends Body {
 	constructor(input: string|Request, init?:RequestInit);
 	method: string;
 	url: string;
@@ -30,16 +24,19 @@ interface RequestInit {
 	cache?: RequestCache;
 }
 
-declare enum RequestContext {
-	"audio", "beacon", "cspreport", "download", "embed", "eventsource", "favicon", "fetch",
-	"font", "form", "frame", "hyperlink", "iframe", "image", "imageset", "import",
-	"internal", "location", "manifest", "object", "ping", "plugin", "prefetch", "script",
-	"serviceworker", "sharedworker", "subresource", "style", "track", "video", "worker",
-	"xmlhttprequest", "xslt"
-}
-declare enum RequestMode { "same-origin", "no-cors", "cors" }
-declare enum RequestCredentials { "omit", "same-origin", "include" }
-declare enum RequestCache { "default", "no-store", "reload", "no-cache", "force-cache", "only-if-cached" }
+type RequestContext =
+	"audio" | "beacon" | "cspreport" | "download" | "embed" |
+	"eventsource" | "favicon" | "fetch" | "font" | "form" | "frame" |
+	"hyperlink" | "iframe" | "image" | "imageset" | "import" |
+	"internal" | "location" | "manifest" | "object" | "ping" | "plugin" |
+	"prefetch" | "script" | "serviceworker" | "sharedworker" |
+	"subresource" | "style" | "track" | "video" | "worker" |
+	"xmlhttprequest" | "xslt";
+type RequestMode = "same-origin" | "no-cors" | "cors";
+type RequestCredentials = "omit" | "same-origin" | "include";
+type RequestCache =
+	"default" | "no-store" | "reload" | "no-cache" |
+	"force-cache" | "only-if-cached";
 
 declare class Headers {
 	append(name: string, value: string): void;
@@ -48,6 +45,7 @@ declare class Headers {
 	getAll(name: string): Array<string>;
 	has(name: string): boolean;
 	set(name: string, value: string): void;
+	forEach(callback: (value: string, name: string) => void): void;
 }
 
 declare class Body {
@@ -56,12 +54,13 @@ declare class Body {
 	blob(): Promise<Blob>;
 	formData(): Promise<FormData>;
 	json(): Promise<any>;
+	json<T>(): Promise<T>;
 	text(): Promise<string>;
 }
 declare class Response extends Body {
 	constructor(body?: BodyInit, init?: ResponseInit);
-	error(): Response;
-	redirect(url: string, status: number): Response;
+	static error(): Response;
+	static redirect(url: string, status: number): Response;
 	type: ResponseType;
 	url: string;
 	status: number;
@@ -71,12 +70,12 @@ declare class Response extends Body {
 	clone(): Response;
 }
 
-declare enum ResponseType { "basic", "cors", "default", "error", "opaque" }
+type ResponseType = "basic" | "cors" | "default" | "error" | "opaque";
 
-declare class ResponseInit {
+interface ResponseInit {
 	status: number;
-	statusText: string;
-	headers: HeaderInit;
+	statusText?: string;
+	headers?: HeaderInit;
 }
 
 declare type HeaderInit = Headers|Array<string>;
@@ -84,5 +83,7 @@ declare type BodyInit = Blob|FormData|string;
 declare type RequestInfo = Request|string;
 
 interface Window {
-	fetch(url: string, init?: RequestInit): Promise<Response>;
+	fetch(url: string|Request, init?: RequestInit): Promise<Response>;
 }
+
+declare var fetch: typeof window.fetch;
