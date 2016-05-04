@@ -36,6 +36,9 @@ export class HttpClient {
   */
   interceptors: Interceptor[] = [];
 
+  /**
+  * Creates an instance of HttpClient.
+  */
   constructor() {
     if (typeof fetch === 'undefined') {
       throw new Error('HttpClient requires a Fetch API implementation, but the current environment doesn\'t support it. You may need to load a polyfill such as https://github.com/github/fetch.');
@@ -45,9 +48,9 @@ export class HttpClient {
   /**
   * Configure this client with default settings to be used by all requests.
   *
-  * @param config - A configuration object, or a function that takes a config
+  * @param config A configuration object, or a function that takes a config
   * object and configures it.
-  *
+  * @returns The chainable instance of this HttpClient.
   * @chainable
   */
   configure(config: RequestInit|(config: HttpClientConfiguration) => void|HttpClientConfiguration): HttpClient {
@@ -88,10 +91,11 @@ export class HttpClient {
   *
   * See also https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
   *
-  * @param input - The resource that you wish to fetch. Either a
+  * @param input The resource that you wish to fetch. Either a
   * Request object, or a string containing the URL of the resource.
-  * @param - An options object containing settings to be applied to
+  * @param init An options object containing settings to be applied to
   * the Request.
+  * @returns A Promise for the Response from the fetch request.
   */
   fetch(input: Request|string, init?: RequestInit): Promise<Response> {
     this::trackRequestStart();
