@@ -29,7 +29,7 @@ Along these lines, the Aurelia project provides two options:
 * `aurelia-http-client` - A basic HttpClient based on XMLHttpRequest. It supports all HTTP verbs, JSONP and request cancellation.
 * `aurelia-fetch-client` - A more forward-looking HttpClient based on the Fetch specification. It supports all HTTP verbs and integrates with Service Workers, including Request/Response caching.
 
-How should you choose between these two options? We recommend using `aurelia-fetch-client` if possible. It is based on the Fetch specification which will be the preferred way of handling all AJAX going forward. However, if you need request cancellation, the Fetch spec does not currently support this. This is primarily because Fetch leverages Promises, which have no notion of cancellation at present. While this improvement to the spec is being considered for the future, it isn't available at present. So, if you need request cancellation, you may need to use `aurelia-http-client` instead.
+How should you choose between these two options? We recommend using `aurelia-fetch-client` if possible. It is based on the Fetch specification which will be the preferred way of handling all AJAX going forward. However, if you need request cancellation or download progress, the Fetch spec does not currently support these features. While these improvements to the spec are being considered for the future, it isn't available at present. So, if you need these capabilities, you may need to use `aurelia-http-client` instead.
 
 ## [aurelia-fetch-client](aurelia-doc://section/2/version/1.0.0)
 
@@ -209,7 +209,7 @@ This example creates a new `HttpClient` and configures it for use with an imagin
 
 ### Limitations
 
-* This library does not include a polyfill for Fetch. If you need to support [browsers that haven't implemented Fetch](http://caniuse.com/#feat=fetch), you will need to install a polyfill like [GitHub's Fetch polyfill](https://github.com/github/fetch).
+* This library does not include a polyfill for Fetch. If you need to support [browsers that have not implemented Fetch](http://caniuse.com/#feat=fetch), you will need to install a polyfill like [GitHub's Fetch polyfill](https://github.com/github/fetch).
 * This library does not work around any of the existing limitations in the Fetch API, including:
   * Fetch does not currently support aborting requests or specifying request timeouts.
   * Fetch does not currently support progress reporting.
