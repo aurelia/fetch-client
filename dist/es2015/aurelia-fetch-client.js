@@ -45,7 +45,6 @@ function rejectOnError(response) {
 }
 
 export let HttpClient = class HttpClient {
-
   constructor() {
     this.activeRequestCount = 0;
     this.isRequesting = false;

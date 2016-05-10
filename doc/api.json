@@ -6,7 +6,7 @@
   "flags": {},
   "children": [
     {
-      "id": 198,
+      "id": 201,
       "name": "HttpClient",
       "kind": 128,
       "kindString": "Class",
@@ -18,31 +18,37 @@
       },
       "children": [
         {
-          "id": 205,
+          "id": 208,
           "name": "constructor",
           "kind": 512,
           "kindString": "Constructor",
           "flags": {
             "isExported": true
           },
+          "comment": {
+            "shortText": "Creates an instance of HttpClient."
+          },
           "signatures": [
             {
-              "id": 206,
+              "id": 209,
               "name": "new HttpClient",
               "kind": 16384,
               "kindString": "Constructor signature",
               "flags": {},
+              "comment": {
+                "shortText": "Creates an instance of HttpClient."
+              },
               "type": {
                 "type": "reference",
                 "name": "HttpClient",
-                "id": 198,
+                "id": 201,
                 "moduleName": "\"aurelia-fetch-client\""
               }
             }
           ]
         },
         {
-          "id": 199,
+          "id": 202,
           "name": "activeRequestCount",
           "kind": 1024,
           "kindString": "Property",
@@ -58,7 +64,7 @@
           }
         },
         {
-          "id": 202,
+          "id": 205,
           "name": "baseUrl",
           "kind": 1024,
           "kindString": "Property",
@@ -74,7 +80,7 @@
           }
         },
         {
-          "id": 203,
+          "id": 206,
           "name": "defaults",
           "kind": 1024,
           "kindString": "Property",
@@ -92,7 +98,7 @@
           }
         },
         {
-          "id": 204,
+          "id": 207,
           "name": "interceptors",
           "kind": 1024,
           "kindString": "Property",
@@ -111,7 +117,7 @@
           }
         },
         {
-          "id": 201,
+          "id": 204,
           "name": "isConfigured",
           "kind": 1024,
           "kindString": "Property",
@@ -127,7 +133,7 @@
           }
         },
         {
-          "id": 200,
+          "id": 203,
           "name": "isRequesting",
           "kind": 1024,
           "kindString": "Property",
@@ -143,7 +149,7 @@
           }
         },
         {
-          "id": 207,
+          "id": 210,
           "name": "configure",
           "kind": 2048,
           "kindString": "Method",
@@ -152,13 +158,14 @@
           },
           "signatures": [
             {
-              "id": 208,
+              "id": 211,
               "name": "configure",
               "kind": 4096,
               "kindString": "Call signature",
               "flags": {},
               "comment": {
                 "shortText": "Configure this client with default settings to be used by all requests.",
+                "returns": "The chainable instance of this HttpClient.",
                 "tags": [
                   {
                     "tag": "chainable",
@@ -168,13 +175,13 @@
               },
               "parameters": [
                 {
-                  "id": 209,
+                  "id": 212,
                   "name": "config",
                   "kind": 32768,
                   "kindString": "Parameter",
                   "flags": {},
                   "comment": {
-                    "text": "A configuration object, or a function that takes a config\nobject and configures it.\n"
+                    "text": "A configuration object, or a function that takes a config\nobject and configures it."
                   },
                   "type": {
                     "type": "union",
@@ -187,21 +194,21 @@
                       {
                         "type": "reflection",
                         "declaration": {
-                          "id": 210,
+                          "id": 213,
                           "name": "__type",
                           "kind": 65536,
                           "kindString": "Type literal",
                           "flags": {},
                           "signatures": [
                             {
-                              "id": 211,
+                              "id": 214,
                               "name": "__call",
                               "kind": 4096,
                               "kindString": "Call signature",
                               "flags": {},
                               "parameters": [
                                 {
-                                  "id": 212,
+                                  "id": 215,
                                   "name": "config",
                                   "kind": 32768,
                                   "kindString": "Parameter",
@@ -209,7 +216,7 @@
                                   "type": {
                                     "type": "reference",
                                     "name": "HttpClientConfiguration",
-                                    "id": 181
+                                    "id": 184
                                   }
                                 }
                               ],
@@ -223,7 +230,7 @@
                                   {
                                     "type": "reference",
                                     "name": "HttpClientConfiguration",
-                                    "id": 181
+                                    "id": 184
                                   }
                                 ]
                               }
@@ -238,14 +245,14 @@
               "type": {
                 "type": "reference",
                 "name": "HttpClient",
-                "id": 198,
+                "id": 201,
                 "moduleName": "\"aurelia-fetch-client\""
               }
             }
           ]
         },
         {
-          "id": 213,
+          "id": 216,
           "name": "fetch",
           "kind": 2048,
           "kindString": "Method",
@@ -254,18 +261,19 @@
           },
           "signatures": [
             {
-              "id": 214,
+              "id": 217,
               "name": "fetch",
               "kind": 4096,
               "kindString": "Call signature",
               "flags": {},
               "comment": {
                 "shortText": "Starts the process of fetching a resource. Default configuration parameters\nwill be applied to the Request. The constructed Request will be passed to\nregistered request interceptors before being sent. The Response will be passed\nto registered Response interceptors before it is returned.",
-                "text": "See also https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API\n"
+                "text": "See also https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API\n",
+                "returns": "A Promise for the Response from the fetch request.\n"
               },
               "parameters": [
                 {
-                  "id": 215,
+                  "id": 218,
                   "name": "input",
                   "kind": 32768,
                   "kindString": "Parameter",
@@ -289,12 +297,15 @@
                   }
                 },
                 {
-                  "id": 216,
+                  "id": 219,
                   "name": "init",
                   "kind": 32768,
                   "kindString": "Parameter",
                   "flags": {
                     "isOptional": true
+                  },
+                  "comment": {
+                    "text": "An options object containing settings to be applied to\nthe Request."
                   },
                   "type": {
                     "type": "reference",
@@ -324,33 +335,33 @@
           "title": "Constructors",
           "kind": 512,
           "children": [
-            205
+            208
           ]
         },
         {
           "title": "Properties",
           "kind": 1024,
           "children": [
-            199,
             202,
-            203,
+            205,
+            206,
+            207,
             204,
-            201,
-            200
+            203
           ]
         },
         {
           "title": "Methods",
           "kind": 2048,
           "children": [
-            207,
-            213
+            210,
+            216
           ]
         }
       ]
     },
     {
-      "id": 181,
+      "id": 184,
       "name": "HttpClientConfiguration",
       "kind": 128,
       "kindString": "Class",
@@ -362,7 +373,7 @@
       },
       "children": [
         {
-          "id": 182,
+          "id": 185,
           "name": "baseUrl",
           "kind": 1024,
           "kindString": "Property",
@@ -378,7 +389,7 @@
           }
         },
         {
-          "id": 183,
+          "id": 186,
           "name": "defaults",
           "kind": 1024,
           "kindString": "Property",
@@ -396,7 +407,7 @@
           }
         },
         {
-          "id": 184,
+          "id": 187,
           "name": "interceptors",
           "kind": 1024,
           "kindString": "Property",
@@ -415,7 +426,7 @@
           }
         },
         {
-          "id": 196,
+          "id": 199,
           "name": "rejectErrorResponses",
           "kind": 2048,
           "kindString": "Method",
@@ -424,13 +435,14 @@
           },
           "signatures": [
             {
-              "id": 197,
+              "id": 200,
               "name": "rejectErrorResponses",
               "kind": 4096,
               "kindString": "Call signature",
               "flags": {},
               "comment": {
                 "shortText": "Causes Responses whose status codes fall outside the range 200-299 to reject.\nThe fetch API only rejects on network errors or other conditions that prevent\nthe request from completing, meaning consumers must inspect Response.ok in the\nPromise continuation to determine if the server responded with a success code.\nThis method adds a response interceptor that causes Responses with error codes\nto be rejected, which is common behavior in HTTP client libraries.",
+                "returns": "The chainable instance of this configuration object.",
                 "tags": [
                   {
                     "tag": "chainable",
@@ -441,14 +453,14 @@
               "type": {
                 "type": "reference",
                 "name": "HttpClientConfiguration",
-                "id": 181,
+                "id": 184,
                 "moduleName": "\"aurelia-fetch-client\""
               }
             }
           ]
         },
         {
-          "id": 194,
+          "id": 197,
           "name": "useStandardConfiguration",
           "kind": 2048,
           "kindString": "Method",
@@ -457,13 +469,14 @@
           },
           "signatures": [
             {
-              "id": 195,
+              "id": 198,
               "name": "useStandardConfiguration",
               "kind": 4096,
               "kindString": "Call signature",
               "flags": {},
               "comment": {
                 "shortText": "Applies a configuration that addresses common application needs, including\nconfiguring same-origin credentials, and using rejectErrorResponses.",
+                "returns": "The chainable instance of this configuration object.",
                 "tags": [
                   {
                     "tag": "chainable",
@@ -474,14 +487,14 @@
               "type": {
                 "type": "reference",
                 "name": "HttpClientConfiguration",
-                "id": 181,
+                "id": 184,
                 "moduleName": "\"aurelia-fetch-client\""
               }
             }
           ]
         },
         {
-          "id": 185,
+          "id": 188,
           "name": "withBaseUrl",
           "kind": 2048,
           "kindString": "Method",
@@ -490,13 +503,14 @@
           },
           "signatures": [
             {
-              "id": 186,
+              "id": 189,
               "name": "withBaseUrl",
               "kind": 4096,
               "kindString": "Call signature",
               "flags": {},
               "comment": {
                 "shortText": "Sets the baseUrl.",
+                "returns": "The chainable instance of this configuration object.",
                 "tags": [
                   {
                     "tag": "chainable",
@@ -506,7 +520,7 @@
               },
               "parameters": [
                 {
-                  "id": 187,
+                  "id": 190,
                   "name": "baseUrl",
                   "kind": 32768,
                   "kindString": "Parameter",
@@ -523,14 +537,14 @@
               "type": {
                 "type": "reference",
                 "name": "HttpClientConfiguration",
-                "id": 181,
+                "id": 184,
                 "moduleName": "\"aurelia-fetch-client\""
               }
             }
           ]
         },
         {
-          "id": 188,
+          "id": 191,
           "name": "withDefaults",
           "kind": 2048,
           "kindString": "Method",
@@ -539,13 +553,14 @@
           },
           "signatures": [
             {
-              "id": 189,
+              "id": 192,
               "name": "withDefaults",
               "kind": 4096,
               "kindString": "Call signature",
               "flags": {},
               "comment": {
                 "shortText": "Sets the defaults.",
+                "returns": "The chainable instance of this configuration object.",
                 "tags": [
                   {
                     "tag": "chainable",
@@ -555,7 +570,7 @@
               },
               "parameters": [
                 {
-                  "id": 190,
+                  "id": 193,
                   "name": "defaults",
                   "kind": 32768,
                   "kindString": "Parameter",
@@ -574,14 +589,14 @@
               "type": {
                 "type": "reference",
                 "name": "HttpClientConfiguration",
-                "id": 181,
+                "id": 184,
                 "moduleName": "\"aurelia-fetch-client\""
               }
             }
           ]
         },
         {
-          "id": 191,
+          "id": 194,
           "name": "withInterceptor",
           "kind": 2048,
           "kindString": "Method",
@@ -590,13 +605,14 @@
           },
           "signatures": [
             {
-              "id": 192,
+              "id": 195,
               "name": "withInterceptor",
               "kind": 4096,
               "kindString": "Call signature",
               "flags": {},
               "comment": {
                 "shortText": "Adds an interceptor to be run on all requests or responses.",
+                "returns": "The chainable instance of this configuration object.",
                 "tags": [
                   {
                     "tag": "chainable",
@@ -606,7 +622,7 @@
               },
               "parameters": [
                 {
-                  "id": 193,
+                  "id": 196,
                   "name": "interceptor",
                   "kind": 32768,
                   "kindString": "Parameter",
@@ -625,7 +641,7 @@
               "type": {
                 "type": "reference",
                 "name": "HttpClientConfiguration",
-                "id": 181,
+                "id": 184,
                 "moduleName": "\"aurelia-fetch-client\""
               }
             }
@@ -637,20 +653,20 @@
           "title": "Properties",
           "kind": 1024,
           "children": [
-            182,
-            183,
-            184
+            185,
+            186,
+            187
           ]
         },
         {
           "title": "Methods",
           "kind": 2048,
           "children": [
-            196,
-            194,
-            185,
+            199,
+            197,
             188,
-            191
+            191,
+            194
           ]
         }
       ]
@@ -677,7 +693,13 @@
             "isOptional": true
           },
           "comment": {
-            "shortText": "Called with the request before it is sent. Request interceptors can modify and\nreturn the request, or return a new one to be sent. If desired, the interceptor\nmay return a Response in order to short-circuit the HTTP request itself."
+            "shortText": "Called with the request before it is sent. Request interceptors can modify and\nreturn the request, or return a new one to be sent. If desired, the interceptor\nmay return a Response in order to short-circuit the HTTP request itself.",
+            "tags": [
+              {
+                "tag": "returns",
+                "text": "The existing request, a new request or a response; or a Promise for any of these.\n"
+              }
+            ]
           },
           "type": {
             "type": "reflection",
@@ -688,7 +710,7 @@
               "kindString": "Type literal",
               "flags": {},
               "comment": {
-                "text": "The request to be sent.\n"
+                "text": "The request to be sent."
               },
               "signatures": [
                 {
@@ -698,7 +720,7 @@
                   "kindString": "Call signature",
                   "flags": {},
                   "comment": {
-                    "text": "The request to be sent.\n"
+                    "text": "The request to be sent."
                   },
                   "parameters": [
                     {
@@ -769,8 +791,12 @@
             "tags": [
               {
                 "tag": "param",
-                "text": "The rejection value from the previous interceptor.\n",
+                "text": "The rejection value from the previous interceptor.",
                 "param": "error"
+              },
+              {
+                "tag": "returns",
+                "text": "The existing request, a new request or a response; or a Promise for any of these.\n"
               }
             ]
           },
@@ -853,7 +879,13 @@
             "isOptional": true
           },
           "comment": {
-            "shortText": "Called with the response after it is received. Response interceptors can modify\nand return the Response, or create a new one to be returned to the caller."
+            "shortText": "Called with the response after it is received. Response interceptors can modify\nand return the Response, or create a new one to be returned to the caller.",
+            "tags": [
+              {
+                "tag": "returns",
+                "text": "The response; or a Promise for one.\n"
+              }
+            ]
           },
           "type": {
             "type": "reflection",
@@ -864,7 +896,7 @@
               "kindString": "Type literal",
               "flags": {},
               "comment": {
-                "text": "The response.\n"
+                "text": "The response."
               },
               "signatures": [
                 {
@@ -874,7 +906,7 @@
                   "kindString": "Call signature",
                   "flags": {},
                   "comment": {
-                    "text": "The response.\n"
+                    "text": "The response."
                   },
                   "parameters": [
                     {
@@ -944,8 +976,12 @@
             "tags": [
               {
                 "tag": "param",
-                "text": "The rejection value from the fetch request or from a\nprevious interceptor.\n",
+                "text": "The rejection value from the fetch request or from a\nprevious interceptor.",
                 "param": "error"
+              },
+              {
+                "tag": "returns",
+                "text": "The response; or a Promise for one.\n"
               }
             ]
           },
@@ -1052,6 +1088,9 @@
             "isExported": true,
             "isOptional": true
           },
+          "comment": {
+            "shortText": "Any body that you want to add to your request: this can be a Blob, BufferSource, FormData, URLSearchParams, or USVString object. Note that a request using the GET or HEAD method cannot have a body."
+          },
           "type": {
             "type": "union",
             "types": [
@@ -1089,6 +1128,9 @@
             "isExported": true,
             "isOptional": true
           },
+          "comment": {
+            "shortText": "The cache mode you want to use for the request: default, no-store, reload, no-cache, or force-cache."
+          },
           "type": {
             "type": "instrinct",
             "name": "string"
@@ -1103,6 +1145,9 @@
             "isExported": true,
             "isOptional": true
           },
+          "comment": {
+            "shortText": "The request credentials you want to use for the request: omit, same-origin, or include. The default is omit. In Chrome the default is same-origin before Chrome 47 and include starting with Chrome 47."
+          },
           "type": {
             "type": "instrinct",
             "name": "string"
@@ -1116,6 +1161,9 @@
           "flags": {
             "isExported": true,
             "isOptional": true
+          },
+          "comment": {
+            "shortText": "Any headers you want to add to your request, contained within a Headers object or an object literal with ByteString values."
           },
           "type": {
             "type": "union",
@@ -1133,6 +1181,23 @@
           }
         },
         {
+          "id": 183,
+          "name": "integrity",
+          "kind": 1024,
+          "kindString": "Property",
+          "flags": {
+            "isExported": true,
+            "isOptional": true
+          },
+          "comment": {
+            "shortText": "Contains the subresource integrity value of the request (e.g., sha256-BpfBw7ivV8q2jLiT13fxDYAe2tJllusRSZ273h2nFSE=)."
+          },
+          "type": {
+            "type": "instrinct",
+            "name": "string"
+          }
+        },
+        {
           "id": 175,
           "name": "method",
           "kind": 1024,
@@ -1140,6 +1205,9 @@
           "flags": {
             "isExported": true,
             "isOptional": true
+          },
+          "comment": {
+            "shortText": "The request method, e.g., GET, POST."
           },
           "type": {
             "type": "instrinct",
@@ -1154,6 +1222,43 @@
           "flags": {
             "isExported": true,
             "isOptional": true
+          },
+          "comment": {
+            "shortText": "The mode you want to use for the request, e.g., cors, no-cors, same-origin, or navigate. The default is cors. In Chrome the default is no-cors before Chrome 47 and same-origin starting with Chrome 47."
+          },
+          "type": {
+            "type": "instrinct",
+            "name": "string"
+          }
+        },
+        {
+          "id": 181,
+          "name": "redirect",
+          "kind": 1024,
+          "kindString": "Property",
+          "flags": {
+            "isExported": true,
+            "isOptional": true
+          },
+          "comment": {
+            "shortText": "The redirect mode to use: follow, error, or manual. In Chrome the default is follow before Chrome 47 and manual starting with Chrome 47."
+          },
+          "type": {
+            "type": "instrinct",
+            "name": "string"
+          }
+        },
+        {
+          "id": 182,
+          "name": "referrer",
+          "kind": 1024,
+          "kindString": "Property",
+          "flags": {
+            "isExported": true,
+            "isOptional": true
+          },
+          "comment": {
+            "shortText": "A USVString specifying no-referrer, client, or a URL. The default is client."
           },
           "type": {
             "type": "instrinct",
@@ -1170,14 +1275,17 @@
             180,
             179,
             176,
+            183,
             175,
-            178
+            178,
+            181,
+            182
           ]
         }
       ]
     },
     {
-      "id": 217,
+      "id": 220,
       "name": "json",
       "kind": 64,
       "kindString": "Function",
@@ -1186,23 +1294,24 @@
       },
       "signatures": [
         {
-          "id": 218,
+          "id": 221,
           "name": "json",
           "kind": 4096,
           "kindString": "Call signature",
           "flags": {},
           "comment": {
-            "shortText": "Create a Blob containing JSON-serialized data.\nUseful for easily creating JSON fetch request bodies."
+            "shortText": "Create a Blob containing JSON-serialized data.\nUseful for easily creating JSON fetch request bodies.",
+            "returns": "A Blob containing the JSON serialized body.\n"
           },
           "parameters": [
             {
-              "id": 219,
+              "id": 222,
               "name": "body",
               "kind": 32768,
               "kindString": "Parameter",
               "flags": {},
               "comment": {
-                "text": "The object to be serialized to JSON.\n"
+                "text": "The object to be serialized to JSON."
               },
               "type": {
                 "type": "instrinct",
@@ -1223,8 +1332,8 @@
       "title": "Classes",
       "kind": 128,
       "children": [
-        198,
-        181
+        201,
+        184
       ]
     },
     {
@@ -1239,7 +1348,7 @@
       "title": "Functions",
       "kind": 64,
       "children": [
-        217
+        220
       ]
     }
   ]

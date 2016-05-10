@@ -3,7 +3,8 @@
 * Create a Blob containing JSON-serialized data.
 * Useful for easily creating JSON fetch request bodies.
 *
-* @param body - The object to be serialized to JSON.
+* @param body The object to be serialized to JSON.
+* @returns A Blob containing the JSON serialized body.
 */
 export function json(body: any): Blob {
   return new Blob([JSON.stringify(body)], { type: 'application/json' });
@@ -21,7 +22,8 @@ interface Interceptor {
   * return the request, or return a new one to be sent. If desired, the interceptor
   * may return a Response in order to short-circuit the HTTP request itself.
   *
-  * @param request - The request to be sent.
+  * @param request The request to be sent.
+  * @returns The existing request, a new request or a response; or a Promise for any of these.
   */
   request?: (request: Request) => Request|Response|Promise<Request|Response>;
 
@@ -30,7 +32,8 @@ interface Interceptor {
   * as a Promise rejection handler. It may rethrow the error to propagate the
   * failure, or return a new Request or Response to recover.
   *
-  * @param error - The rejection value from the previous interceptor.
+  * @param error The rejection value from the previous interceptor.
+  * @returns The existing request, a new request or a response; or a Promise for any of these.
   */
   requestError?: (error: any) => Request|Response|Promise<Request|Response>;
 
@@ -38,7 +41,8 @@ interface Interceptor {
   * Called with the response after it is received. Response interceptors can modify
   * and return the Response, or create a new one to be returned to the caller.
   *
-  * @param response - The response.
+  * @param response The response.
+  * @returns The response; or a Promise for one.
   */
   response?: (response: Response, request?: Request) => Response|Promise<Response>;
 
@@ -47,8 +51,9 @@ interface Interceptor {
    * function acts as a Promise rejection handler. It may rethrow the error
    * to propagate the failure, or return a new Response to recover.
    *
-   * @param error - The rejection value from the fetch request or from a
+   * @param error The rejection value from the fetch request or from a
    * previous interceptor.
+   * @returns The response; or a Promise for one.
    */
   responseError?: (error: any, request?: Request) => Response|Promise<Response>;
 }
@@ -58,17 +63,50 @@ interface Interceptor {
 * See https://developer.mozilla.org/en-US/docs/Web/API/Request/Request
 */
 interface RequestInit {
+  /**
+  * The request method, e.g., GET, POST.
+  */
   method?: string;
 
+  /**
+  * Any headers you want to add to your request, contained within a Headers object or an object literal with ByteString values.
+  */
   headers?: Headers|Object;
 
+  /**
+  * Any body that you want to add to your request: this can be a Blob, BufferSource, FormData, URLSearchParams, or USVString object. Note that a request using the GET or HEAD method cannot have a body.
+  */
   body?: Blob|BufferSource|FormData|URLSearchParams|string;
 
+  /**
+  * The mode you want to use for the request, e.g., cors, no-cors, same-origin, or navigate. The default is cors. In Chrome the default is no-cors before Chrome 47 and same-origin starting with Chrome 47.
+  */
   mode?: string;
 
+  /**
+  * The request credentials you want to use for the request: omit, same-origin, or include. The default is omit. In Chrome the default is same-origin before Chrome 47 and include starting with Chrome 47.
+  */
   credentials?: string;
 
+  /**
+  * The cache mode you want to use for the request: default, no-store, reload, no-cache, or force-cache.
+  */
   cache?: string;
+
+  /**
+  * The redirect mode to use: follow, error, or manual. In Chrome the default is follow before Chrome 47 and manual starting with Chrome 47.
+  */
+  redirect?: string;
+
+  /**
+  * A USVString specifying no-referrer, client, or a URL. The default is client.
+  */
+  referrer?: string;
+
+  /**
+  * Contains the subresource integrity value of the request (e.g., sha256-BpfBw7ivV8q2jLiT13fxDYAe2tJllusRSZ273h2nFSE=).
+  */
+  integrity?: string;
 }
 
 /**
@@ -96,7 +134,8 @@ export class HttpClientConfiguration {
   /**
   * Sets the baseUrl.
   *
-  * @param baseUrl - The base URL.
+  * @param baseUrl The base URL.
+  * @returns The chainable instance of this configuration object.
   * @chainable
   */
   withBaseUrl(baseUrl: string): HttpClientConfiguration {
@@ -107,7 +146,8 @@ export class HttpClientConfiguration {
   /**
   * Sets the defaults.
   *
-  * @param defaults - The defaults.
+  * @param defaults The defaults.
+  * @returns The chainable instance of this configuration object.
   * @chainable
   */
   withDefaults(defaults: RequestInit): HttpClientConfiguration {
@@ -118,11 +158,12 @@ export class HttpClientConfiguration {
   /**
   * Adds an interceptor to be run on all requests or responses.
   *
-  * @param interceptor - An object with request, requestError,
+  * @param interceptor An object with request, requestError,
   * response, or responseError methods. request and requestError act as
   * resolve and reject handlers for the Request before it is sent.
   * response and responseError act as resolve and reject handlers for
   * the Response after it has been received.
+  * @returns The chainable instance of this configuration object.
   * @chainable
   */
   withInterceptor(interceptor: Interceptor): HttpClientConfiguration {
@@ -133,7 +174,7 @@ export class HttpClientConfiguration {
   /**
   * Applies a configuration that addresses common application needs, including
   * configuring same-origin credentials, and using rejectErrorResponses.
-  *
+  * @returns The chainable instance of this configuration object.
   * @chainable
   */
   useStandardConfiguration(): HttpClientConfiguration {
@@ -149,7 +190,7 @@ export class HttpClientConfiguration {
   * Promise continuation to determine if the server responded with a success code.
   * This method adds a response interceptor that causes Responses with error codes
   * to be rejected, which is common behavior in HTTP client libraries.
-  *
+  * @returns The chainable instance of this configuration object.
   * @chainable
   */
   rejectErrorResponses(): HttpClientConfiguration {
@@ -200,6 +241,9 @@ export class HttpClient {
   */
   interceptors: Interceptor[] = [];
 
+  /**
+  * Creates an instance of HttpClient.
+  */
   constructor() {
     if (typeof fetch === 'undefined') {
       throw new Error('HttpClient requires a Fetch API implementation, but the current environment doesn\'t support it. You may need to load a polyfill such as https://github.com/github/fetch.');
@@ -209,9 +253,9 @@ export class HttpClient {
   /**
   * Configure this client with default settings to be used by all requests.
   *
-  * @param config - A configuration object, or a function that takes a config
+  * @param config A configuration object, or a function that takes a config
   * object and configures it.
-  *
+  * @returns The chainable instance of this HttpClient.
   * @chainable
   */
   configure(config: RequestInit|(config: HttpClientConfiguration) => void|HttpClientConfiguration): HttpClient {
@@ -252,10 +296,11 @@ export class HttpClient {
   *
   * See also https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
   *
-  * @param input - The resource that you wish to fetch. Either a
+  * @param input The resource that you wish to fetch. Either a
   * Request object, or a string containing the URL of the resource.
-  * @param - An options object containing settings to be applied to
+  * @param init An options object containing settings to be applied to
   * the Request.
+  * @returns A Promise for the Response from the fetch request.
   */
   fetch(input: Request|string, init?: RequestInit): Promise<Response> {
     this::trackRequestStart();
