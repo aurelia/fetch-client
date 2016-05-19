@@ -13,6 +13,7 @@ System.config({
   },
 
   map: {
+    "aurelia-pal": "npm:aurelia-pal@1.0.0-beta.1.2.2",
     "aurelia-polyfills": "npm:aurelia-polyfills@1.0.0-beta.1.1.1",
     "babel": "npm:babel-core@5.1.13",
     "babel-runtime": "npm:babel-runtime@5.1.13",
@@ -33,7 +34,7 @@ System.config({
       "util": "npm:util@0.10.3"
     },
     "npm:aurelia-polyfills@1.0.0-beta.1.1.1": {
-      "aurelia-pal": "npm:aurelia-pal@1.0.0-beta.1.2.0"
+      "aurelia-pal": "npm:aurelia-pal@1.0.0-beta.1.2.2"
     },
     "npm:core-js@2.0.3": {
       "fs": "github:jspm/nodelibs-fs@0.1.2",

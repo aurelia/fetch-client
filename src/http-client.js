@@ -1,5 +1,6 @@
 import {HttpClientConfiguration} from './http-client-configuration';
 import {RequestInit, Interceptor} from './interfaces';
+import {PLATFORM} from 'aurelia-pal';
 
 /**
 * An HTTP client based on the Fetch API.
@@ -169,8 +170,8 @@ function buildRequest(input, init) {
     request.headers.set('Content-Type', new Headers(parsedDefaultHeaders).get('content-type'));
   }
   setDefaultHeaders(request.headers, parsedDefaultHeaders);
-  if (body && Blob.prototype.isPrototypeOf(body) && body.type) {
-    // work around bug in IE & Edge where the Blob type is ignored in the request
+  if (body && (!PLATFORM.global.Blob || PLATFORM.global.Blob.prototype.isPrototypeOf(body)) && body.type) {
+    // work around bug in IE & Edge where the Blob type is ignored in the request resp. Blob isn't available
     // https://connect.microsoft.com/IE/feedback/details/2136163
     request.headers.set('Content-Type', body.type);
   }
