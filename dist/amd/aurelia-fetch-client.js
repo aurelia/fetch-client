@@ -12,11 +12,7 @@ define(['exports'], function (exports) {
     return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
   };
 
-  function _classCallCheck(instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-      throw new TypeError("Cannot call a class as a function");
-    }
-  }
+  
 
   function json(body) {
     return new Blob([JSON.stringify(body)], { type: 'application/json' });
@@ -24,7 +20,7 @@ define(['exports'], function (exports) {
 
   var HttpClientConfiguration = exports.HttpClientConfiguration = function () {
     function HttpClientConfiguration() {
-      _classCallCheck(this, HttpClientConfiguration);
+      
 
       this.baseUrl = '';
       this.defaults = {};
@@ -69,7 +65,7 @@ define(['exports'], function (exports) {
 
   var HttpClient = exports.HttpClient = function () {
     function HttpClient() {
-      _classCallCheck(this, HttpClient);
+      
 
       this.activeRequestCount = 0;
       this.isRequesting = false;

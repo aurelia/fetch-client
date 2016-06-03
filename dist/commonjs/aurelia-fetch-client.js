@@ -8,7 +8,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 exports.json = json;
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 
 function json(body) {
   return new Blob([JSON.stringify(body)], { type: 'application/json' });
@@ -16,7 +16,7 @@ function json(body) {
 
 var HttpClientConfiguration = exports.HttpClientConfiguration = function () {
   function HttpClientConfiguration() {
-    _classCallCheck(this, HttpClientConfiguration);
+    
 
     this.baseUrl = '';
     this.defaults = {};
@@ -61,7 +61,7 @@ function rejectOnError(response) {
 
 var HttpClient = exports.HttpClient = function () {
   function HttpClient() {
-    _classCallCheck(this, HttpClient);
+    
 
     this.activeRequestCount = 0;
     this.isRequesting = false;

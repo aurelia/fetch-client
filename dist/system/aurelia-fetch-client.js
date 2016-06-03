@@ -1,13 +1,11 @@
 'use strict';
 
 System.register([], function (_export, _context) {
+  "use strict";
+
   var _typeof, HttpClientConfiguration, HttpClient, absoluteUrlRegexp;
 
-  function _classCallCheck(instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-      throw new TypeError("Cannot call a class as a function");
-    }
-  }
+  
 
   function rejectOnError(response) {
     if (!response.ok) {
@@ -125,7 +123,7 @@ System.register([], function (_export, _context) {
 
       _export('HttpClientConfiguration', HttpClientConfiguration = function () {
         function HttpClientConfiguration() {
-          _classCallCheck(this, HttpClientConfiguration);
+          
 
           this.baseUrl = '';
           this.defaults = {};
@@ -164,7 +162,7 @@ System.register([], function (_export, _context) {
 
       _export('HttpClient', HttpClient = function () {
         function HttpClient() {
-          _classCallCheck(this, HttpClient);
+          
 
           this.activeRequestCount = 0;
           this.isRequesting = false;
