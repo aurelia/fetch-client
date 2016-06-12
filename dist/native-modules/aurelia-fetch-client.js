@@ -1,40 +1,47 @@
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+
 
 export function json(body) {
   return new Blob([JSON.stringify(body)], { type: 'application/json' });
 }
 
-export let HttpClientConfiguration = class HttpClientConfiguration {
-  constructor() {
+export var HttpClientConfiguration = function () {
+  function HttpClientConfiguration() {
+    
+
     this.baseUrl = '';
     this.defaults = {};
     this.interceptors = [];
   }
 
-  withBaseUrl(baseUrl) {
+  HttpClientConfiguration.prototype.withBaseUrl = function withBaseUrl(baseUrl) {
     this.baseUrl = baseUrl;
     return this;
-  }
+  };
 
-  withDefaults(defaults) {
+  HttpClientConfiguration.prototype.withDefaults = function withDefaults(defaults) {
     this.defaults = defaults;
     return this;
-  }
+  };
 
-  withInterceptor(interceptor) {
+  HttpClientConfiguration.prototype.withInterceptor = function withInterceptor(interceptor) {
     this.interceptors.push(interceptor);
     return this;
-  }
+  };
 
-  useStandardConfiguration() {
-    let standardConfig = { credentials: 'same-origin' };
+  HttpClientConfiguration.prototype.useStandardConfiguration = function useStandardConfiguration() {
+    var standardConfig = { credentials: 'same-origin' };
     Object.assign(this.defaults, standardConfig, this.defaults);
     return this.rejectErrorResponses();
-  }
+  };
 
-  rejectErrorResponses() {
+  HttpClientConfiguration.prototype.rejectErrorResponses = function rejectErrorResponses() {
     return this.withInterceptor({ response: rejectOnError });
-  }
-};
+  };
+
+  return HttpClientConfiguration;
+}();
 
 function rejectOnError(response) {
   if (!response.ok) {
@@ -44,8 +51,10 @@ function rejectOnError(response) {
   return response;
 }
 
-export let HttpClient = class HttpClient {
-  constructor() {
+export var HttpClient = function () {
+  function HttpClient() {
+    
+
     this.activeRequestCount = 0;
     this.isRequesting = false;
     this.isConfigured = false;
@@ -58,14 +67,16 @@ export let HttpClient = class HttpClient {
     }
   }
 
-  configure(config) {
-    let normalizedConfig;
+  HttpClient.prototype.configure = function configure(config) {
+    var _interceptors;
 
-    if (typeof config === 'object') {
+    var normalizedConfig = void 0;
+
+    if ((typeof config === 'undefined' ? 'undefined' : _typeof(config)) === 'object') {
       normalizedConfig = { defaults: config };
     } else if (typeof config === 'function') {
       normalizedConfig = new HttpClientConfiguration();
-      let c = config(normalizedConfig);
+      var c = config(normalizedConfig);
       if (HttpClientConfiguration.prototype.isPrototypeOf(c)) {
         normalizedConfig = c;
       }
@@ -73,25 +84,39 @@ export let HttpClient = class HttpClient {
       throw new Error('invalid config');
     }
 
-    let defaults = normalizedConfig.defaults;
+    var defaults = normalizedConfig.defaults;
     if (defaults && Headers.prototype.isPrototypeOf(defaults.headers)) {
       throw new Error('Default headers must be a plain object.');
     }
 
     this.baseUrl = normalizedConfig.baseUrl;
     this.defaults = defaults;
-    this.interceptors.push(...(normalizedConfig.interceptors || []));
+    (_interceptors = this.interceptors).push.apply(_interceptors, normalizedConfig.interceptors || []);
     this.isConfigured = true;
 
     return this;
-  }
+  };
 
-  fetch(input, init) {
+  HttpClient.prototype.fetch = function (_fetch) {
+    function fetch(_x, _x2) {
+      return _fetch.apply(this, arguments);
+    }
+
+    fetch.toString = function () {
+      return _fetch.toString();
+    };
+
+    return fetch;
+  }(function (input, init) {
+    var _this = this;
+
     trackRequestStart.call(this);
 
-    let request = Promise.resolve().then(() => buildRequest.call(this, input, init, this.defaults));
-    let promise = processRequest(request, this.interceptors).then(result => {
-      let response = null;
+    var request = Promise.resolve().then(function () {
+      return buildRequest.call(_this, input, init, _this.defaults);
+    });
+    var promise = processRequest(request, this.interceptors).then(function (result) {
+      var response = null;
 
       if (Response.prototype.isPrototypeOf(result)) {
         response = result;
@@ -99,17 +124,21 @@ export let HttpClient = class HttpClient {
         request = Promise.resolve(result);
         response = fetch(result);
       } else {
-        throw new Error(`An invalid result was returned by the interceptor chain. Expected a Request or Response instance, but got [${ result }]`);
+        throw new Error('An invalid result was returned by the interceptor chain. Expected a Request or Response instance, but got [' + result + ']');
       }
 
-      return request.then(_request => processResponse(response, this.interceptors, _request));
+      return request.then(function (_request) {
+        return processResponse(response, _this.interceptors, _request);
+      });
     });
 
     return trackRequestEndWith.call(this, promise);
-  }
-};
+  });
 
-const absoluteUrlRegexp = /^([a-z][a-z0-9+\-.]*:)?\/\//i;
+  return HttpClient;
+}();
+
+var absoluteUrlRegexp = /^([a-z][a-z0-9+\-.]*:)?\/\//i;
 
 function trackRequestStart() {
   this.isRequesting = !! ++this.activeRequestCount;
@@ -120,14 +149,14 @@ function trackRequestEnd() {
 }
 
 function trackRequestEndWith(promise) {
-  let handle = trackRequestEnd.bind(this);
+  var handle = trackRequestEnd.bind(this);
   promise.then(handle, handle);
   return promise;
 }
 
 function parseHeaderValues(headers) {
-  let parsedHeaders = {};
-  for (let name in headers || {}) {
+  var parsedHeaders = {};
+  for (var name in headers || {}) {
     if (headers.hasOwnProperty(name)) {
       parsedHeaders[name] = typeof headers[name] === 'function' ? headers[name]() : headers[name];
     }
@@ -136,20 +165,20 @@ function parseHeaderValues(headers) {
 }
 
 function buildRequest(input, init) {
-  let defaults = this.defaults || {};
-  let request;
-  let body;
-  let requestContentType;
+  var defaults = this.defaults || {};
+  var request = void 0;
+  var body = void 0;
+  var requestContentType = void 0;
 
-  let parsedDefaultHeaders = parseHeaderValues(defaults.headers);
+  var parsedDefaultHeaders = parseHeaderValues(defaults.headers);
   if (Request.prototype.isPrototypeOf(input)) {
     request = input;
     requestContentType = new Headers(request.headers).get('Content-Type');
   } else {
     init || (init = {});
     body = init.body;
-    let bodyObj = body ? { body } : null;
-    let requestInit = Object.assign({}, defaults, { headers: {} }, init, bodyObj);
+    var bodyObj = body ? { body: body } : null;
+    var requestInit = Object.assign({}, defaults, { headers: {} }, init, bodyObj);
     requestContentType = new Headers(requestInit.headers).get('Content-Type');
     request = new Request(getRequestUrl(this.baseUrl, input), requestInit);
   }
@@ -172,7 +201,7 @@ function getRequestUrl(baseUrl, url) {
 }
 
 function setDefaultHeaders(headers, defaultHeaders) {
-  for (let name in defaultHeaders || {}) {
+  for (var name in defaultHeaders || {}) {
     if (defaultHeaders.hasOwnProperty(name) && !headers.has(name)) {
       headers.set(name, defaultHeaders[name]);
     }
@@ -187,12 +216,20 @@ function processResponse(response, interceptors, request) {
   return applyInterceptors(response, interceptors, 'response', 'responseError', request);
 }
 
-function applyInterceptors(input, interceptors, successName, errorName, ...interceptorArgs) {
-  return (interceptors || []).reduce((chain, interceptor) => {
-    let successHandler = interceptor[successName];
-    let errorHandler = interceptor[errorName];
+function applyInterceptors(input, interceptors, successName, errorName) {
+  for (var _len = arguments.length, interceptorArgs = Array(_len > 4 ? _len - 4 : 0), _key = 4; _key < _len; _key++) {
+    interceptorArgs[_key - 4] = arguments[_key];
+  }
 
-    return chain.then(successHandler && (value => successHandler.call(interceptor, value, ...interceptorArgs)) || identity, errorHandler && (reason => errorHandler.call(interceptor, reason, ...interceptorArgs)) || thrower);
+  return (interceptors || []).reduce(function (chain, interceptor) {
+    var successHandler = interceptor[successName];
+    var errorHandler = interceptor[errorName];
+
+    return chain.then(successHandler && function (value) {
+      return successHandler.call.apply(successHandler, [interceptor, value].concat(interceptorArgs));
+    } || identity, errorHandler && function (reason) {
+      return errorHandler.call.apply(errorHandler, [interceptor, reason].concat(interceptorArgs));
+    } || thrower);
   }, Promise.resolve(input));
 }
 

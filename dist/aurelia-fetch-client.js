@@ -413,7 +413,15 @@ function applyInterceptors(input, interceptors, successName, errorName, ...inter
       let errorHandler = interceptor[errorName];
 
       return chain.then(
-        successHandler && (value => interceptor::successHandler(value, ...interceptorArgs)),
-        errorHandler && (reason => interceptor::errorHandler(reason, ...interceptorArgs)));
+        successHandler && (value => interceptor::successHandler(value, ...interceptorArgs)) || identity,
+        errorHandler && (reason => interceptor::errorHandler(reason, ...interceptorArgs)) || thrower);
     }, Promise.resolve(input));
+}
+
+function identity(x) {
+  return x;
+}
+
+function thrower(x) {
+  throw x;
 }

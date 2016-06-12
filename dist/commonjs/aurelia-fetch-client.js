@@ -235,8 +235,16 @@ function applyInterceptors(input, interceptors, successName, errorName) {
 
     return chain.then(successHandler && function (value) {
       return successHandler.call.apply(successHandler, [interceptor, value].concat(interceptorArgs));
-    }, errorHandler && function (reason) {
+    } || identity, errorHandler && function (reason) {
       return errorHandler.call.apply(errorHandler, [interceptor, reason].concat(interceptorArgs));
-    });
+    } || thrower);
   }, Promise.resolve(input));
+}
+
+function identity(x) {
+  return x;
+}
+
+function thrower(x) {
+  throw x;
 }
