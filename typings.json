@@ -1,0 +1,4 @@
+{
+  "name": "aurelia-fetch-client",
+  "main": "dist/aurelia-fetch-client.d.ts"
+}
