@@ -11,7 +11,7 @@ This library is part of the [Aurelia](http://www.aurelia.io/) platform and conta
 
 ## Documentation
 
-You can read documentation on the fetch client [here](http://aurelia.io/docs.html#/aurelia/fetch-client/1.0.0-beta.1.2.2/doc/article/http-services). If you would like to help improve this documentation, the source for the above can be found in the doc folder within this repository.
+You can read documentation on the fetch client [here](http://aurelia.io/hub.html#/doc/article/aurelia/fetch-client/latest/http-services/2). If you would like to help improve this documentation, the source for the above can be found in the doc folder within this repository.
 
 ## Platform Support
 
