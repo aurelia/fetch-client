@@ -5,8 +5,12 @@ var runSequence = require('run-sequence');
 var through2 = require('through2');
 
 gulp.task('doc-generate', function(){
-  return gulp.src([paths.output + paths.packageName + '.d.ts', paths.doc + '/whatwg-fetch.d.ts'])
-    .pipe(typedoc({
+  return gulp.src([
+    paths.output + paths.packageName + '.d.ts',
+    paths.doc + '/dom.d.ts',
+    paths.doc + '/whatwg-fetch.d.ts',
+    paths.doc + '/url.d.ts'
+  ]).pipe(typedoc({
       target: 'es6',
       includeDeclarations: true,
       moduleResolution: 'node',
