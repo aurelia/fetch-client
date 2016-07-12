@@ -261,7 +261,6 @@ The `HttpClient` has a variety of methods. The following is a description of the
       patch(url: string, content: any): Promise<HttpResponseMessage>;
       post(url: string, content: any): Promise<HttpResponseMessage>;
     }
-  }
   </source-code>
 </code-listing>
 
@@ -308,6 +307,7 @@ In this case, all requests from the client will have the base url of 'http://aur
       .asGet()
       .withBaseUrl('http://aurelia.io')
       .withHeader('Authorization', 'bearer 123')
+      .withParams({ abc: '123' })
       .send();
   </source-code>
 </code-listing>
