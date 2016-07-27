@@ -7,6 +7,12 @@ System.register([], function (_export, _context) {
 
   
 
+  function json(body) {
+    return new Blob([JSON.stringify(body)], { type: 'application/json' });
+  }
+
+  _export('json', json);
+
   function rejectOnError(response) {
     if (!response.ok) {
       throw response;
@@ -123,11 +129,6 @@ System.register([], function (_export, _context) {
       } : function (obj) {
         return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
       };
-      function json(body) {
-        return new Blob([JSON.stringify(body)], { type: 'application/json' });
-      }
-
-      _export('json', json);
 
       _export('HttpClientConfiguration', HttpClientConfiguration = function () {
         function HttpClientConfiguration() {
