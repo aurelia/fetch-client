@@ -20,7 +20,7 @@
 ---
 ## [Options](aurelia-doc://section/1/version/1.0.0)
 
-When building font-end applications, it's often necessary to leverage HTTP services to acquire data or persist state. There are many ways to accomplish this. You could use an advanced data library that implements object-relational mapping, an opinionated restful client or just a simple HTTP library. All these options are provided by the global web community and all of them can be used in an Aurelia application.
+When building front-end applications, it's often necessary to leverage HTTP services to acquire data or persist state. There are many ways to accomplish this. You could use an advanced data library that implements object-relational mapping, an opinionated restful client or just a simple HTTP library. All these options are provided by the global web community and all of them can be used in an Aurelia application.
 
 That said, the Aurelia team felt the need to provide a simple solution out of the box. We wanted our community to have a directly supported option while still keeping Aurelia open so that our own community could innovate or leverage any other library developed elsewhere.
 
