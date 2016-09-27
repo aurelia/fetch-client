@@ -88,6 +88,9 @@ define(['exports'], function (exports) {
         normalizedConfig = { defaults: config };
       } else if (typeof config === 'function') {
         normalizedConfig = new HttpClientConfiguration();
+        normalizedConfig.baseUrl = this.baseUrl;
+        normalizedConfig.defaults = this.defaults;
+        normalizedConfig.interceptors = this.interceptors;
         var c = config(normalizedConfig);
         if (HttpClientConfiguration.prototype.isPrototypeOf(c)) {
           normalizedConfig = c;
@@ -153,7 +156,7 @@ define(['exports'], function (exports) {
   var absoluteUrlRegexp = /^([a-z][a-z0-9+\-.]*:)?\/\//i;
 
   function trackRequestStart() {
-    this.isRequesting = !! ++this.activeRequestCount;
+    this.isRequesting = !!++this.activeRequestCount;
   }
 
   function trackRequestEnd() {

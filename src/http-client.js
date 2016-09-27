@@ -60,6 +60,9 @@ export class HttpClient {
       normalizedConfig = { defaults: config };
     } else if (typeof config === 'function') {
       normalizedConfig = new HttpClientConfiguration();
+      normalizedConfig.baseUrl = this.baseUrl;
+      normalizedConfig.defaults = this.defaults;
+      normalizedConfig.interceptors = this.interceptors;
       let c = config(normalizedConfig);
       if (HttpClientConfiguration.prototype.isPrototypeOf(c)) {
         normalizedConfig = c;
