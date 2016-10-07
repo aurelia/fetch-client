@@ -319,7 +319,7 @@ It is possible to hook into requests and responses with interceptors as well. He
 <code-listing heading="Basic HTTP Interceptors">
   <source-code lang="ES 2015/ES 2016/TypeScript">
     let client = new HttpClient();
-      .configure(x => {
+    client.configure(x => {
         x.withInterceptor({
           request(message) {
             return message;
