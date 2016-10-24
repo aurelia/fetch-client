@@ -63,6 +63,7 @@ export class HttpClient {
       normalizedConfig.baseUrl = this.baseUrl;
       normalizedConfig.defaults = Object.assign({}, this.defaults);
       normalizedConfig.interceptors = this.interceptors;
+      
       let c = config(normalizedConfig);
       if (HttpClientConfiguration.prototype.isPrototypeOf(c)) {
         normalizedConfig = c;
