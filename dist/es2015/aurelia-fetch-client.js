@@ -65,9 +65,6 @@ export let HttpClient = class HttpClient {
       normalizedConfig = { defaults: config };
     } else if (typeof config === 'function') {
       normalizedConfig = new HttpClientConfiguration();
-      normalizedConfig.baseUrl = this.baseUrl;
-      normalizedConfig.defaults = Object.assign({}, this.defaults);
-      normalizedConfig.interceptors = this.interceptors;
       let c = config(normalizedConfig);
       if (HttpClientConfiguration.prototype.isPrototypeOf(c)) {
         normalizedConfig = c;
@@ -83,7 +80,7 @@ export let HttpClient = class HttpClient {
 
     this.baseUrl = normalizedConfig.baseUrl;
     this.defaults = defaults;
-    this.interceptors = normalizedConfig.interceptors || [];
+    this.interceptors.push(...(normalizedConfig.interceptors || []));
     this.isConfigured = true;
 
     return this;
@@ -115,7 +112,7 @@ export let HttpClient = class HttpClient {
 const absoluteUrlRegexp = /^([a-z][a-z0-9+\-.]*:)?\/\//i;
 
 function trackRequestStart() {
-  this.isRequesting = !!++this.activeRequestCount;
+  this.isRequesting = !! ++this.activeRequestCount;
 }
 
 function trackRequestEnd() {

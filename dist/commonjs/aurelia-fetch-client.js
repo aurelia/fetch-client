@@ -76,15 +76,14 @@ var HttpClient = exports.HttpClient = function () {
   }
 
   HttpClient.prototype.configure = function configure(config) {
+    var _interceptors;
+
     var normalizedConfig = void 0;
 
     if ((typeof config === 'undefined' ? 'undefined' : _typeof(config)) === 'object') {
       normalizedConfig = { defaults: config };
     } else if (typeof config === 'function') {
       normalizedConfig = new HttpClientConfiguration();
-      normalizedConfig.baseUrl = this.baseUrl;
-      normalizedConfig.defaults = Object.assign({}, this.defaults);
-      normalizedConfig.interceptors = this.interceptors;
       var c = config(normalizedConfig);
       if (HttpClientConfiguration.prototype.isPrototypeOf(c)) {
         normalizedConfig = c;
@@ -100,7 +99,7 @@ var HttpClient = exports.HttpClient = function () {
 
     this.baseUrl = normalizedConfig.baseUrl;
     this.defaults = defaults;
-    this.interceptors = normalizedConfig.interceptors || [];
+    (_interceptors = this.interceptors).push.apply(_interceptors, normalizedConfig.interceptors || []);
     this.isConfigured = true;
 
     return this;
@@ -150,7 +149,7 @@ var HttpClient = exports.HttpClient = function () {
 var absoluteUrlRegexp = /^([a-z][a-z0-9+\-.]*:)?\/\//i;
 
 function trackRequestStart() {
-  this.isRequesting = !!++this.activeRequestCount;
+  this.isRequesting = !! ++this.activeRequestCount;
 }
 
 function trackRequestEnd() {
