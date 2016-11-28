@@ -323,15 +323,15 @@ It is possible to hook into requests and responses with interceptors as well. He
         x.withInterceptor({
           request(message) {
             return message;
-          }
+          },
 
           requestError(error) {
             throw error;
-          }
+          },
 
           response(message) {
             return message;
-          }
+          },
 
           responseError(error) {
             throw error;
