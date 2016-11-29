@@ -53,6 +53,17 @@ describe('HttpClient', () => {
       expect(client.baseUrl).toBe(baseUrl);
       expect(client.interceptors.indexOf(interceptor)).toBe(0);
     });
+    
+    it('accepts configuration override', () => {
+      let defaults = { foo: true };
+      
+      client.configure(config => config.withDefaults(defaults));
+
+
+      client.configure(config => {
+        expect(config.defaults.foo).toBe(true);
+      });
+    });
 
     it('rejects invalid configs', () => {
       expect(() => client.configure(1)).toThrow();
