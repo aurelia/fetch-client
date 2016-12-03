@@ -1,3 +1,13 @@
+<a name="1.1.0"></a>
+# [1.1.0](https://github.com/aurelia/fetch-client/compare/1.0.1...v1.1.0) (2016-12-03)
+
+
+### Features
+
+* passing current config to configure(function(config)) ([124c28b](https://github.com/aurelia/fetch-client/commit/124c28b)), closes [#74](https://github.com/aurelia/fetch-client/issues/74)
+
+
+
 <a name="1.0.1"></a>
 ## [1.0.1](https://github.com/aurelia/fetch-client/compare/1.0.0...v1.0.1) (2016-08-26)
 

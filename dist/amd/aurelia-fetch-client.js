@@ -80,14 +80,16 @@ define(['exports'], function (exports) {
     }
 
     HttpClient.prototype.configure = function configure(config) {
-      var _interceptors;
-
       var normalizedConfig = void 0;
 
       if ((typeof config === 'undefined' ? 'undefined' : _typeof(config)) === 'object') {
         normalizedConfig = { defaults: config };
       } else if (typeof config === 'function') {
         normalizedConfig = new HttpClientConfiguration();
+        normalizedConfig.baseUrl = this.baseUrl;
+        normalizedConfig.defaults = Object.assign({}, this.defaults);
+        normalizedConfig.interceptors = this.interceptors;
+
         var c = config(normalizedConfig);
         if (HttpClientConfiguration.prototype.isPrototypeOf(c)) {
           normalizedConfig = c;
@@ -103,7 +105,7 @@ define(['exports'], function (exports) {
 
       this.baseUrl = normalizedConfig.baseUrl;
       this.defaults = defaults;
-      (_interceptors = this.interceptors).push.apply(_interceptors, normalizedConfig.interceptors || []);
+      this.interceptors = normalizedConfig.interceptors || [];
       this.isConfigured = true;
 
       return this;
