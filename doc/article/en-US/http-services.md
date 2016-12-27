@@ -40,7 +40,7 @@ As previously stated, the `aurelia-fetch-client` library aims to embrace and exp
 
 ### Bring Your Own Polyfill
 
-This library relies on the Fetch API, which is not yet supported by all popular browsers. *This library does not include a polyfill for Fetch.* If you need to support [browsers that haven't implemented Fetch](http://caniuse.com/#feat=fetch), you will need to install a polyfill like [GitHub's Fetch polyfill](https://github.com/github/fetch).
+This library relies on the Fetch API, which is not yet supported by all popular browsers. *This library does not include a polyfill for Fetch.* If you need to support [browsers that have not implemented Fetch](http://caniuse.com/#feat=fetch), you will need to install a polyfill like [GitHub's Fetch polyfill](https://github.com/github/fetch).
 
 First, install the polyfill using your package manager. Second, make sure to import the polyfill into your application code so that it's correctly initialized before you use our fetch client. The best place to load the polyfill is typically in your application's `main` module. That might look something like this:
 
