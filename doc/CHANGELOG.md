@@ -1,3 +1,8 @@
+<a name="1.1.1"></a>
+## [1.1.1](https://github.com/aurelia/fetch-client/compare/1.1.0...v1.1.1) (2017-02-21)
+
+* Documentation update.
+
 <a name="1.1.0"></a>
 # [1.1.0](https://github.com/aurelia/fetch-client/compare/1.0.1...v1.1.0) (2016-12-03)
 
