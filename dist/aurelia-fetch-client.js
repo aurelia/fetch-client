@@ -7,7 +7,7 @@
 * @returns A Blob containing the JSON serialized body.
 */
 export function json(body: any): Blob {
-  return new Blob([JSON.stringify(body)], { type: 'application/json' });
+  return new Blob([JSON.stringify((body !== undefined ? body : {}))], { type: 'application/json' });
 }
 
 /* eslint-disable */

@@ -8,7 +8,7 @@ System.register([], function (_export, _context) {
   
 
   function json(body) {
-    return new Blob([JSON.stringify(body)], { type: 'application/json' });
+    return new Blob([JSON.stringify(body !== undefined ? body : {})], { type: 'application/json' });
   }
 
   _export('json', json);

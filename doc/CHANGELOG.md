@@ -1,3 +1,10 @@
+<a name="1.1.2"></a>
+## [1.1.2](https://github.com/aurelia/fetch-client/compare/1.1.1...v1.1.2) (2017-03-23)
+
+### Bug Fixes
+
+* Fix blob serialization for undefined body.
+
 <a name="1.1.1"></a>
 ## [1.1.1](https://github.com/aurelia/fetch-client/compare/1.1.0...v1.1.1) (2017-02-21)
 

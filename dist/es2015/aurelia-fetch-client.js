@@ -1,6 +1,6 @@
 
 export function json(body) {
-  return new Blob([JSON.stringify(body)], { type: 'application/json' });
+  return new Blob([JSON.stringify(body !== undefined ? body : {})], { type: 'application/json' });
 }
 
 export let HttpClientConfiguration = class HttpClientConfiguration {

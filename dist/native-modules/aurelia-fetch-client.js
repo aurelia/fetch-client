@@ -3,7 +3,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 
 export function json(body) {
-  return new Blob([JSON.stringify(body)], { type: 'application/json' });
+  return new Blob([JSON.stringify(body !== undefined ? body : {})], { type: 'application/json' });
 }
 
 export var HttpClientConfiguration = function () {
