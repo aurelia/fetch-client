@@ -7,7 +7,9 @@ export class HttpClientConfiguration {
   /**
   * The base URL to be prepended to each Request's url before sending.
   */
-  baseUrl: string = '';
+  get baseUrl(): string {
+    return this._options.baseUrl;
+  }
 
   /**
   * Default values to apply to init objects when creating Requests. Note that
@@ -15,12 +17,25 @@ export class HttpClientConfiguration {
   * Request provides its own defaults and discards the original init object.
   * See also https://developer.mozilla.org/en-US/docs/Web/API/Request/Request
   */
-  defaults: RequestInit = {};
+  get defaults(): RequestInit {
+    return this._options.defaults;
+  } 
 
   /**
   * Interceptors to be added to the HttpClient.
   */
-  interceptors: Interceptor[] = [];
+  get interceptors(): Interceptor[] {
+    return this._options.interceptors;
+  }
+  
+  constructor(options: any = {}) {
+    this.options = {
+      baseUrl: '',
+      defaults: {},
+      interceptors: [],
+      ...options
+    };
+  }
 
   /**
   * Sets the baseUrl.
@@ -30,8 +45,10 @@ export class HttpClientConfiguration {
   * @chainable
   */
   withBaseUrl(baseUrl: string): HttpClientConfiguration {
-    this.baseUrl = baseUrl;
-    return this;
+    return new HttpClientConfiguration({
+      baseUrl: baseUrl,
+      ...this._options
+    });
   }
 
   /**
@@ -42,8 +59,10 @@ export class HttpClientConfiguration {
   * @chainable
   */
   withDefaults(defaults: RequestInit): HttpClientConfiguration {
-    this.defaults = defaults;
-    return this;
+    return new HttpClientConfiguration({
+      defaults: { ...defaults, ...this._options.defaults },
+      ...this._options
+    });
   }
 
   /**
@@ -57,9 +76,11 @@ export class HttpClientConfiguration {
   * @returns The chainable instance of this configuration object.
   * @chainable
   */
-  withInterceptor(interceptor: Interceptor): HttpClientConfiguration {
-    this.interceptors.push(interceptor);
-    return this;
+  addInterceptor(interceptor: Interceptor): HttpClientConfiguration {
+    return new HttpClientConfiguration({
+      interceptors: this._options.interceptors.concat(interceptor),
+      ...this._options
+    });
   }
 
   /**
@@ -69,9 +90,9 @@ export class HttpClientConfiguration {
   * @chainable
   */
   useStandardConfiguration(): HttpClientConfiguration {
-    let standardConfig = { credentials: 'same-origin' };
-    Object.assign(this.defaults, standardConfig, this.defaults);
-    return this.rejectErrorResponses();
+    const standardConfig = { credentials: 'same-origin' };
+    return this.withDefaults(standardConfig)
+      .rejectErrorResponses();
   }
 
   /**
