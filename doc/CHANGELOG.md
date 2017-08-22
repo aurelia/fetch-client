@@ -1,3 +1,10 @@
+<a name="1.1.3"></a>
+## [1.1.3](https://github.com/aurelia/fetch-client/compare/1.1.2...v1.1.3) (2017-08-22)
+
+### Bug Fixes
+
+* fix style typo in error message that affected links displayed in editors
+
 <a name="1.1.2"></a>
 ## [1.1.2](https://github.com/aurelia/fetch-client/compare/1.1.1...v1.1.2) (2017-03-23)
 

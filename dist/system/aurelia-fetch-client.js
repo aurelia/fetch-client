@@ -181,7 +181,7 @@ System.register([], function (_export, _context) {
           this.interceptors = [];
 
           if (typeof fetch === 'undefined') {
-            throw new Error('HttpClient requires a Fetch API implementation, but the current environment doesn\'t support it. You may need to load a polyfill such as https://github.com/github/fetch.');
+            throw new Error('HttpClient requires a Fetch API implementation, but the current environment doesn\'t support it. You may need to load a polyfill such as https://github.com/github/fetch');
           }
         }
 
