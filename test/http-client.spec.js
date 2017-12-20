@@ -53,10 +53,10 @@ describe('HttpClient', () => {
       expect(client.baseUrl).toBe(baseUrl);
       expect(client.interceptors.indexOf(interceptor)).toBe(0);
     });
-    
+
     it('accepts configuration override', () => {
       let defaults = { foo: true };
-      
+
       client.configure(config => config.withDefaults(defaults));
 
 
@@ -406,7 +406,6 @@ describe('HttpClient', () => {
           let [request] = fetch.calls.first().args;
           expect(request.headers.has('x-foo')).toBe(true);
           expect(request.headers.get('x-foo')).toBe('baz');
-          expect(request.headers.getAll('x-foo').length).toBe(1);
           done();
         });
     });
