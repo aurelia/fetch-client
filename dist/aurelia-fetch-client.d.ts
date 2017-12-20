@@ -108,9 +108,10 @@ export declare interface RequestInit {
 * Useful for easily creating JSON fetch request bodies.
 *
 * @param body The object to be serialized to JSON.
+* @param replacer The JSON.stringify replacer used when serializing.
 * @returns A Blob containing the JSON serialized body.
 */
-export declare function json(body: any): Blob;
+export declare function json(body: any, replacer?: any): Blob;
 
 /**
 * A class for configuring HttpClients.

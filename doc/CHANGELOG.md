@@ -1,3 +1,13 @@
+<a name="1.2.0"></a>
+# [1.2.0](https://github.com/aurelia/fetch-client/compare/1.1.3...v1.2.0) (2017-12-20)
+
+
+### Features
+
+* **HttpClient:** add JSON.stringify replacer ([2fc49a9](https://github.com/aurelia/fetch-client/commit/2fc49a9))
+
+
+
 <a name="1.1.3"></a>
 ## [1.1.3](https://github.com/aurelia/fetch-client/compare/1.1.2...v1.1.3) (2017-08-22)
 

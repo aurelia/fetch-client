@@ -10,8 +10,8 @@ exports.json = json;
 
 
 
-function json(body) {
-  return new Blob([JSON.stringify(body !== undefined ? body : {})], { type: 'application/json' });
+function json(body, replacer) {
+  return new Blob([JSON.stringify(body !== undefined ? body : {}, replacer)], { type: 'application/json' });
 }
 
 var HttpClientConfiguration = exports.HttpClientConfiguration = function () {
