@@ -134,6 +134,8 @@ In the example above, `withBaseUrl()` is used to specify a base url that all fet
 * `response` will be run after `fetch()` completes, and will receive the resulting [Response](https://developer.mozilla.org/en-US/docs/Web/API/Response). As with `request`, it can either pass the Response along, return a modified response, or throw.
 * `responseError` is similar to `requestError`, and acts as a Promise rejection handler for response rejections.
 
+These methods on the interceptor object can also return `Promise`s for their respective return values.
+
 ### Helpers
 
 The Fetch API has a couple gotchas, documented by the [GitHub Fetch polyfill](https://github.com/github/fetch#caveats) docs. `aurelia-fetch-client` provides configuration helpers to apply the changes suggested by the polyfill docs.
