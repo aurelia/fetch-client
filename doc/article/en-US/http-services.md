@@ -1,22 +1,7 @@
 ---
-{
-  "name": "HTTP Services",
-  "culture": "en-US",
-  "description": "Usually JavaScript applications need to get their data from or communicate with various web services. In this article we'll take a look at the options Aurelia makes available to you.",
-  "engines" : { "aurelia-doc" : "^1.0.0" },
-  "author": {
-    "name": "Bryan Smith",
-    "url": "https://twitter.com/bryanarrsmith"
-  },
-  "contributors": [
-    {
-      "name": "Rob Eisenberg",
-      "url": "http://robeisenberg.com"
-    }
-  ],
-  "translators": [],
-  "keywords": ["HTTP", "Fetch", "Ajax"]
-}
+name: HTTP Services
+description: Usually JavaScript applications need to get their data from or communicate with various web services. In this article we'll take a look at the options Aurelia makes available to you.
+author: Bryan Smith (https://twitter.com/bryanarrsmith)
 ---
 ## [Options](aurelia-doc://section/1/version/1.0.0)
 
