@@ -3,7 +3,7 @@ name: HTTP Services
 description: Usually JavaScript applications need to get their data from or communicate with various web services. In this article we'll take a look at the options Aurelia makes available to you.
 author: Bryan Smith (https://twitter.com/bryanarrsmith)
 ---
-## [Options](aurelia-doc://section/1/version/1.0.0)
+## Options
 
 When building front-end applications, it's often necessary to leverage HTTP services to acquire data or persist state. There are many ways to accomplish this. You could use an advanced data library that implements object-relational mapping, an opinionated restful client or just a simple HTTP library. All these options are provided by the global web community and all of them can be used in an Aurelia application.
 
@@ -16,7 +16,7 @@ Along these lines, the Aurelia project provides two options:
 
 How should you choose between these two options? We recommend using `aurelia-fetch-client` if possible. It is based on the Fetch specification which will be the preferred way of handling all AJAX going forward. However, if you need request cancellation or download progress, the Fetch spec does not currently support these features. While these improvements to the spec are being considered for the future, it isn't available at present. So, if you need these capabilities, you may need to use `aurelia-http-client` instead.
 
-## [aurelia-fetch-client](aurelia-doc://section/2/version/1.0.0)
+## aurelia-fetch-client
 
 As previously stated, the `aurelia-fetch-client` library aims to embrace and expose the new [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API), while providing features important in web applications: default configuration of request parameters, interceptors and centralized request tracking. The main method, `HttpClient#fetch()`, has the same signature as `window.fetch()`. The difference is that our `HttpClient` will apply default configuration values, execute any registered interceptors and track the number of active requests.
 
@@ -205,7 +205,7 @@ This example creates a new `HttpClient` and configures it for use with an imagin
 
 If your application has requirements that don't fit within these limitations, then you may want to look into using `aurelia-http-client` instead.
 
-## [aurelia-http-client](aurelia-doc://section/3/version/1.0.0)
+## aurelia-http-client
 
 In addition to `aurelia-fetch-client`, Aurelia includes a basic `HttpClient` to provide a comfortable interface to the browser's `XMLHttpRequest` object. Like `aurelia-fetch-client`, `aurelia-http-client` is not included in the modules that Aurelia's bootstrapper installs, since it's completely optional and many apps may choose to use a different strategy for data retrieval. So, if you want to use it, first you must install it with your preferred package manager.
 
