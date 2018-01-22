@@ -1,4 +1,5 @@
 import 'aurelia-polyfills';
+import {json} from '../src/util';
 import {HttpClient} from '../src/http-client';
 import {HttpClientConfiguration} from '../src/http-client-configuration';
 
@@ -97,6 +98,52 @@ describe('HttpClient', () => {
         })
         .then(() => {
           expect(fetch).toHaveBeenCalled();
+          done();
+        });
+    });
+
+    it('makes proper requests with json() inputs', (done) => {
+      fetch.and.returnValue(emptyResponse(200));
+
+      client
+        .fetch('http://example.com/some/cool/path', {
+          method: 'post',
+          body: json({ test: 'object' })
+        })
+        .then(result => {
+          expect(result.ok).toBe(true);
+        })
+        .catch(result => {
+          expect(result).not.toBe(result);
+        })
+        .then(() => {
+          expect(fetch).toHaveBeenCalled();
+          let [request] = fetch.calls.first().args;
+          expect(request.headers.has('content-type')).toBe(true);
+          expect(request.headers.get('content-type')).toMatch(/application\/json/);
+          done();
+        });
+    });
+
+    it('makes proper requests with JSON.stringify inputs', (done) => {
+      fetch.and.returnValue(emptyResponse(200));
+      
+      client
+        .fetch('http://example.com/some/cool/path', {
+          method: 'post',
+          body: JSON.stringify({ test: 'object' })
+        })
+        .then(result => {
+          expect(result.ok).toBe(true);
+        })
+        .catch(result => {
+          expect(result).not.toBe(result);
+        })
+        .then(() => {
+          expect(fetch).toHaveBeenCalled();
+          let [request] = fetch.calls.first().args;
+          expect(request.headers.has('content-type')).toBe(true);
+          expect(request.headers.get('content-type')).toMatch(/application\/json/);
           done();
         });
     });
