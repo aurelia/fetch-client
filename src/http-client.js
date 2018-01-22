@@ -43,6 +43,11 @@ export class HttpClient {
     if (typeof fetch === 'undefined') {
       throw new Error('HttpClient requires a Fetch API implementation, but the current environment doesn\'t support it. You may need to load a polyfill such as https://github.com/github/fetch');
     }
+
+    // Use application/json as the default content-type.
+    this.defaults = {
+      headers: { 'content-type': 'application/json' }
+    };
   }
 
   /**
