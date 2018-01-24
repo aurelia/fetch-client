@@ -1,3 +1,13 @@
+<a name="1.3.0"></a>
+# [1.3.0](https://github.com/aurelia/fetch-client/compare/1.2.0...v1.3.0) (2018-01-24)
+
+
+### Bug Fixes
+
+* **util:** Discontinue using Blob for JSON ([03ae35f](https://github.com/aurelia/fetch-client/commit/03ae35f)), closes [#90](https://github.com/aurelia/fetch-client/issues/90)
+
+
+
 <a name="1.2.0"></a>
 # [1.2.0](https://github.com/aurelia/fetch-client/compare/1.1.3...v1.2.0) (2017-12-20)
 

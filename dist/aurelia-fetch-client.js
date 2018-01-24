@@ -1,14 +1,13 @@
 
 /**
-* Create a Blob containing JSON-serialized data.
-* Useful for easily creating JSON fetch request bodies.
+* Serialize an object to JSON. Useful for easily creating JSON fetch request bodies.
 *
 * @param body The object to be serialized to JSON.
 * @param replacer The JSON.stringify replacer used when serializing.
-* @returns A Blob containing the JSON serialized body.
+* @returns A JSON string.
 */
-export function json(body: any, replacer?: any): Blob {
-  return new Blob([JSON.stringify((body !== undefined ? body : {}), replacer)], { type: 'application/json' });
+export function json(body: any, replacer?: any): string {
+  return JSON.stringify((body !== undefined ? body : {}), replacer);
 }
 
 /* eslint-disable */
@@ -249,6 +248,11 @@ export class HttpClient {
     if (typeof fetch === 'undefined') {
       throw new Error('HttpClient requires a Fetch API implementation, but the current environment doesn\'t support it. You may need to load a polyfill such as https://github.com/github/fetch');
     }
+
+    // Use application/json as the default content-type.
+    this.defaults = {
+      headers: { 'content-type': 'application/json' }
+    };
   }
 
   /**

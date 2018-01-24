@@ -1,6 +1,6 @@
 
 export function json(body, replacer) {
-  return new Blob([JSON.stringify(body !== undefined ? body : {}, replacer)], { type: 'application/json' });
+  return JSON.stringify(body !== undefined ? body : {}, replacer);
 }
 
 export let HttpClientConfiguration = class HttpClientConfiguration {
@@ -56,6 +56,10 @@ export let HttpClient = class HttpClient {
     if (typeof fetch === 'undefined') {
       throw new Error('HttpClient requires a Fetch API implementation, but the current environment doesn\'t support it. You may need to load a polyfill such as https://github.com/github/fetch');
     }
+
+    this.defaults = {
+      headers: { 'content-type': 'application/json' }
+    };
   }
 
   configure(config) {

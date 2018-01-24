@@ -11,7 +11,7 @@ exports.json = json;
 
 
 function json(body, replacer) {
-  return new Blob([JSON.stringify(body !== undefined ? body : {}, replacer)], { type: 'application/json' });
+  return JSON.stringify(body !== undefined ? body : {}, replacer);
 }
 
 var HttpClientConfiguration = exports.HttpClientConfiguration = function () {
@@ -73,6 +73,10 @@ var HttpClient = exports.HttpClient = function () {
     if (typeof fetch === 'undefined') {
       throw new Error('HttpClient requires a Fetch API implementation, but the current environment doesn\'t support it. You may need to load a polyfill such as https://github.com/github/fetch');
     }
+
+    this.defaults = {
+      headers: { 'content-type': 'application/json' }
+    };
   }
 
   HttpClient.prototype.configure = function configure(config) {
