@@ -515,7 +515,7 @@ describe('HttpClient', () => {
 
     it('uses default content-type header', (done) => {
       fetch.and.returnValue(emptyResponse(200));
-      let contentType = 'application/json;charset=UTF-8';
+      let contentType = 'application/octet-stream';
       client.defaults = { method: 'post', body: '{}', headers: { 'content-type': contentType } };
 
       client.fetch('path')
