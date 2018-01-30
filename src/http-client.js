@@ -221,13 +221,13 @@ function applyInterceptors(input, interceptors, successName, errorName, ...inter
     }, Promise.resolve(input));
 }
 
-function isJSON(str) { 
-  try { 
+function isJSON(str) {
+  try {
     JSON.parse(str);
-  }
-  catch (err) {
+  } catch (err) {
     return false;
   }
+
   return true;
 }
 
