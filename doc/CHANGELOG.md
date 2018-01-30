@@ -1,3 +1,13 @@
+<a name="1.3.1"></a>
+## [1.3.1](https://github.com/aurelia/fetch-client/compare/1.3.0...v1.3.1) (2018-01-30)
+
+
+### Bug Fixes
+
+* **http-client:** Rework application/json header ([946273a](https://github.com/aurelia/fetch-client/commit/946273a)), closes [#90](https://github.com/aurelia/fetch-client/issues/90)
+
+
+
 <a name="1.3.0"></a>
 # [1.3.0](https://github.com/aurelia/fetch-client/compare/1.2.0...v1.3.0) (2018-01-24)
 
