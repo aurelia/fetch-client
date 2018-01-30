@@ -43,11 +43,6 @@ export class HttpClient {
     if (typeof fetch === 'undefined') {
       throw new Error('HttpClient requires a Fetch API implementation, but the current environment doesn\'t support it. You may need to load a polyfill such as https://github.com/github/fetch');
     }
-
-    // Use application/json as the default content-type.
-    this.defaults = {
-      headers: { 'content-type': 'application/json' }
-    };
   }
 
   /**
@@ -174,8 +169,12 @@ function buildRequest(input, init) {
     requestContentType = new Headers(requestInit.headers).get('Content-Type');
     request = new Request(getRequestUrl(this.baseUrl, input), requestInit);
   }
-  if (!requestContentType && new Headers(parsedDefaultHeaders).has('content-type')) {
-    request.headers.set('Content-Type', new Headers(parsedDefaultHeaders).get('content-type'));
+  if (!requestContentType) {
+    if (new Headers(parsedDefaultHeaders).has('content-type')) {
+      request.headers.set('Content-Type', new Headers(parsedDefaultHeaders).get('content-type'));
+    } else if (body && isJSON(body)) {
+      request.headers.set('Content-Type', 'application/json');
+    }
   }
   setDefaultHeaders(request.headers, parsedDefaultHeaders);
   if (body && Blob.prototype.isPrototypeOf(body) && body.type) {
@@ -220,6 +219,16 @@ function applyInterceptors(input, interceptors, successName, errorName, ...inter
         successHandler && (value => interceptor::successHandler(value, ...interceptorArgs)) || identity,
         errorHandler && (reason => interceptor::errorHandler(reason, ...interceptorArgs)) || thrower);
     }, Promise.resolve(input));
+}
+
+function isJSON(str) { 
+  try { 
+    JSON.parse(str);
+  }
+  catch (err) {
+    return false;
+  }
+  return true;
 }
 
 function identity(x) {
