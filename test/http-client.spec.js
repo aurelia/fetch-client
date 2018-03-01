@@ -127,7 +127,7 @@ describe('HttpClient', () => {
 
     it('makes proper requests with JSON.stringify inputs', (done) => {
       fetch.and.returnValue(emptyResponse(200));
-      
+
       client
         .fetch('http://example.com/some/cool/path', {
           method: 'post',
@@ -189,6 +189,91 @@ describe('HttpClient', () => {
 
       client
         .fetch(new Request('some/cool/path'))
+        .then(result => {
+          expect(result.ok).toBe(true);
+        })
+        .catch(result => {
+          expect(result).not.toBe(result);
+        })
+        .then(() => {
+          expect(fetch).toHaveBeenCalled();
+          done();
+        });
+    });
+  });
+
+  describe('get', () => {
+    it('passes-through to fetch', () => {
+      client
+        .get('http://example.com/some/cool/path')
+        .then(result => {
+          expect(result.ok).toBe(true);
+        })
+        .catch(result => {
+          expect(result).not.toBe(result);
+        })
+        .then(() => {
+          expect(fetch).toHaveBeenCalled();
+          done();
+        });
+    });
+  });
+
+  describe('post', () => {
+    it('sets method to POST and body of request and calls fetch', () => {
+      client
+        .post('http://example.com/some/cool/path', JSON.stringify({ test: 'object' }))
+        .then(result => {
+          expect(result.ok).toBe(true);
+        })
+        .catch(result => {
+          expect(result).not.toBe(result);
+        })
+        .then(() => {
+          expect(fetch).toHaveBeenCalled();
+          done();
+        });
+    });
+  });
+
+  describe('put', () => {
+    it('sets method to PUT and body of request and calls fetch', () => {
+      client
+        .put('http://example.com/some/cool/path', JSON.stringify({ test: 'object' }))
+        .then(result => {
+          expect(result.ok).toBe(true);
+        })
+        .catch(result => {
+          expect(result).not.toBe(result);
+        })
+        .then(() => {
+          expect(fetch).toHaveBeenCalled();
+          done();
+        });
+    });
+  });
+
+  describe('patch', () => {
+    it('sets method to PATCH and body of request and calls fetch', () => {
+      client
+        .put('http://example.com/some/cool/path', JSON.stringify({ test: 'object' }))
+        .then(result => {
+          expect(result.ok).toBe(true);
+        })
+        .catch(result => {
+          expect(result).not.toBe(result);
+        })
+        .then(() => {
+          expect(fetch).toHaveBeenCalled();
+          done();
+        });
+    });
+  });
+
+  describe('delete', () => {
+    it('sets method to DELETE and body of request and calls fetch', () => {
+      client
+        .delete('http://example.com/some/cool/path', JSON.stringify({ test: 'object' }))
         .then(result => {
           expect(result.ok).toBe(true);
         })
