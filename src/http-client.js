@@ -105,7 +105,7 @@ export class HttpClient {
     this::trackRequestStart();
 
     let request = this.buildRequest(input, init);
-    return processRequest(request, this.interceptors)
+    return processRequest(request, this.interceptors, this)
       .then(result => {
         let response = null;
 
@@ -118,7 +118,7 @@ export class HttpClient {
           throw new Error(`An invalid result was returned by the interceptor chain. Expected a Request or Response instance, but got [${result}]`);
         }
 
-        return processResponse(response, this.interceptors, request);
+        return processResponse(response, this.interceptors, request, this);
       })
       .then(result => {
         if (Request.prototype.isPrototypeOf(result)) {
@@ -206,12 +206,12 @@ function setDefaultHeaders(headers, defaultHeaders) {
   }
 }
 
-function processRequest(request, interceptors) {
-  return applyInterceptors(request, interceptors, 'request', 'requestError');
+function processRequest(request, interceptors, http) {
+  return applyInterceptors(request, interceptors, 'request', 'requestError', http);
 }
 
-function processResponse(response, interceptors, request) {
-  return applyInterceptors(response, interceptors, 'response', 'responseError', request);
+function processResponse(response, interceptors, request, http) {
+  return applyInterceptors(response, interceptors, 'response', 'responseError', request, http);
 }
 
 function applyInterceptors(input, interceptors, successName, errorName, ...interceptorArgs) {
