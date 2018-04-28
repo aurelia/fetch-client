@@ -104,24 +104,30 @@ export class HttpClient {
   fetch(input: Request|string, init?: RequestInit): Promise<Response> {
     this::trackRequestStart();
 
-    let request = Promise.resolve().then(() => this::buildRequest(input, init, this.defaults));
-    let promise = processRequest(request, this.interceptors)
+    let request = this::buildRequest(input, init, this.defaults);
+    return processRequest(request, this.interceptors)
       .then(result => {
         let response = null;
 
         if (Response.prototype.isPrototypeOf(result)) {
-          response = result;
+          response = Promise.resolve(result);
         } else if (Request.prototype.isPrototypeOf(result)) {
-          request = Promise.resolve(result);
+          request = result;
           response = fetch(result);
         } else {
           throw new Error(`An invalid result was returned by the interceptor chain. Expected a Request or Response instance, but got [${result}]`);
         }
 
-        return request.then(_request => processResponse(response, this.interceptors, _request));
+        return processResponse(response, this.interceptors, request);
+      })
+      .then(result => {
+        if (Request.prototype.isPrototypeOf(result)) {
+          debugger;
+          return this.fetch(result);
+        }
+        this::trackRequestEnd();
+        return result;
       });
-
-    return this::trackRequestEndWith(promise);
   }
 }
 

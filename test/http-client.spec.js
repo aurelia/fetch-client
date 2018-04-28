@@ -270,6 +270,25 @@ describe('HttpClient', () => {
         });
     });
 
+    it('forward requests', (done) => {
+      const path = 'retry';
+      let retry = 3;
+      fetch.and.returnValue(Promise.reject(new Response(null, { status: 500 })));
+      let interceptor = { response(r) { return r; }, responseError(r) { if (retry--) { return new Request(path) } else { throw r; } } };
+      spyOn(interceptor, 'response').and.callThrough();
+      spyOn(interceptor, 'responseError').and.callThrough();
+
+      client.interceptors.push(interceptor);
+
+      client.fetch(path)
+        .catch(() => {
+          expect(interceptor.response).not.toHaveBeenCalled();
+          expect(interceptor.responseError).toHaveBeenCalledWith(jasmine.any(Response), jasmine.any(Request));
+          expect(fetch).toHaveBeenCalledTimes(4);
+          done();
+        });
+    });
+
     it('normalizes input for interceptors', (done) => {
       fetch.and.returnValue(emptyResponse(200));
       let request;
