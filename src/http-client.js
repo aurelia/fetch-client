@@ -104,7 +104,7 @@ export class HttpClient {
   fetch(input: Request|string, init?: RequestInit): Promise<Response> {
     this::trackRequestStart();
 
-    let request = this::buildRequest(input, init, this.defaults);
+    let request = this.buildRequest(input, init);
     return processRequest(request, this.interceptors)
       .then(result => {
         let response = null;
@@ -122,12 +122,45 @@ export class HttpClient {
       })
       .then(result => {
         if (Request.prototype.isPrototypeOf(result)) {
-          debugger;
           return this.fetch(result);
         }
         this::trackRequestEnd();
         return result;
       });
+  }
+
+  buildRequest(input: string, init: RequestInit): Request {
+    let defaults = this.defaults || {};
+    let request;
+    let body;
+    let requestContentType;
+
+    let parsedDefaultHeaders = parseHeaderValues(defaults.headers);
+    if (Request.prototype.isPrototypeOf(input)) {
+      request = input;
+      requestContentType = new Headers(request.headers).get('Content-Type');
+    } else {
+      init || (init = {});
+      body = init.body;
+      let bodyObj = body ? { body } : null;
+      let requestInit = Object.assign({}, defaults, { headers: {} }, init, bodyObj);
+      requestContentType = new Headers(requestInit.headers).get('Content-Type');
+      request = new Request(getRequestUrl(this.baseUrl, input), requestInit);
+    }
+    if (!requestContentType) {
+      if (new Headers(parsedDefaultHeaders).has('content-type')) {
+        request.headers.set('Content-Type', new Headers(parsedDefaultHeaders).get('content-type'));
+      } else if (body && isJSON(body)) {
+        request.headers.set('Content-Type', 'application/json');
+      }
+    }
+    setDefaultHeaders(request.headers, parsedDefaultHeaders);
+    if (body && Blob.prototype.isPrototypeOf(body) && body.type) {
+      // work around bug in IE & Edge where the Blob type is ignored in the request
+      // https://connect.microsoft.com/IE/feedback/details/2136163
+      request.headers.set('Content-Type', body.type);
+    }
+    return request;
   }
 }
 
@@ -155,40 +188,6 @@ function parseHeaderValues(headers) {
     }
   }
   return parsedHeaders;
-}
-
-function buildRequest(input, init) {
-  let defaults = this.defaults || {};
-  let request;
-  let body;
-  let requestContentType;
-
-  let parsedDefaultHeaders = parseHeaderValues(defaults.headers);
-  if (Request.prototype.isPrototypeOf(input)) {
-    request = input;
-    requestContentType = new Headers(request.headers).get('Content-Type');
-  } else {
-    init || (init = {});
-    body = init.body;
-    let bodyObj = body ? { body } : null;
-    let requestInit = Object.assign({}, defaults, { headers: {} }, init, bodyObj);
-    requestContentType = new Headers(requestInit.headers).get('Content-Type');
-    request = new Request(getRequestUrl(this.baseUrl, input), requestInit);
-  }
-  if (!requestContentType) {
-    if (new Headers(parsedDefaultHeaders).has('content-type')) {
-      request.headers.set('Content-Type', new Headers(parsedDefaultHeaders).get('content-type'));
-    } else if (body && isJSON(body)) {
-      request.headers.set('Content-Type', 'application/json');
-    }
-  }
-  setDefaultHeaders(request.headers, parsedDefaultHeaders);
-  if (body && Blob.prototype.isPrototypeOf(body) && body.type) {
-    // work around bug in IE & Edge where the Blob type is ignored in the request
-    // https://connect.microsoft.com/IE/feedback/details/2136163
-    request.headers.set('Content-Type', body.type);
-  }
-  return request;
 }
 
 function getRequestUrl(baseUrl, url) {
