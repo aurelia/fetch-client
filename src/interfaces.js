@@ -95,4 +95,9 @@ interface RequestInit {
   * Contains the subresource integrity value of the request (e.g., sha256-BpfBw7ivV8q2jLiT13fxDYAe2tJllusRSZ273h2nFSE=).
   */
   integrity?: string;
+
+  /**
+   * An AbortSignal to set request’s signal.
+   */
+  signal?: AbortSignal;
 }
