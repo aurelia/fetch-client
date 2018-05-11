@@ -200,6 +200,27 @@ describe('HttpClient', () => {
           done();
         });
     });
+
+    it('makes request and aborts with an AbortController signal', (done) => {
+      fetch = window.fetch = originalFetch
+
+      const controller = new AbortController();
+ 
+      client
+        .fetch('http://jsonplaceholder.typicode.com/users', {signal: controller.signal})
+        .then(result => {
+          expect(result).not.toBe(result);
+        })
+        .catch(result => {
+          expect(result instanceof Error).toBe(true);
+          expect(result.name).toBe('AbortError');
+        })
+        .then(() => {
+          done();
+        });
+
+        controller.abort();
+    });
   });
 
   describe('interceptors', () => {
