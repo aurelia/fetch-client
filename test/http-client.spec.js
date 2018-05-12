@@ -1,6 +1,6 @@
 import 'aurelia-polyfills';
 import {json} from '../src/util';
-import {HttpClient} from '../src/http-client';
+import {HttpClient, buildRequest} from '../src/http-client';
 import {HttpClientConfiguration} from '../src/http-client-configuration';
 
 describe('HttpClient', () => {
@@ -287,6 +287,35 @@ describe('HttpClient', () => {
         .catch(() => {
           expect(interceptor.response).not.toHaveBeenCalled();
           expect(interceptor.responseError).toHaveBeenCalledWith(jasmine.any(Response), jasmine.any(Request));
+          done();
+        });
+    });
+
+    it('forward requests', (done) => {
+      const path = 'retry';
+      let retry = 3;
+      fetch.and.returnValue(Promise.reject(new Response(null, { status: 500 })));
+      let interceptor = { 
+        response(r) { return r; },
+        responseError(r) { 
+          if (retry--) {
+            let request = client.buildRequest(path);
+            return request;
+          } else { 
+            throw r; 
+          } 
+        } 
+      };
+      spyOn(interceptor, 'response').and.callThrough();
+      spyOn(interceptor, 'responseError').and.callThrough();
+
+      client.interceptors.push(interceptor);
+
+      client.fetch(path)
+        .catch(() => {
+          expect(interceptor.response).not.toHaveBeenCalled();
+          expect(interceptor.responseError).toHaveBeenCalledWith(jasmine.any(Response), jasmine.any(Request));
+          expect(fetch).toHaveBeenCalledTimes(4);
           done();
         });
     });
