@@ -256,7 +256,7 @@ describe('HttpClient', () => {
   describe('patch', () => {
     it('sets method to PATCH and body of request and calls fetch', () => {
       client
-        .put('http://example.com/some/cool/path', JSON.stringify({ test: 'object' }))
+        .patch('http://example.com/some/cool/path', JSON.stringify({ test: 'object' }))
         .then(result => {
           expect(result.ok).toBe(true);
         })
