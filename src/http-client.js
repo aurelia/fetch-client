@@ -1,5 +1,6 @@
 import {HttpClientConfiguration} from './http-client-configuration';
 import {RequestInit, Interceptor} from './interfaces';
+import {RetryInterceptor} from './retry-interceptor';
 
 /**
 * An HTTP client based on the Fetch API.
@@ -77,6 +78,21 @@ export class HttpClient {
       // Headers instances are not iterable in all browsers. Require a plain
       // object here to allow default headers to be merged into request headers.
       throw new Error('Default headers must be a plain object.');
+    }
+
+    let interceptors = normalizedConfig.interceptors;
+
+    if (interceptors && interceptors.length ) {
+      // find if there is a RetryInterceptor
+      if (interceptors.filter( x => RetryInterceptor.prototype.isPrototypeOf(x)).length > 1) {
+        throw new Error('Only one RetryInterceptor is allowed.');
+      }
+
+      const retryInterceptorIndex = interceptors.findIndex( x => RetryInterceptor.prototype.isPrototypeOf(x));
+
+      if (retryInterceptorIndex >= 0 && retryInterceptorIndex !== interceptors.length - 1) {
+        throw new Error('The retry interceptor must be the last interceptor defined.');
+      }
     }
 
     this.baseUrl = normalizedConfig.baseUrl;

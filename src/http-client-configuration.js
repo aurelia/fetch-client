@@ -1,4 +1,5 @@
 import {RequestInit, Interceptor} from './interfaces';
+import {RetryInterceptor} from './retry-interceptor';
 
 /**
 * A class for configuring HttpClients.
@@ -86,6 +87,12 @@ export class HttpClientConfiguration {
   */
   rejectErrorResponses(): HttpClientConfiguration {
     return this.withInterceptor({ response: rejectOnError });
+  }
+
+  withRetry( config?: RetryConfiguration) {
+    const interceptor : Interceptor = new RetryInterceptor(config);
+
+    return this.withInterceptor(interceptor);
   }
 }
 

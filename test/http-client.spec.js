@@ -1,7 +1,9 @@
-import 'aurelia-polyfills';
+import './setup';
+import { PLATFORM } from 'aurelia-pal';
 import {json} from '../src/util';
-import {HttpClient, buildRequest} from '../src/http-client';
+import {HttpClient} from '../src/http-client';
 import {HttpClientConfiguration} from '../src/http-client-configuration';
+import {retryStrategy} from '../src/retry-interceptor';
 
 describe('HttpClient', () => {
   let originalFetch = window.fetch;
@@ -236,7 +238,7 @@ describe('HttpClient', () => {
 
       client.fetch('path')
         .then(() => {
-          expect(interceptor.request).toHaveBeenCalledWith(jasmine.any(Request));
+          expect(interceptor.request).toHaveBeenCalledWith(jasmine.any(Request), client);
           expect(interceptor.requestError).not.toHaveBeenCalled();
           done();
         });
@@ -254,7 +256,7 @@ describe('HttpClient', () => {
       client.fetch()
         .catch(() => {
           expect(interceptor.request).not.toHaveBeenCalled();
-          expect(interceptor.requestError).toHaveBeenCalledWith(jasmine.any(Error));
+          expect(interceptor.requestError).toHaveBeenCalledWith(jasmine.any(Error), client);
           done();
         });
     });
@@ -269,7 +271,7 @@ describe('HttpClient', () => {
 
       client.fetch('path')
         .then(() => {
-          expect(interceptor.response).toHaveBeenCalledWith(jasmine.any(Response), jasmine.any(Request));
+          expect(interceptor.response).toHaveBeenCalledWith(jasmine.any(Response), jasmine.any(Request), client);
           expect(interceptor.responseError).not.toHaveBeenCalled();
           done();
         });
@@ -286,7 +288,7 @@ describe('HttpClient', () => {
       client.fetch('path')
         .catch(() => {
           expect(interceptor.response).not.toHaveBeenCalled();
-          expect(interceptor.responseError).toHaveBeenCalledWith(jasmine.any(Response), jasmine.any(Request));
+          expect(interceptor.responseError).toHaveBeenCalledWith(jasmine.any(Response), jasmine.any(Request), client);
           done();
         });
     });
@@ -314,7 +316,7 @@ describe('HttpClient', () => {
       client.fetch(path)
         .catch(() => {
           expect(interceptor.response).not.toHaveBeenCalled();
-          expect(interceptor.responseError).toHaveBeenCalledWith(jasmine.any(Response), jasmine.any(Request));
+          expect(interceptor.responseError).toHaveBeenCalledWith(jasmine.any(Response), jasmine.any(Request), client);
           expect(fetch).toHaveBeenCalledTimes(4);
           done();
         });
@@ -345,8 +347,8 @@ describe('HttpClient', () => {
 
       client.fetch('path')
         .then(() => {
-          expect(first.request).toHaveBeenCalledWith(jasmine.any(Request));
-          expect(second.request).toHaveBeenCalledWith(jasmine.any(Request));
+          expect(first.request).toHaveBeenCalledWith(jasmine.any(Request), client);
+          expect(second.request).toHaveBeenCalledWith(jasmine.any(Request), client);
           done();
         });
     });
@@ -574,6 +576,276 @@ describe('HttpClient', () => {
           expect(request.headers.has('content-type')).toBe(true);
           expect(request.headers.get('content-type')).toBe(contentType);
           done();
+        });
+    });
+  });
+
+  describe('retry', () => {
+    const originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+    beforeEach(() => {
+      client = new HttpClient();
+      fetch = window.fetch = jasmine.createSpy('fetch');
+      jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
+    });
+
+    afterEach(() => {
+      fetch = window.fetch = originalFetch;
+      jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
+    });
+
+    it('fails if multiple RetryInterceptors are defined', () => {
+      const configure = () => {
+        client.configure(config => config.withRetry().withRetry());
+      };
+
+      expect(configure).toThrowError('Only one RetryInterceptor is allowed.');
+    });
+
+    it('fails if RetryInterceptor is not last interceptor defined', () => {
+      const configure = () => {
+        client.configure(config => config.withRetry().rejectErrorResponses());
+      };
+
+      expect(configure).toThrowError('The retry interceptor must be the last interceptor defined.');
+    });
+
+    it('retries the specified number of times', (done) => {
+      let response = new Response(null, { status: 500 });
+      fetch.and.returnValue(Promise.resolve(response));
+
+      client.configure(config => config.rejectErrorResponses().withRetry({
+        maxRetries: 3,
+        interval: 10
+      }));
+      client.fetch('path')
+        .then((r) => {
+          done.fail('fetch did not error');
+        })
+        .catch((r) => {
+          // 1 original call plus 3 retries
+          expect(fetch).toHaveBeenCalledTimes(4);
+          done();
+        });
+    });
+
+    it('continues with retry when doRetry returns true', (done) => {
+      let response = new Response(null, { status: 500 });
+      fetch.and.returnValue(Promise.resolve(response));
+
+      let doRetryCallback = jasmine.createSpy('doRetry').and.returnValue(true);
+
+      client.configure(config => config.rejectErrorResponses().withRetry({
+        maxRetries: 2,
+        interval: 10,
+        doRetry: doRetryCallback
+      }));
+      client.fetch('path')
+        .then((r) => {
+          done.fail('fetch did not error');
+        })
+        .catch((r) => {
+          // 1 original call plus 2 retries
+          expect(fetch).toHaveBeenCalledTimes(3);
+          // only called on retries
+          expect(doRetryCallback).toHaveBeenCalledTimes(2);
+          done();
+        });
+    });
+
+    it('does not retry when doRetry returns false', (done) => {
+      let response = new Response(null, { status: 500 });
+      fetch.and.returnValue(Promise.resolve(response));
+
+      let doRetryCallback = jasmine.createSpy('doRetry').and.returnValue(false);
+
+      client.configure(config => config.rejectErrorResponses().withRetry({
+        maxRetries: 2,
+        interval: 10,
+        doRetry: doRetryCallback
+      }));
+      client.fetch('path')
+        .then((r) => {
+          done.fail('fetch did not error');
+        })
+        .catch((r) => {
+          // 1 original call plus 0 retries
+          expect(fetch).toHaveBeenCalledTimes(1);
+          // only called on retries
+          expect(doRetryCallback).toHaveBeenCalledTimes(1);
+          done();
+        });
+    });
+
+    it('calls beforeRetry callback when specified', (done) => {
+      let response = new Response(null, { status: 500 });
+      fetch.and.returnValue(Promise.resolve(response));
+
+      let beforeRetryCallback = jasmine.createSpy('beforeRetry').and.returnValue(new Request('path'));
+
+      client.configure(config => config.rejectErrorResponses().withRetry({
+        maxRetries: 2,
+        interval: 10,
+        beforeRetry: beforeRetryCallback
+      }));
+      client.fetch('path')
+        .then((r) => {
+          done.fail('fetch did not error');
+        })
+        .catch((r) => {
+          // 1 original call plus 2 retries
+          expect(fetch).toHaveBeenCalledTimes(3);
+          // only called on retries
+          expect(beforeRetryCallback).toHaveBeenCalledTimes(2);
+          done();
+        });
+    });
+
+    it('calls custom retry strategy callback when specified', (done) => {
+      let response = new Response(null, { status: 500 });
+      fetch.and.returnValue(Promise.resolve(response));
+
+      let strategyRetryCallback = jasmine.createSpy('strategy').and.returnValue(10);
+
+      client.configure(config => config.rejectErrorResponses().withRetry({
+        maxRetries: 2,
+        strategy: strategyRetryCallback
+      }));
+      client.fetch('path')
+        .then((r) => {
+          done.fail('fetch did not error');
+        })
+        .catch((r) => {
+          // 1 original call plus 2 retries
+          expect(fetch).toHaveBeenCalledTimes(3);
+          // only called on retries
+          expect(strategyRetryCallback).toHaveBeenCalledTimes(2);
+          done();
+        });
+    });
+
+    it('waits correct number amount of time with fixed retry strategy', (done) => {
+      let response = new Response(null, { status: 500 });
+      fetch.and.returnValue(Promise.resolve(response));
+
+      spyOn(PLATFORM.global, 'setTimeout').and.callThrough();
+
+      client.configure(config => config.rejectErrorResponses().withRetry({
+        maxRetries: 2,
+        interval: 250,
+        strategy: retryStrategy.fixed
+      }));
+      client.fetch('path')
+        .then((r) => {
+          done.fail('fetch did not error');
+        })
+        .catch((r) => {
+          // only called on retries
+          expect(PLATFORM.global.setTimeout.calls.argsFor(0)).toEqual([jasmine.any(Function), 250]);
+          expect(PLATFORM.global.setTimeout.calls.argsFor(1)).toEqual([jasmine.any(Function), 250]);
+          done();
+        });
+    });
+
+    it('waits correct number amount of time with incremental retry strategy', (done) => {
+      let response = new Response(null, { status: 500 });
+      fetch.and.returnValue(Promise.resolve(response));
+
+      spyOn(window, 'setTimeout').and.callThrough();
+
+      client.configure(config => config.rejectErrorResponses().withRetry({
+        maxRetries: 2,
+        interval: 250,
+        strategy: retryStrategy.incremental
+      }));
+      client.fetch('path')
+        .then((r) => {
+          done.fail('fetch did not error');
+        })
+        .catch((r) => {
+          // only called on retries
+          expect(window.setTimeout.calls.argsFor(0)).toEqual([jasmine.any(Function), 250]);
+          expect(window.setTimeout.calls.argsFor(1)).toEqual([jasmine.any(Function), 500]);
+          done();
+        });
+    });
+
+    it('waits correct number amount of time with exponential retry strategy', (done) => {
+      let response = new Response(null, { status: 500 });
+      fetch.and.returnValue(Promise.resolve(response));
+
+      spyOn(window, 'setTimeout').and.callThrough();
+
+      client.configure(config => config.rejectErrorResponses().withRetry({
+        maxRetries: 2,
+        interval: 2000,
+        strategy: retryStrategy.exponential
+      }));
+      client.fetch('path')
+        .then((r) => {
+          done.fail('fetch did not error');
+        })
+        .catch((r) => {
+          // only called on retries
+          expect(window.setTimeout.calls.argsFor(0)).toEqual([jasmine.any(Function), 2000]);
+          expect(window.setTimeout.calls.argsFor(1)).toEqual([jasmine.any(Function), 4000]);
+          done();
+        });
+    });
+
+    it('waits correct number amount of time with random retry strategy', (done) => {
+      let response = new Response(null, { status: 500 });
+      const firstRandom = 0.1;
+      const secondRandom = 0.4;
+
+      fetch.and.returnValue(Promise.resolve(response));
+
+      spyOn(window, 'setTimeout').and.callThrough();
+      spyOn(Math, 'random').and.returnValues(firstRandom, secondRandom);
+
+      client.configure(config => config.rejectErrorResponses().withRetry({
+        maxRetries: 2,
+        interval: 2000,
+        strategy: retryStrategy.random,
+        minRandomInterval: 1000,
+        maxRandomInterval: 3000
+      }));
+
+      const firstInterval = firstRandom * (3000 - 1000) + 1000;
+      const secondInterval = secondRandom * (3000 - 1000) + 1000;
+
+      client.fetch('path')
+        .then((r) => {
+          done.fail('fetch did not error');
+        })
+        .catch((r) => {
+          // only called on retries
+          expect(window.setTimeout.calls.argsFor(0)).toEqual([jasmine.any(Function), firstInterval]);
+          expect(window.setTimeout.calls.argsFor(1)).toEqual([jasmine.any(Function), secondInterval]);
+          done();
+        });
+    });
+
+    it('successfully returns without error if a retry succeeds', (done) => {
+      let firstResponse = new Response(null, { status: 500 });
+      let secondResponse = new Response(null, { status: 200 });
+
+      fetch.and.returnValues(Promise.resolve(firstResponse), Promise.resolve(secondResponse));
+
+      client.configure(config => config.rejectErrorResponses().withRetry({
+        maxRetries: 3,
+        interval: 1,
+        strategy: retryStrategy.fixed
+      }));
+
+      client.fetch('path')
+        .then(r => {
+          // 1 original call plus 1 retry
+          expect(fetch).toHaveBeenCalledTimes(2);
+          expect(r).toEqual(secondResponse);
+          done();
+        })
+        .catch(r => {
+          done.fail('retry was unsuccessful');
         });
     });
   });
