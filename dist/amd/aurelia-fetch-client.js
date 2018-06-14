@@ -1,15 +1,16 @@
-define(['exports'], function (exports) {
+define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
+  exports.HttpClient = exports.HttpClientConfiguration = exports.RetryInterceptor = exports.retryStrategy = undefined;
   exports.json = json;
 
   var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
     return typeof obj;
   } : function (obj) {
-    return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+    return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
   };
 
   
@@ -17,6 +18,142 @@ define(['exports'], function (exports) {
   function json(body, replacer) {
     return JSON.stringify(body !== undefined ? body : {}, replacer);
   }
+
+  var retryStrategy = exports.retryStrategy = {
+    fixed: 0,
+    incremental: 1,
+    exponential: 2,
+    random: 3
+  };
+
+  var defaultRetryConfig = {
+    maxRetries: 3,
+    interval: 1000,
+    strategy: retryStrategy.fixed
+  };
+
+  var RetryInterceptor = exports.RetryInterceptor = function () {
+    function RetryInterceptor(retryConfig) {
+      
+
+      this.retryConfig = Object.assign({}, defaultRetryConfig, retryConfig || {});
+
+      if (this.retryConfig.strategy === retryStrategy.exponential && this.retryConfig.interval <= 1000) {
+        throw new Error('An interval less than or equal to 1 second is not allowed when using the exponential retry strategy');
+      }
+    }
+
+    RetryInterceptor.prototype.request = function (_request) {
+      function request(_x) {
+        return _request.apply(this, arguments);
+      }
+
+      request.toString = function () {
+        return _request.toString();
+      };
+
+      return request;
+    }(function (request) {
+      if (!request.retryConfig) {
+        request.retryConfig = Object.assign({}, this.retryConfig);
+        request.retryConfig.counter = 0;
+      }
+
+      request.retryConfig.requestClone = request.clone();
+
+      return request;
+    });
+
+    RetryInterceptor.prototype.response = function (_response) {
+      function response(_x2, _x3) {
+        return _response.apply(this, arguments);
+      }
+
+      response.toString = function () {
+        return _response.toString();
+      };
+
+      return response;
+    }(function (response, request) {
+      delete request.retryConfig;
+      return response;
+    });
+
+    RetryInterceptor.prototype.responseError = function responseError(error, request, httpClient) {
+      var retryConfig = request.retryConfig;
+      var requestClone = retryConfig.requestClone;
+
+      return Promise.resolve().then(function () {
+        if (retryConfig.counter < retryConfig.maxRetries) {
+          var result = retryConfig.doRetry ? retryConfig.doRetry(error, request) : true;
+
+          return Promise.resolve(result).then(function (doRetry) {
+            if (doRetry) {
+              retryConfig.counter++;
+              return new Promise(function (resolve) {
+                return _aureliaPal.PLATFORM.global.setTimeout(resolve, calculateDelay(retryConfig) || 0);
+              }).then(function () {
+                var newRequest = requestClone.clone();
+                if (typeof retryConfig.beforeRetry === 'function') {
+                  return retryConfig.beforeRetry(newRequest, httpClient);
+                }
+                return newRequest;
+              }).then(function (newRequest) {
+                return httpClient.fetch(Object.assign(newRequest, { retryConfig: retryConfig }));
+              });
+            }
+
+            delete request.retryConfig;
+            throw error;
+          });
+        }
+
+        delete request.retryConfig;
+        throw error;
+      });
+    };
+
+    return RetryInterceptor;
+  }();
+
+  function calculateDelay(retryConfig) {
+    var interval = retryConfig.interval,
+        strategy = retryConfig.strategy,
+        minRandomInterval = retryConfig.minRandomInterval,
+        maxRandomInterval = retryConfig.maxRandomInterval,
+        counter = retryConfig.counter;
+
+
+    if (typeof strategy === 'function') {
+      return retryConfig.strategy(counter);
+    }
+
+    switch (strategy) {
+      case retryStrategy.fixed:
+        return retryStrategies[retryStrategy.fixed](interval);
+      case retryStrategy.incremental:
+        return retryStrategies[retryStrategy.incremental](counter, interval);
+      case retryStrategy.exponential:
+        return retryStrategies[retryStrategy.exponential](counter, interval);
+      case retryStrategy.random:
+        return retryStrategies[retryStrategy.random](counter, interval, minRandomInterval, maxRandomInterval);
+      default:
+        throw new Error('Unrecognized retry strategy');
+    }
+  }
+
+  var retryStrategies = [function (interval) {
+    return interval;
+  }, function (retryCount, interval) {
+    return interval * retryCount;
+  }, function (retryCount, interval) {
+    return retryCount === 1 ? interval : Math.pow(interval, retryCount) / 1000;
+  }, function (retryCount, interval) {
+    var minRandomInterval = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+    var maxRandomInterval = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 60000;
+
+    return Math.random() * (maxRandomInterval - minRandomInterval) + minRandomInterval;
+  }];
 
   var HttpClientConfiguration = exports.HttpClientConfiguration = function () {
     function HttpClientConfiguration() {
@@ -50,6 +187,12 @@ define(['exports'], function (exports) {
 
     HttpClientConfiguration.prototype.rejectErrorResponses = function rejectErrorResponses() {
       return this.withInterceptor({ response: rejectOnError });
+    };
+
+    HttpClientConfiguration.prototype.withRetry = function withRetry(config) {
+      var interceptor = new RetryInterceptor(config);
+
+      return this.withInterceptor(interceptor);
     };
 
     return HttpClientConfiguration;
@@ -103,6 +246,24 @@ define(['exports'], function (exports) {
         throw new Error('Default headers must be a plain object.');
       }
 
+      var interceptors = normalizedConfig.interceptors;
+
+      if (interceptors && interceptors.length) {
+        if (interceptors.filter(function (x) {
+          return RetryInterceptor.prototype.isPrototypeOf(x);
+        }).length > 1) {
+          throw new Error('Only one RetryInterceptor is allowed.');
+        }
+
+        var retryInterceptorIndex = interceptors.findIndex(function (x) {
+          return RetryInterceptor.prototype.isPrototypeOf(x);
+        });
+
+        if (retryInterceptorIndex >= 0 && retryInterceptorIndex !== interceptors.length - 1) {
+          throw new Error('The retry interceptor must be the last interceptor defined.');
+        }
+      }
+
       this.baseUrl = normalizedConfig.baseUrl;
       this.defaults = defaults;
       this.interceptors = normalizedConfig.interceptors || [];
@@ -112,7 +273,7 @@ define(['exports'], function (exports) {
     };
 
     HttpClient.prototype.fetch = function (_fetch) {
-      function fetch(_x, _x2) {
+      function fetch(_x6, _x7) {
         return _fetch.apply(this, arguments);
       }
 
@@ -126,28 +287,60 @@ define(['exports'], function (exports) {
 
       trackRequestStart.call(this);
 
-      var request = Promise.resolve().then(function () {
-        return buildRequest.call(_this, input, init, _this.defaults);
-      });
-      var promise = processRequest(request, this.interceptors).then(function (result) {
+      var request = this.buildRequest(input, init);
+      return processRequest(request, this.interceptors, this).then(function (result) {
         var response = null;
 
         if (Response.prototype.isPrototypeOf(result)) {
-          response = result;
+          response = Promise.resolve(result);
         } else if (Request.prototype.isPrototypeOf(result)) {
-          request = Promise.resolve(result);
+          request = result;
           response = fetch(result);
         } else {
           throw new Error('An invalid result was returned by the interceptor chain. Expected a Request or Response instance, but got [' + result + ']');
         }
 
-        return request.then(function (_request) {
-          return processResponse(response, _this.interceptors, _request);
-        });
+        return processResponse(response, _this.interceptors, request, _this);
+      }).then(function (result) {
+        if (Request.prototype.isPrototypeOf(result)) {
+          return _this.fetch(result);
+        }
+        trackRequestEnd.call(_this);
+        return result;
       });
-
-      return trackRequestEndWith.call(this, promise);
     });
+
+    HttpClient.prototype.buildRequest = function buildRequest(input, init) {
+      var defaults = this.defaults || {};
+      var request = void 0;
+      var body = void 0;
+      var requestContentType = void 0;
+
+      var parsedDefaultHeaders = parseHeaderValues(defaults.headers);
+      if (Request.prototype.isPrototypeOf(input)) {
+        request = input;
+        requestContentType = new Headers(request.headers).get('Content-Type');
+      } else {
+        init || (init = {});
+        body = init.body;
+        var bodyObj = body ? { body: body } : null;
+        var requestInit = Object.assign({}, defaults, { headers: {} }, init, bodyObj);
+        requestContentType = new Headers(requestInit.headers).get('Content-Type');
+        request = new Request(getRequestUrl(this.baseUrl, input), requestInit);
+      }
+      if (!requestContentType) {
+        if (new Headers(parsedDefaultHeaders).has('content-type')) {
+          request.headers.set('Content-Type', new Headers(parsedDefaultHeaders).get('content-type'));
+        } else if (body && isJSON(body)) {
+          request.headers.set('Content-Type', 'application/json');
+        }
+      }
+      setDefaultHeaders(request.headers, parsedDefaultHeaders);
+      if (body && Blob.prototype.isPrototypeOf(body) && body.type) {
+        request.headers.set('Content-Type', body.type);
+      }
+      return request;
+    };
 
     return HttpClient;
   }();
@@ -155,17 +348,11 @@ define(['exports'], function (exports) {
   var absoluteUrlRegexp = /^([a-z][a-z0-9+\-.]*:)?\/\//i;
 
   function trackRequestStart() {
-    this.isRequesting = !! ++this.activeRequestCount;
+    this.isRequesting = !!++this.activeRequestCount;
   }
 
   function trackRequestEnd() {
     this.isRequesting = !! --this.activeRequestCount;
-  }
-
-  function trackRequestEndWith(promise) {
-    var handle = trackRequestEnd.bind(this);
-    promise.then(handle, handle);
-    return promise;
   }
 
   function parseHeaderValues(headers) {
@@ -176,38 +363,6 @@ define(['exports'], function (exports) {
       }
     }
     return parsedHeaders;
-  }
-
-  function buildRequest(input, init) {
-    var defaults = this.defaults || {};
-    var request = void 0;
-    var body = void 0;
-    var requestContentType = void 0;
-
-    var parsedDefaultHeaders = parseHeaderValues(defaults.headers);
-    if (Request.prototype.isPrototypeOf(input)) {
-      request = input;
-      requestContentType = new Headers(request.headers).get('Content-Type');
-    } else {
-      init || (init = {});
-      body = init.body;
-      var bodyObj = body ? { body: body } : null;
-      var requestInit = Object.assign({}, defaults, { headers: {} }, init, bodyObj);
-      requestContentType = new Headers(requestInit.headers).get('Content-Type');
-      request = new Request(getRequestUrl(this.baseUrl, input), requestInit);
-    }
-    if (!requestContentType) {
-      if (new Headers(parsedDefaultHeaders).has('content-type')) {
-        request.headers.set('Content-Type', new Headers(parsedDefaultHeaders).get('content-type'));
-      } else if (body && isJSON(body)) {
-        request.headers.set('Content-Type', 'application/json');
-      }
-    }
-    setDefaultHeaders(request.headers, parsedDefaultHeaders);
-    if (body && Blob.prototype.isPrototypeOf(body) && body.type) {
-      request.headers.set('Content-Type', body.type);
-    }
-    return request;
   }
 
   function getRequestUrl(baseUrl, url) {
@@ -226,12 +381,12 @@ define(['exports'], function (exports) {
     }
   }
 
-  function processRequest(request, interceptors) {
-    return applyInterceptors(request, interceptors, 'request', 'requestError');
+  function processRequest(request, interceptors, http) {
+    return applyInterceptors(request, interceptors, 'request', 'requestError', http);
   }
 
-  function processResponse(response, interceptors, request) {
-    return applyInterceptors(response, interceptors, 'response', 'responseError', request);
+  function processResponse(response, interceptors, request, http) {
+    return applyInterceptors(response, interceptors, 'response', 'responseError', request, http);
   }
 
   function applyInterceptors(input, interceptors, successName, errorName) {

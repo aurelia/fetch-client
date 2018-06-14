@@ -1,3 +1,4 @@
+import {PLATFORM} from 'aurelia-pal';
 
 /**
 * Serialize an object to JSON. Useful for easily creating JSON fetch request bodies.
@@ -55,7 +56,7 @@ interface Interceptor {
    * previous interceptor.
    * @returns The response; or a Promise for one.
    */
-  responseError?: (error: any, request?: Request) => Response|Promise<Response>;
+  responseError?: (error: any, request?: Request, httpClient? : HttpClient) => Response|Promise<Response>;
 }
 
 /**
@@ -107,7 +108,135 @@ interface RequestInit {
   * Contains the subresource integrity value of the request (e.g., sha256-BpfBw7ivV8q2jLiT13fxDYAe2tJllusRSZ273h2nFSE=).
   */
   integrity?: string;
+
+  /**
+   * An AbortSignal to set request’s signal.
+   */
+  signal?: AbortSignal;
 }
+
+interface RetryConfiguration {
+  maxRetries: number;
+  interval?: number;
+  strategy?: number|(retryCount: number) => number;
+  minRandomInterval?: number;
+  maxRandomInterval?: number;
+  doRetry?: (response: Response, request: Request) => boolean | Promise<boolean>;
+  beforeRetry?: (request: Request, client: HttpClient) => Request | Promise<Request>;
+}
+
+export const retryStrategy = {
+  fixed: 0,
+  incremental: 1,
+  exponential: 2,
+  random: 3
+};
+
+const defaultRetryConfig: RetryConfiguration = {
+  maxRetries: 3,
+  interval: 1000,
+  strategy: retryStrategy.fixed
+};
+
+export class RetryInterceptor implements Interceptor {
+  retryConfig: RetryConfiguration;
+
+  constructor(retryConfig?: RetryConfiguration) {
+    this.retryConfig = Object.assign({}, defaultRetryConfig, retryConfig || {});
+
+    if (this.retryConfig.strategy === retryStrategy.exponential &&
+      this.retryConfig.interval <= 1000) {
+      throw new Error('An interval less than or equal to 1 second is not allowed when using the exponential retry strategy');
+    }
+  }
+
+  request(request) {
+    if (!request.retryConfig) {
+      request.retryConfig = Object.assign({}, this.retryConfig);
+      request.retryConfig.counter = 0;
+    }
+
+    // do this on every request
+    request.retryConfig.requestClone = request.clone();
+
+    return request;
+  }
+
+  response(response, request) {
+    // retry was successful, so clean up after ourselves
+    delete request.retryConfig;
+    return response;
+  }
+
+  responseError(error, request, httpClient) {
+    const { retryConfig } = request;
+    const { requestClone } = retryConfig;
+    return Promise.resolve().then(() => {
+      if (retryConfig.counter < retryConfig.maxRetries) {
+        const result = retryConfig.doRetry ? retryConfig.doRetry(error, request) : true;
+
+        return Promise.resolve(result).then(doRetry => {
+          if (doRetry) {
+            retryConfig.counter++;
+            return new Promise(resolve => PLATFORM.global.setTimeout(resolve, calculateDelay(retryConfig) || 0)).then(() => {
+              let newRequest = requestClone.clone();
+              if (typeof (retryConfig.beforeRetry) === 'function') {
+                return retryConfig.beforeRetry(newRequest, httpClient);
+              }
+              return newRequest;
+            }).then(newRequest => {
+              return httpClient.fetch(Object.assign(newRequest, { retryConfig }));
+            });
+          }
+
+          // no more retries, so clean up
+          delete request.retryConfig;
+          throw error;
+        });
+      }
+      // no more retries, so clean up
+      delete request.retryConfig;
+      throw error;
+    });
+  }
+}
+
+function calculateDelay(retryConfig: RetryConfiguration) {
+  const { interval, strategy, minRandomInterval, maxRandomInterval, counter } = retryConfig;
+
+  if (typeof (strategy) === 'function') {
+    return retryConfig.strategy(counter);
+  }
+
+  switch (strategy) {
+  case (retryStrategy.fixed):
+    return retryStrategies[retryStrategy.fixed](interval);
+  case (retryStrategy.incremental):
+    return retryStrategies[retryStrategy.incremental](counter, interval);
+  case (retryStrategy.exponential):
+    return retryStrategies[retryStrategy.exponential](counter, interval);
+  case (retryStrategy.random):
+    return retryStrategies[retryStrategy.random](counter, interval, minRandomInterval, maxRandomInterval);
+  default:
+    throw new Error('Unrecognized retry strategy');
+  }
+}
+
+const retryStrategies = [
+  // fixed
+  interval => interval,
+
+  // incremental
+  (retryCount, interval) => interval * retryCount,
+
+  // exponential
+  (retryCount, interval) => retryCount === 1 ? interval : Math.pow(interval, retryCount) / 1000,
+
+  // random
+  (retryCount, interval, minRandomInterval = 0, maxRandomInterval = 60000) => {
+    return Math.random() * (maxRandomInterval - minRandomInterval) + minRandomInterval;
+  }
+];
 
 /**
 * A class for configuring HttpClients.
@@ -195,6 +324,12 @@ export class HttpClientConfiguration {
   */
   rejectErrorResponses(): HttpClientConfiguration {
     return this.withInterceptor({ response: rejectOnError });
+  }
+
+  withRetry( config?: RetryConfiguration) {
+    const interceptor : Interceptor = new RetryInterceptor(config);
+
+    return this.withInterceptor(interceptor);
   }
 }
 
@@ -284,6 +419,21 @@ export class HttpClient {
       throw new Error('Default headers must be a plain object.');
     }
 
+    let interceptors = normalizedConfig.interceptors;
+
+    if (interceptors && interceptors.length ) {
+      // find if there is a RetryInterceptor
+      if (interceptors.filter( x => RetryInterceptor.prototype.isPrototypeOf(x)).length > 1) {
+        throw new Error('Only one RetryInterceptor is allowed.');
+      }
+
+      const retryInterceptorIndex = interceptors.findIndex( x => RetryInterceptor.prototype.isPrototypeOf(x));
+
+      if (retryInterceptorIndex >= 0 && retryInterceptorIndex !== interceptors.length - 1) {
+        throw new Error('The retry interceptor must be the last interceptor defined.');
+      }
+    }
+
     this.baseUrl = normalizedConfig.baseUrl;
     this.defaults = defaults;
     this.interceptors = normalizedConfig.interceptors || [];
@@ -309,24 +459,63 @@ export class HttpClient {
   fetch(input: Request|string, init?: RequestInit): Promise<Response> {
     this::trackRequestStart();
 
-    let request = Promise.resolve().then(() => this::buildRequest(input, init, this.defaults));
-    let promise = processRequest(request, this.interceptors)
+    let request = this.buildRequest(input, init);
+    return processRequest(request, this.interceptors, this)
       .then(result => {
         let response = null;
 
         if (Response.prototype.isPrototypeOf(result)) {
-          response = result;
+          response = Promise.resolve(result);
         } else if (Request.prototype.isPrototypeOf(result)) {
-          request = Promise.resolve(result);
+          request = result;
           response = fetch(result);
         } else {
           throw new Error(`An invalid result was returned by the interceptor chain. Expected a Request or Response instance, but got [${result}]`);
         }
 
-        return request.then(_request => processResponse(response, this.interceptors, _request));
+        return processResponse(response, this.interceptors, request, this);
+      })
+      .then(result => {
+        if (Request.prototype.isPrototypeOf(result)) {
+          return this.fetch(result);
+        }
+        this::trackRequestEnd();
+        return result;
       });
+  }
 
-    return this::trackRequestEndWith(promise);
+  buildRequest(input: string, init: RequestInit): Request {
+    let defaults = this.defaults || {};
+    let request;
+    let body;
+    let requestContentType;
+
+    let parsedDefaultHeaders = parseHeaderValues(defaults.headers);
+    if (Request.prototype.isPrototypeOf(input)) {
+      request = input;
+      requestContentType = new Headers(request.headers).get('Content-Type');
+    } else {
+      init || (init = {});
+      body = init.body;
+      let bodyObj = body ? { body } : null;
+      let requestInit = Object.assign({}, defaults, { headers: {} }, init, bodyObj);
+      requestContentType = new Headers(requestInit.headers).get('Content-Type');
+      request = new Request(getRequestUrl(this.baseUrl, input), requestInit);
+    }
+    if (!requestContentType) {
+      if (new Headers(parsedDefaultHeaders).has('content-type')) {
+        request.headers.set('Content-Type', new Headers(parsedDefaultHeaders).get('content-type'));
+      } else if (body && isJSON(body)) {
+        request.headers.set('Content-Type', 'application/json');
+      }
+    }
+    setDefaultHeaders(request.headers, parsedDefaultHeaders);
+    if (body && Blob.prototype.isPrototypeOf(body) && body.type) {
+      // work around bug in IE & Edge where the Blob type is ignored in the request
+      // https://connect.microsoft.com/IE/feedback/details/2136163
+      request.headers.set('Content-Type', body.type);
+    }
+    return request;
   }
 }
 
@@ -340,12 +529,6 @@ function trackRequestEnd() {
   this.isRequesting = !!(--this.activeRequestCount);
 }
 
-function trackRequestEndWith(promise) {
-  let handle = this::trackRequestEnd;
-  promise.then(handle, handle);
-  return promise;
-}
-
 function parseHeaderValues(headers) {
   let parsedHeaders = {};
   for (let name in headers || {}) {
@@ -354,40 +537,6 @@ function parseHeaderValues(headers) {
     }
   }
   return parsedHeaders;
-}
-
-function buildRequest(input, init) {
-  let defaults = this.defaults || {};
-  let request;
-  let body;
-  let requestContentType;
-
-  let parsedDefaultHeaders = parseHeaderValues(defaults.headers);
-  if (Request.prototype.isPrototypeOf(input)) {
-    request = input;
-    requestContentType = new Headers(request.headers).get('Content-Type');
-  } else {
-    init || (init = {});
-    body = init.body;
-    let bodyObj = body ? { body } : null;
-    let requestInit = Object.assign({}, defaults, { headers: {} }, init, bodyObj);
-    requestContentType = new Headers(requestInit.headers).get('Content-Type');
-    request = new Request(getRequestUrl(this.baseUrl, input), requestInit);
-  }
-  if (!requestContentType) {
-    if (new Headers(parsedDefaultHeaders).has('content-type')) {
-      request.headers.set('Content-Type', new Headers(parsedDefaultHeaders).get('content-type'));
-    } else if (body && isJSON(body)) {
-      request.headers.set('Content-Type', 'application/json');
-    }
-  }
-  setDefaultHeaders(request.headers, parsedDefaultHeaders);
-  if (body && Blob.prototype.isPrototypeOf(body) && body.type) {
-    // work around bug in IE & Edge where the Blob type is ignored in the request
-    // https://connect.microsoft.com/IE/feedback/details/2136163
-    request.headers.set('Content-Type', body.type);
-  }
-  return request;
 }
 
 function getRequestUrl(baseUrl, url) {
@@ -406,12 +555,12 @@ function setDefaultHeaders(headers, defaultHeaders) {
   }
 }
 
-function processRequest(request, interceptors) {
-  return applyInterceptors(request, interceptors, 'request', 'requestError');
+function processRequest(request, interceptors, http) {
+  return applyInterceptors(request, interceptors, 'request', 'requestError', http);
 }
 
-function processResponse(response, interceptors, request) {
-  return applyInterceptors(response, interceptors, 'response', 'responseError', request);
+function processResponse(response, interceptors, request, http) {
+  return applyInterceptors(response, interceptors, 'response', 'responseError', request, http);
 }
 
 function applyInterceptors(input, interceptors, successName, errorName, ...interceptorArgs) {

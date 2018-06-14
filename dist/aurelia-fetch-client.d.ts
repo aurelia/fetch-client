@@ -1,3 +1,6 @@
+import {
+  PLATFORM
+} from 'aurelia-pal';
 
 /* eslint-disable */
 /**
@@ -44,7 +47,7 @@ export declare interface Interceptor {
      * previous interceptor.
      * @returns The response; or a Promise for one.
      */
-  responseError?: (error: any, request?: Request) => Response | Promise<Response>;
+  responseError?: (error: any, request?: Request, httpClient?: HttpClient) => Response | Promise<Response>;
 }
 
 /**
@@ -101,6 +104,20 @@ export declare interface RequestInit {
     * Contains the subresource integrity value of the request (e.g., sha256-BpfBw7ivV8q2jLiT13fxDYAe2tJllusRSZ273h2nFSE=).
     */
   integrity?: string;
+  
+  /**
+     * An AbortSignal to set request’s signal.
+     */
+  signal?: AbortSignal;
+}
+export declare interface RetryConfiguration {
+  maxRetries: number;
+  interval?: number;
+  strategy?: number | ((retryCount: number) => number);
+  minRandomInterval?: number;
+  maxRandomInterval?: number;
+  doRetry?: (response: Response, request: Request) => boolean | Promise<boolean>;
+  beforeRetry?: (request: Request, client: HttpClient) => Request | Promise<Request>;
 }
 
 /**
@@ -111,10 +128,15 @@ export declare interface RequestInit {
 * @returns A JSON string.
 */
 export declare function json(body: any, replacer?: any): string;
+export declare const retryStrategy: any;
+export declare class RetryInterceptor implements Interceptor {
+  retryConfig: RetryConfiguration;
+  constructor(retryConfig?: RetryConfiguration);
+  request(request?: any): any;
+  response(response?: any, request?: any): any;
+  responseError(error?: any, request?: any, httpClient?: any): any;
+}
 
-/**
-* A class for configuring HttpClients.
-*/
 /**
 * A class for configuring HttpClients.
 */
@@ -188,6 +210,7 @@ export declare class HttpClientConfiguration {
     * @chainable
     */
   rejectErrorResponses(): HttpClientConfiguration;
+  withRetry(config?: RetryConfiguration): any;
 }
 
 /**
@@ -256,4 +279,5 @@ export declare class HttpClient {
     * @returns A Promise for the Response from the fetch request.
     */
   fetch(input: Request | string, init?: RequestInit): Promise<Response>;
+  buildRequest(input: string, init: RequestInit): Request;
 }

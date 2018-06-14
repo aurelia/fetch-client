@@ -1,3 +1,17 @@
+<a name="1.4.0"></a>
+# [1.4.0](https://github.com/aurelia/fetch-client/compare/1.3.1...1.4.0) (2018-06-14)
+
+
+### Features
+
+* **fetch-client:** add retry functionality ([d16447a](https://github.com/aurelia/fetch-client/commit/d16447a))
+* **http-client:** Expose buildRequest helper API ([33d364d](https://github.com/aurelia/fetch-client/commit/33d364d))
+* **http-client:** Expose HttpClient to interceptors ([36518bc](https://github.com/aurelia/fetch-client/commit/36518bc))
+* **http-client:** Forward Request from response interceptor ([cc91034](https://github.com/aurelia/fetch-client/commit/cc91034))
+* **interface:** add signal to RequestInit interface ([7a056c0](https://github.com/aurelia/fetch-client/commit/7a056c0))
+
+
+
 <a name="1.3.1"></a>
 ## [1.3.1](https://github.com/aurelia/fetch-client/compare/1.3.0...v1.3.1) (2018-01-30)
 
