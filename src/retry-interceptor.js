@@ -85,16 +85,16 @@ function calculateDelay(retryConfig: RetryConfiguration) {
   }
 
   switch (strategy) {
-    case (retryStrategy.fixed):
-      return retryStrategies[retryStrategy.fixed](interval);
-    case (retryStrategy.incremental):
-      return retryStrategies[retryStrategy.incremental](counter, interval);
-    case (retryStrategy.exponential):
-      return retryStrategies[retryStrategy.exponential](counter, interval);
-    case (retryStrategy.random):
-      return retryStrategies[retryStrategy.random](counter, interval, minRandomInterval, maxRandomInterval);
-    default:
-      throw new Error('Unrecognized retry strategy');
+  case (retryStrategy.fixed):
+    return retryStrategies[retryStrategy.fixed](interval);
+  case (retryStrategy.incremental):
+    return retryStrategies[retryStrategy.incremental](counter, interval);
+  case (retryStrategy.exponential):
+    return retryStrategies[retryStrategy.exponential](counter, interval);
+  case (retryStrategy.random):
+    return retryStrategies[retryStrategy.random](counter, interval, minRandomInterval, maxRandomInterval);
+  default:
+    throw new Error('Unrecognized retry strategy');
   }
 }
 

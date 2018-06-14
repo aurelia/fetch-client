@@ -190,12 +190,6 @@ function trackRequestEnd() {
   this.isRequesting = !!(--this.activeRequestCount);
 }
 
-function trackRequestEndWith(promise) {
-  let handle = this::trackRequestEnd;
-  promise.then(handle, handle);
-  return promise;
-}
-
 function parseHeaderValues(headers) {
   let parsedHeaders = {};
   for (let name in headers || {}) {
