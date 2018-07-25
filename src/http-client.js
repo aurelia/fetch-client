@@ -178,6 +178,75 @@ export class HttpClient {
     }
     return request;
   }
+
+  /**
+  * Calls fetch as a GET request.
+  *
+  * @param input The resource that you wish to fetch. Either a
+  * Request object, or a string containing the URL of the resource.
+  * @param init An options object containing settings to be applied to
+  * the Request.
+  * @returns A Promise for the Response from the fetch request.
+  */
+  get(input: Request|string, init?: RequestInit): Promise<Response> {
+    return this.fetch(input, init);
+  }
+
+  /**
+  * Calls fetch with request method set to POST.
+  *
+  * @param input The resource that you wish to fetch. Either a
+  * Request object, or a string containing the URL of the resource.
+  * @param body The body of the request.
+  * @param init An options object containing settings to be applied to
+  * the Request.
+  * @returns A Promise for the Response from the fetch request.
+  */
+  post(input: Request|string, body?: any, init?: RequestInit): Promise<Response> {
+    return this::callFetch(input, body, init, 'post');
+  }
+
+  /**
+  * Calls fetch with request method set to PUT.
+  *
+  * @param input The resource that you wish to fetch. Either a
+  * Request object, or a string containing the URL of the resource.
+  * @param body The body of the request.
+  * @param init An options object containing settings to be applied to
+  * the Request.
+  * @returns A Promise for the Response from the fetch request.
+  */
+  put(input: Request|string, body?: any, init?: RequestInit): Promise<Response> {
+    return this::callFetch(input, body, init, 'put');
+  }
+
+  /**
+  * Calls fetch with request method set to PATCH.
+  *
+  * @param input The resource that you wish to fetch. Either a
+  * Request object, or a string containing the URL of the resource.
+  * @param body The body of the request.
+  * @param init An options object containing settings to be applied to
+  * the Request.
+  * @returns A Promise for the Response from the fetch request.
+  */
+  put(input: Request | string, body ?: any, init ?: RequestInit): Promise < Response > {
+    return this:: callFetch(input, body, init, 'patch');
+  }
+
+  /**
+  * Calls fetch with request method set to DELETE.
+  *
+  * @param input The resource that you wish to fetch. Either a
+  * Request object, or a string containing the URL of the resource.
+  * @param body The body of the request.
+  * @param init An options object containing settings to be applied to
+  * the Request.
+  * @returns A Promise for the Response from the fetch request.
+  */
+  delete(input: Request|string, body?: any, init?: RequestInit): Promise<Response> {
+    return this::callFetch(input, body, init, 'delete');
+  }
 }
 
 const absoluteUrlRegexp = /^([a-z][a-z0-9+\-.]*:)?\/\//i;
@@ -252,4 +321,15 @@ function identity(x) {
 
 function thrower(x) {
   throw x;
+}
+
+function callFetch(input, body, init, method) {
+  if (!init) {
+    init = {};
+  }
+  init.method = method;
+  if (body) {
+    init.body = body;
+  }
+  return this.fetch(input, init);
 }
