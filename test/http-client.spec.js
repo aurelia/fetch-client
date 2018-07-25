@@ -226,7 +226,9 @@ describe('HttpClient', () => {
   });
 
   describe('get', () => {
-    it('passes-through to fetch', () => {
+    it('passes-through to fetch', (done) => {
+      fetch.and.returnValue(emptyResponse(200));
+
       client
         .get('http://example.com/some/cool/path')
         .then(result => {
@@ -243,7 +245,9 @@ describe('HttpClient', () => {
   });
 
   describe('post', () => {
-    it('sets method to POST and body of request and calls fetch', () => {
+    it('sets method to POST and body of request and calls fetch', (done) => {
+      fetch.and.returnValue(emptyResponse(200));
+
       client
         .post('http://example.com/some/cool/path', JSON.stringify({ test: 'object' }))
         .then(result => {
@@ -260,7 +264,9 @@ describe('HttpClient', () => {
   });
 
   describe('put', () => {
-    it('sets method to PUT and body of request and calls fetch', () => {
+    it('sets method to PUT and body of request and calls fetch', (done) => {
+      fetch.and.returnValue(emptyResponse(200));
+
       client
         .put('http://example.com/some/cool/path', JSON.stringify({ test: 'object' }))
         .then(result => {
@@ -277,7 +283,9 @@ describe('HttpClient', () => {
   });
 
   describe('patch', () => {
-    it('sets method to PATCH and body of request and calls fetch', () => {
+    it('sets method to PATCH and body of request and calls fetch', (done) => {
+      fetch.and.returnValue(emptyResponse(200));
+
       client
         .patch('http://example.com/some/cool/path', JSON.stringify({ test: 'object' }))
         .then(result => {
@@ -294,7 +302,9 @@ describe('HttpClient', () => {
   });
 
   describe('delete', () => {
-    it('sets method to DELETE and body of request and calls fetch', () => {
+    it('sets method to DELETE and body of request and calls fetch', (done) => {
+      fetch.and.returnValue(emptyResponse(200));
+      
       client
         .delete('http://example.com/some/cool/path', JSON.stringify({ test: 'object' }))
         .then(result => {

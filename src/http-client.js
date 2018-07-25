@@ -230,8 +230,8 @@ export class HttpClient {
   * the Request.
   * @returns A Promise for the Response from the fetch request.
   */
-  put(input: Request | string, body ?: any, init ?: RequestInit): Promise < Response > {
-    return this:: callFetch(input, body, init, 'patch');
+  patch(input: Request|string, body?: any, init?: RequestInit): Promise<Response> {
+    return this::callFetch(input, body, init, 'patch');
   }
 
   /**
