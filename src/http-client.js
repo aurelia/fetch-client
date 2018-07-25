@@ -1,6 +1,7 @@
 import {HttpClientConfiguration} from './http-client-configuration';
 import {RequestInit, Interceptor} from './interfaces';
 import {RetryInterceptor} from './retry-interceptor';
+import {DOM} from 'aurelia-pal';
 
 /**
 * An HTTP client based on the Fetch API.
@@ -257,6 +258,10 @@ function trackRequestStart() {
 
 function trackRequestEnd() {
   this.isRequesting = !!(--this.activeRequestCount);
+  if (!this.isRequesting) {
+    let evt = DOM.createCustomEvent('aurelia-fetch-client-requests-drained', { bubbles: true, cancelable: true });
+    setTimeout(() => DOM.dispatchEvent(evt), 1);
+  }
 }
 
 function parseHeaderValues(headers) {
