@@ -342,6 +342,26 @@ define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
       return request;
     };
 
+    HttpClient.prototype.get = function get(input, init) {
+      return this.fetch(input, init);
+    };
+
+    HttpClient.prototype.post = function post(input, body, init) {
+      return callFetch.call(this, input, body, init, 'post');
+    };
+
+    HttpClient.prototype.put = function put(input, body, init) {
+      return callFetch.call(this, input, body, init, 'put');
+    };
+
+    HttpClient.prototype.patch = function patch(input, body, init) {
+      return callFetch.call(this, input, body, init, 'patch');
+    };
+
+    HttpClient.prototype.delete = function _delete(input, body, init) {
+      return callFetch.call(this, input, body, init, 'delete');
+    };
+
     return HttpClient;
   }();
 
@@ -353,6 +373,12 @@ define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
 
   function trackRequestEnd() {
     this.isRequesting = !! --this.activeRequestCount;
+    if (!this.isRequesting) {
+      var evt = _aureliaPal.DOM.createCustomEvent('aurelia-fetch-client-requests-drained', { bubbles: true, cancelable: true });
+      setTimeout(function () {
+        return _aureliaPal.DOM.dispatchEvent(evt);
+      }, 1);
+    }
   }
 
   function parseHeaderValues(headers) {
@@ -422,5 +448,16 @@ define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
 
   function thrower(x) {
     throw x;
+  }
+
+  function callFetch(input, body, init, method) {
+    if (!init) {
+      init = {};
+    }
+    init.method = method;
+    if (body) {
+      init.body = body;
+    }
+    return this.fetch(input, init);
   }
 });

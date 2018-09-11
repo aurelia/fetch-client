@@ -1,4 +1,4 @@
-import { PLATFORM } from 'aurelia-pal';
+import { PLATFORM, DOM } from 'aurelia-pal';
 
 export function json(body, replacer) {
   return JSON.stringify(body !== undefined ? body : {}, replacer);
@@ -264,6 +264,26 @@ export let HttpClient = class HttpClient {
     }
     return request;
   }
+
+  get(input, init) {
+    return this.fetch(input, init);
+  }
+
+  post(input, body, init) {
+    return callFetch.call(this, input, body, init, 'post');
+  }
+
+  put(input, body, init) {
+    return callFetch.call(this, input, body, init, 'put');
+  }
+
+  patch(input, body, init) {
+    return callFetch.call(this, input, body, init, 'patch');
+  }
+
+  delete(input, body, init) {
+    return callFetch.call(this, input, body, init, 'delete');
+  }
 };
 
 const absoluteUrlRegexp = /^([a-z][a-z0-9+\-.]*:)?\/\//i;
@@ -274,6 +294,10 @@ function trackRequestStart() {
 
 function trackRequestEnd() {
   this.isRequesting = !! --this.activeRequestCount;
+  if (!this.isRequesting) {
+    let evt = DOM.createCustomEvent('aurelia-fetch-client-requests-drained', { bubbles: true, cancelable: true });
+    setTimeout(() => DOM.dispatchEvent(evt), 1);
+  }
 }
 
 function parseHeaderValues(headers) {
@@ -335,4 +359,15 @@ function identity(x) {
 
 function thrower(x) {
   throw x;
+}
+
+function callFetch(input, body, init, method) {
+  if (!init) {
+    init = {};
+  }
+  init.method = method;
+  if (body) {
+    init.body = body;
+  }
+  return this.fetch(input, init);
 }

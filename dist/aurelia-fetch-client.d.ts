@@ -1,5 +1,6 @@
 import {
-  PLATFORM
+  PLATFORM,
+  DOM
 } from 'aurelia-pal';
 
 /* eslint-disable */
@@ -280,4 +281,63 @@ export declare class HttpClient {
     */
   fetch(input: Request | string, init?: RequestInit): Promise<Response>;
   buildRequest(input: string, init: RequestInit): Request;
+  
+  /**
+    * Calls fetch as a GET request.
+    *
+    * @param input The resource that you wish to fetch. Either a
+    * Request object, or a string containing the URL of the resource.
+    * @param init An options object containing settings to be applied to
+    * the Request.
+    * @returns A Promise for the Response from the fetch request.
+    */
+  get(input: Request | string, init?: RequestInit): Promise<Response>;
+  
+  /**
+    * Calls fetch with request method set to POST.
+    *
+    * @param input The resource that you wish to fetch. Either a
+    * Request object, or a string containing the URL of the resource.
+    * @param body The body of the request.
+    * @param init An options object containing settings to be applied to
+    * the Request.
+    * @returns A Promise for the Response from the fetch request.
+    */
+  post(input: Request | string, body?: any, init?: RequestInit): Promise<Response>;
+  
+  /**
+    * Calls fetch with request method set to PUT.
+    *
+    * @param input The resource that you wish to fetch. Either a
+    * Request object, or a string containing the URL of the resource.
+    * @param body The body of the request.
+    * @param init An options object containing settings to be applied to
+    * the Request.
+    * @returns A Promise for the Response from the fetch request.
+    */
+  put(input: Request | string, body?: any, init?: RequestInit): Promise<Response>;
+  
+  /**
+    * Calls fetch with request method set to PATCH.
+    *
+    * @param input The resource that you wish to fetch. Either a
+    * Request object, or a string containing the URL of the resource.
+    * @param body The body of the request.
+    * @param init An options object containing settings to be applied to
+    * the Request.
+    * @returns A Promise for the Response from the fetch request.
+    */
+  patch(input: Request | string, body?: any, init?: RequestInit): Promise<Response>;
+  
+  /**
+    * Calls fetch with request method set to DELETE.
+    *
+    * @param input The resource that you wish to fetch. Either a
+    * Request object, or a string containing the URL of the resource.
+    * @param body The body of the request.
+    * @param init An options object containing settings to be applied to
+    * the Request.
+    * @returns A Promise for the Response from the fetch request.
+    */
+  delete(input: Request | string, body?: any, init?: RequestInit): Promise<Response>;
 }

@@ -3,7 +3,7 @@
 System.register(['aurelia-pal'], function (_export, _context) {
   "use strict";
 
-  var PLATFORM, _typeof, retryStrategy, defaultRetryConfig, RetryInterceptor, retryStrategies, HttpClientConfiguration, HttpClient, absoluteUrlRegexp;
+  var PLATFORM, DOM, _typeof, retryStrategy, defaultRetryConfig, RetryInterceptor, retryStrategies, HttpClientConfiguration, HttpClient, absoluteUrlRegexp;
 
   
 
@@ -53,6 +53,12 @@ System.register(['aurelia-pal'], function (_export, _context) {
 
   function trackRequestEnd() {
     this.isRequesting = !! --this.activeRequestCount;
+    if (!this.isRequesting) {
+      var evt = DOM.createCustomEvent('aurelia-fetch-client-requests-drained', { bubbles: true, cancelable: true });
+      setTimeout(function () {
+        return DOM.dispatchEvent(evt);
+      }, 1);
+    }
   }
 
   function parseHeaderValues(headers) {
@@ -123,9 +129,21 @@ System.register(['aurelia-pal'], function (_export, _context) {
   function thrower(x) {
     throw x;
   }
+
+  function callFetch(input, body, init, method) {
+    if (!init) {
+      init = {};
+    }
+    init.method = method;
+    if (body) {
+      init.body = body;
+    }
+    return this.fetch(input, init);
+  }
   return {
     setters: [function (_aureliaPal) {
       PLATFORM = _aureliaPal.PLATFORM;
+      DOM = _aureliaPal.DOM;
     }],
     execute: function () {
       _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
@@ -427,6 +445,26 @@ System.register(['aurelia-pal'], function (_export, _context) {
             request.headers.set('Content-Type', body.type);
           }
           return request;
+        };
+
+        HttpClient.prototype.get = function get(input, init) {
+          return this.fetch(input, init);
+        };
+
+        HttpClient.prototype.post = function post(input, body, init) {
+          return callFetch.call(this, input, body, init, 'post');
+        };
+
+        HttpClient.prototype.put = function put(input, body, init) {
+          return callFetch.call(this, input, body, init, 'put');
+        };
+
+        HttpClient.prototype.patch = function patch(input, body, init) {
+          return callFetch.call(this, input, body, init, 'patch');
+        };
+
+        HttpClient.prototype.delete = function _delete(input, body, init) {
+          return callFetch.call(this, input, body, init, 'delete');
         };
 
         return HttpClient;

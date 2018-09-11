@@ -1,3 +1,11 @@
+<a name="1.5.0"></a>
+# [1.5.0](https://github.com/aurelia/fetch-client/compare/1.4.0...1.5.0) (2018-09-11)
+
+### Features
+
+* add an aurelia-fetch-client-requests-drained event
+* add get/post/put/delete helpder methods
+
 <a name="1.4.0"></a>
 # [1.4.0](https://github.com/aurelia/fetch-client/compare/1.3.1...1.4.0) (2018-06-14)
 
