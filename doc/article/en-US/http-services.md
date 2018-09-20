@@ -31,7 +31,7 @@ First, install the polyfill using your package manager. Second, make sure to imp
 
 <code-listing heading="Initializing the Fetch Polyfill">
   <source-code lang="ES 2015/2016">
-    import 'fetch';
+    import 'whatwg-fetch';
 
     export function configure(aurelia) {
       aurelia.use
@@ -43,7 +43,7 @@ First, install the polyfill using your package manager. Second, make sure to imp
   </source-code>
   <source-code lang="TypeScript">
     import {Aurelia} from 'aurelia-framework';
-    import 'fetch';
+    import 'whatwg-fetch';
 
     export function configure(aurelia: Aurelia): void {
       aurelia.use
