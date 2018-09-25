@@ -1,3 +1,13 @@
+<a name="1.6.0"></a>
+# [1.6.0](https://github.com/aurelia/fetch-client/compare/1.5.0...1.6.0) (2018-09-25)
+
+
+### Bug Fixes
+
+* **doc:** fix polyfill example with whatwg-fetch ([df50f6d](https://github.com/aurelia/fetch-client/commit/df50f6d))
+
+
+
 <a name="1.5.0"></a>
 # [1.5.0](https://github.com/aurelia/fetch-client/compare/1.4.0...1.5.0) (2018-09-11)
 
