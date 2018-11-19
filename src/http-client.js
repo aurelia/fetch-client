@@ -254,6 +254,10 @@ const absoluteUrlRegexp = /^([a-z][a-z0-9+\-.]*:)?\/\//i;
 
 function trackRequestStart() {
   this.isRequesting = !!(++this.activeRequestCount);
+  if (this.isRequesting) {
+    let evt = DOM.createCustomEvent('aurelia-fetch-client-request-started', { bubbles: true, cancelable: true });
+    setTimeout(() => DOM.dispatchEvent(evt), 1);
+  }
 }
 
 function trackRequestEnd() {
