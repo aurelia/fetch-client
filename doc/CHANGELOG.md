@@ -1,3 +1,10 @@
+<a name="1.7.0"></a>
+# [1.7.0](https://github.com/aurelia/fetch-client/compare/1.6.0...1.7.0) (2018-12-01)
+
+### Features
+
+* added 'aurelia-fetch-client-request-started' event
+
 <a name="1.6.0"></a>
 # [1.6.0](https://github.com/aurelia/fetch-client/compare/1.5.0...1.6.0) (2018-09-25)
 

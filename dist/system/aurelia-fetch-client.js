@@ -49,6 +49,12 @@ System.register(['aurelia-pal'], function (_export, _context) {
 
   function trackRequestStart() {
     this.isRequesting = !!++this.activeRequestCount;
+    if (this.isRequesting) {
+      var evt = DOM.createCustomEvent('aurelia-fetch-client-request-started', { bubbles: true, cancelable: true });
+      setTimeout(function () {
+        return DOM.dispatchEvent(evt);
+      }, 1);
+    }
   }
 
   function trackRequestEnd() {
