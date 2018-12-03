@@ -62,7 +62,7 @@ interface RequestInit {
   headers?: Headers|Object;
 
   /**
-  * Any body that you want to add to your request: this can be a Blob, BufferSource, FormData, URLSearchParams, or USVString object. Note that a request using the GET or HEAD method cannot have a body.
+  * Any body that you want to add to your request: this can be a Blob, BufferSource, FormData, URLSearchParams, ReadableStream, or USVString object. Note that a request using the GET or HEAD method cannot have a body.
   */
   body?: Blob|BufferSource|FormData|URLSearchParams|ReadableStream|string|null;
 
