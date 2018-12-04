@@ -62,9 +62,9 @@ interface RequestInit {
   headers?: Headers|Object;
 
   /**
-  * Any body that you want to add to your request: this can be a Blob, BufferSource, FormData, URLSearchParams, or USVString object. Note that a request using the GET or HEAD method cannot have a body.
+  * Any body that you want to add to your request: this can be a Blob, BufferSource, FormData, URLSearchParams, ReadableStream, or USVString object. Note that a request using the GET or HEAD method cannot have a body.
   */
-  body?: Blob|BufferSource|FormData|URLSearchParams|string;
+  body?: Blob|BufferSource|FormData|URLSearchParams|ReadableStream|string|null;
 
   /**
   * The mode you want to use for the request, e.g., cors, no-cors, same-origin, or navigate. The default is cors. In Chrome the default is no-cors before Chrome 47 and same-origin starting with Chrome 47.
