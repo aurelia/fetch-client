@@ -204,7 +204,7 @@ export class HttpClient {
   * @returns A Promise for the Response from the fetch request.
   */
   post(input: Request|string, body?: any, init?: RequestInit): Promise<Response> {
-    return this::callFetch(input, body, init, 'post');
+    return this::callFetch(input, body, init, 'POST');
   }
 
   /**
@@ -218,7 +218,7 @@ export class HttpClient {
   * @returns A Promise for the Response from the fetch request.
   */
   put(input: Request|string, body?: any, init?: RequestInit): Promise<Response> {
-    return this::callFetch(input, body, init, 'put');
+    return this::callFetch(input, body, init, 'PUT');
   }
 
   /**
@@ -232,7 +232,7 @@ export class HttpClient {
   * @returns A Promise for the Response from the fetch request.
   */
   patch(input: Request|string, body?: any, init?: RequestInit): Promise<Response> {
-    return this::callFetch(input, body, init, 'patch');
+    return this::callFetch(input, body, init, 'PATCH');
   }
 
   /**
@@ -246,7 +246,7 @@ export class HttpClient {
   * @returns A Promise for the Response from the fetch request.
   */
   delete(input: Request|string, body?: any, init?: RequestInit): Promise<Response> {
-    return this::callFetch(input, body, init, 'delete');
+    return this::callFetch(input, body, init, 'DELETE');
   }
 }
 
