@@ -1,14 +1,15 @@
 import './setup';
 import { PLATFORM } from 'aurelia-pal';
-import {json} from '../src/util';
-import {HttpClient} from '../src/http-client';
-import {HttpClientConfiguration} from '../src/http-client-configuration';
-import {retryStrategy} from '../src/retry-interceptor';
+import { HttpClient } from '../src/http-client';
+import { HttpClientConfiguration } from '../src/http-client-configuration';
+import { Interceptor } from '../src/interfaces';
+import { retryStrategy } from '../src/retry-interceptor';
+import { json } from '../src/util';
 
 describe('HttpClient', () => {
   let originalFetch = window.fetch;
   let client;
-  let fetch;
+  let fetch: jasmine.Spy;
 
   function setUpTests() {
     beforeEach(() => {
@@ -17,7 +18,7 @@ describe('HttpClient', () => {
     });
 
     afterEach(() => {
-      fetch = window.fetch = originalFetch;
+      fetch = window.fetch = originalFetch as any;
     });
   }
 
@@ -204,10 +205,10 @@ describe('HttpClient', () => {
     });
 
     it('makes request and aborts with an AbortController signal', (done) => {
-      fetch = window.fetch = originalFetch
+      fetch = window.fetch = originalFetch as any;
 
       const controller = new AbortController();
- 
+
       client
         .fetch('http://jsonplaceholder.typicode.com/users', {signal: controller.signal})
         .then(result => {
@@ -304,7 +305,7 @@ describe('HttpClient', () => {
   describe('delete', () => {
     it('sets method to DELETE and body of request and calls fetch', (done) => {
       fetch.and.returnValue(emptyResponse(200));
-      
+
       client
         .delete('http://example.com/some/cool/path', JSON.stringify({ test: 'object' }))
         .then(result => {
@@ -392,16 +393,16 @@ describe('HttpClient', () => {
       const path = 'retry';
       let retry = 3;
       fetch.and.returnValue(Promise.reject(new Response(null, { status: 500 })));
-      let interceptor = { 
+      let interceptor: Interceptor = {
         response(r) { return r; },
-        responseError(r) { 
+        responseError(r) {
           if (retry--) {
             let request = client.buildRequest(path);
             return request;
-          } else { 
-            throw r; 
-          } 
-        } 
+          } else {
+            throw r;
+          }
+        }
       };
       spyOn(interceptor, 'response').and.callThrough();
       spyOn(interceptor, 'responseError').and.callThrough();
@@ -684,7 +685,7 @@ describe('HttpClient', () => {
     });
 
     afterEach(() => {
-      fetch = window.fetch = originalFetch;
+      fetch = window.fetch = originalFetch as any;
       jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
@@ -829,72 +830,71 @@ describe('HttpClient', () => {
         interval: 250,
         strategy: retryStrategy.fixed
       }));
-      client.fetch('path')
-        .then((r) => {
-          done.fail('fetch did not error');
-        })
-        .catch((r) => {
-          // only called on retries
-          expect(PLATFORM.global.setTimeout.calls.argsFor(0)).toEqual([jasmine.any(Function), 250]);
-          expect(PLATFORM.global.setTimeout.calls.argsFor(1)).toEqual([jasmine.any(Function), 250]);
-          done();
-        });
+      return client.fetch('path')
+        .then(
+          () => done.fail('fetch did not error'),
+          () => {
+            // only called on retries
+            expect(PLATFORM.global.setTimeout.calls.argsFor(0)).toEqual([jasmine.any(Function), 250]);
+            expect(PLATFORM.global.setTimeout.calls.argsFor(1)).toEqual([jasmine.any(Function), 250]);
+            done();
+          });
     });
 
-    it('waits correct number amount of time with incremental retry strategy', (done) => {
+    fit('waits correct number amount of time with incremental retry strategy', (done) => {
       let response = new Response(null, { status: 500 });
       fetch.and.returnValue(Promise.resolve(response));
 
-      spyOn(window, 'setTimeout').and.callThrough();
+      spyOn(PLATFORM.global, 'setTimeout').and.callThrough();
 
       client.configure(config => config.rejectErrorResponses().withRetry({
         maxRetries: 2,
         interval: 250,
         strategy: retryStrategy.incremental
       }));
-      client.fetch('path')
-        .then((r) => {
-          done.fail('fetch did not error');
-        })
-        .catch((r) => {
-          // only called on retries
-          expect(window.setTimeout.calls.argsFor(0)).toEqual([jasmine.any(Function), 250]);
-          expect(window.setTimeout.calls.argsFor(1)).toEqual([jasmine.any(Function), 500]);
-          done();
+      return client
+        .fetch('path')
+        .then(
+          () => done.fail('fetch did not error'),
+          () => {
+            // only called on retries
+            expect((window.setTimeout as jasmine.Spy).calls.argsFor(0)).toEqual([jasmine.any(Function), 250]);
+            expect((window.setTimeout as jasmine.Spy).calls.argsFor(1)).toEqual([jasmine.any(Function), 500]);
+            done();
         });
     });
 
-    it('waits correct number amount of time with exponential retry strategy', (done) => {
+    fit('waits correct number amount of time with exponential retry strategy', (done) => {
       let response = new Response(null, { status: 500 });
       fetch.and.returnValue(Promise.resolve(response));
 
-      spyOn(window, 'setTimeout').and.callThrough();
+      spyOn(PLATFORM.global, 'setTimeout').and.callThrough();
 
       client.configure(config => config.rejectErrorResponses().withRetry({
         maxRetries: 2,
         interval: 2000,
         strategy: retryStrategy.exponential
       }));
-      client.fetch('path')
-        .then((r) => {
-          done.fail('fetch did not error');
-        })
-        .catch((r) => {
-          // only called on retries
-          expect(window.setTimeout.calls.argsFor(0)).toEqual([jasmine.any(Function), 2000]);
-          expect(window.setTimeout.calls.argsFor(1)).toEqual([jasmine.any(Function), 4000]);
-          done();
-        });
+      return client.fetch('path')
+        .then(
+          () => done.fail('fetch did not error'),
+          () => {
+            // only called on retries
+            console.log((window.setTimeout as jasmine.Spy).calls.argsFor(0));
+            expect((window.setTimeout as jasmine.Spy).calls.argsFor(0)).toEqual([jasmine.any(Function), 2000]);
+            expect((window.setTimeout as jasmine.Spy).calls.argsFor(1)).toEqual([jasmine.any(Function), 4000]);
+            done();
+          });
     });
 
-    it('waits correct number amount of time with random retry strategy', (done) => {
+    fit('waits correct number amount of time with random retry strategy', (done) => {
       let response = new Response(null, { status: 500 });
       const firstRandom = 0.1;
       const secondRandom = 0.4;
 
       fetch.and.returnValue(Promise.resolve(response));
 
-      spyOn(window, 'setTimeout').and.callThrough();
+      spyOn(PLATFORM.global, 'setTimeout').and.callThrough();
       spyOn(Math, 'random').and.returnValues(firstRandom, secondRandom);
 
       client.configure(config => config.rejectErrorResponses().withRetry({
@@ -908,16 +908,16 @@ describe('HttpClient', () => {
       const firstInterval = firstRandom * (3000 - 1000) + 1000;
       const secondInterval = secondRandom * (3000 - 1000) + 1000;
 
-      client.fetch('path')
-        .then((r) => {
-          done.fail('fetch did not error');
-        })
-        .catch((r) => {
-          // only called on retries
-          expect(window.setTimeout.calls.argsFor(0)).toEqual([jasmine.any(Function), firstInterval]);
-          expect(window.setTimeout.calls.argsFor(1)).toEqual([jasmine.any(Function), secondInterval]);
-          done();
-        });
+      return client.fetch('path')
+        .then(
+          () => done.fail('fetch did not error'),
+          () => {
+            // only called on retries
+            expect((window.setTimeout as jasmine.Spy).calls.argsFor(0)).toEqual([jasmine.any(Function), firstInterval]);
+            expect((window.setTimeout as jasmine.Spy).calls.argsFor(1)).toEqual([jasmine.any(Function), secondInterval]);
+            done();
+          }
+        );
     });
 
     it('successfully returns without error if a retry succeeds', (done) => {

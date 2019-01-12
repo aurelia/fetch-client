@@ -43,7 +43,7 @@ export interface Interceptor {
    * previous interceptor.
    * @returns The response; or a Promise for one.
    */
-  responseError?: (error: any, request?: Request, httpClient? : HttpClient) => Response|Promise<Response>;
+  responseError?: (error: any, request?: Request, httpClient?: HttpClient) => Response|Promise<Response>;
 }
 
 export type ValidInterceptorMethodName = keyof Interceptor;

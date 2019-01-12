@@ -6,10 +6,6 @@
     "emitDecoratorMetadata": false,
     "moduleResolution": "node",
     "stripInternal": true,
-    "preserveConstEnums": true,
-    "listFiles": true,
-    "declaration": true,
-    "removeComments": true,
     "lib": ["es2015", "dom"]
   },
   "exclude": [

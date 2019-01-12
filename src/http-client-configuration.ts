@@ -90,7 +90,7 @@ export class HttpClientConfiguration {
   }
 
   withRetry( config?: RetryConfiguration) {
-    const interceptor : Interceptor = new RetryInterceptor(config);
+    const interceptor: Interceptor = new RetryInterceptor(config);
 
     return this.withInterceptor(interceptor);
   }
