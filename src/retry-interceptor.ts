@@ -32,7 +32,7 @@ export class RetryInterceptor implements Interceptor {
     }
   }
 
-  request(request: Request) {
+  request(request: Request): Request {
     let $r = request as Request & { retryConfig?: RetryConfiguration };
     if (!$r.retryConfig) {
       $r.retryConfig = Object.assign({}, this.retryConfig);
@@ -45,7 +45,7 @@ export class RetryInterceptor implements Interceptor {
     return request;
   }
 
-  response(response: Response, request: Request) {
+  response(response: Response, request: Request): Response {
     // retry was successful, so clean up after ourselves
     delete (request as any).retryConfig;
     return response;
@@ -61,15 +61,17 @@ export class RetryInterceptor implements Interceptor {
         return Promise.resolve(result).then(doRetry => {
           if (doRetry) {
             retryConfig.counter++;
-            return new Promise(resolve => PLATFORM.global.setTimeout(resolve, calculateDelay(retryConfig) || 0)).then(() => {
-              let newRequest = requestClone.clone();
-              if (typeof (retryConfig.beforeRetry) === 'function') {
-                return retryConfig.beforeRetry(newRequest, httpClient);
-              }
-              return newRequest;
-            }).then(newRequest => {
-              return httpClient.fetch(Object.assign(newRequest, { retryConfig }));
-            });
+            return new Promise(resolve => PLATFORM.global.setTimeout(resolve, calculateDelay(retryConfig) || 0))
+              .then(() => {
+                let newRequest = requestClone.clone();
+                if (typeof (retryConfig.beforeRetry) === 'function') {
+                  return retryConfig.beforeRetry(newRequest, httpClient);
+                }
+                return newRequest;
+              })
+              .then(newRequest => {
+                return httpClient.fetch(Object.assign(newRequest, { retryConfig }));
+              });
           }
 
           // no more retries, so clean up
