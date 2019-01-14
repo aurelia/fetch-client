@@ -26,6 +26,7 @@ export default [
         cacheRoot: '.rollupcache',
         tsconfigOverride: {
           compilerOptions: {
+            removeComments: true
           }
         }
       })
@@ -42,7 +43,8 @@ export default [
         cacheRoot: '.rollupcache',
         tsconfigOverride: {
           compilerOptions: {
-            target: 'es2017'
+            target: 'es2017',
+            removeComments: true
           }
         }
       })
@@ -61,7 +63,8 @@ export default [
         cacheRoot: '.rollupcache',
         tsconfigOverride: {
           compilerOptions: {
-            target: 'es5'
+            target: 'es5',
+            removeComments: true
           }
         }
       })

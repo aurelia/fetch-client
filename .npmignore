@@ -1,3 +1,10 @@
 jspm_packages
 bower_components
+node_modules
 .idea
+.rollupcache
+.vscode
+.circleci
+src
+test
+build
