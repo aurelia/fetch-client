@@ -11,7 +11,7 @@ export default [
       {
         file: 'dist/umd/aurelia-fetch-client.js',
         format: 'umd',
-        name: 'au.uiVirtualization',
+        name: 'au.fetchClient',
         globals: {
           'aurelia-binding': 'au',
           'aurelia-dependency-injection': 'au',
