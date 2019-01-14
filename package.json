@@ -21,6 +21,7 @@
     "url": "http://github.com/aurelia/fetch-client"
   },
   "scripts": {
+    "build": "rollup -c",
     "test": "karma start",
     "test:debugger": "karma start --browsers ChromeDebugging",
     "ci": "gulp ci"
@@ -88,6 +89,8 @@
     "merge2": "^1.0.2",
     "object.assign": "^4.0.4",
     "require-dir": "^0.3.0",
+    "rollup": "^1.1.0",
+    "rollup-plugin-typescript2": "^0.18.1",
     "run-sequence": "^1.2.2",
     "through2": "^2.0.1",
     "ts-loader": "^5.3.3",
