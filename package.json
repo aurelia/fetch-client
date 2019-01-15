@@ -15,13 +15,30 @@
   "license": "MIT",
   "author": "Rob Eisenberg <rob@bluespire.com> (http://robeisenberg.com/)",
   "main": "dist/commonjs/aurelia-fetch-client.js",
+  "module": "dist/es2015/aurelia-fetch-client.js",
+  "browser": "dist/umd/aurelia-fetch-client.js",
+  "unpkg": "dist/umd/aurelia-fetch-client.js",
   "typings": "dist/aurelia-fetch-client.d.ts",
   "repository": {
     "type": "git",
     "url": "http://github.com/aurelia/fetch-client"
   },
+  "files": [
+    "dist",
+    "doc",
+    "package.json",
+    "README.md",
+    "LICENSE",
+    "typings.json"
+  ],
   "scripts": {
-    "test": "gulp test",
+    "prebuild": "npm run rimraf",
+    "build": "rollup -c",
+    "changelog": "node build/changelog.js",
+    "postbuild": "dts-bundle-generator -o dist/aurelia-fetch-client.d.ts src/aurelia-fetch-client.ts",
+    "test": "karma start",
+    "test:debugger": "karma start --browsers ChromeDebugging",
+    "rimraf": "rimraf dist",
     "ci": "gulp ci"
   },
   "jspm": {
@@ -32,72 +49,36 @@
       "dist": "dist/amd"
     },
     "dependencies": {
-      "aurelia-pal": "^1.3.0"
+      "aurelia-pal": "^1.8.0"
     },
     "devDependencies": {
-      "aurelia-pal-browser": "^1.0.0",
-      "aurelia-polyfills": "^1.0.0-beta.2.0.0"
+      "aurelia-pal-browser": "^1.8.0",
+      "aurelia-polyfills": "^1.3.0"
     }
   },
   "dependencies": {
     "aurelia-pal": "^1.3.0"
   },
   "devDependencies": {
-    "aurelia-tools": "^0.2.4",
-    "babel-dts-generator": "^0.6.1",
-    "babel-eslint": "^6.1.2",
+    "@types/jasmine": "^3.3.5",
+    "aurelia-pal-browser": "^1.8.0",
+    "aurelia-polyfills": "^1.3.0",
     "babel-plugin-syntax-flow": "^6.8.0",
-    "babel-plugin-transform-decorators-legacy": "^1.3.4",
-    "babel-plugin-transform-es2015-modules-amd": "^6.8.0",
-    "babel-plugin-transform-es2015-modules-commonjs": "^6.11.5",
-    "babel-plugin-transform-es2015-modules-systemjs": "^6.11.6",
-    "babel-plugin-transform-flow-strip-types": "^6.8.0",
-    "babel-plugin-transform-function-bind": "^6.8.0",
-    "babel-preset-es2015": "^6.9.0",
-    "babel-preset-es2015-loose": "^7.0.0",
-    "babel-preset-es2015-loose-native-modules": "^1.0.0",
-    "babel-preset-stage-1": "^6.5.0",
-    "del": "^2.2.1",
-    "eslint": "^3.1.1",
-    "gulp": "^3.9.1",
-    "gulp-babel": "^6.1.2",
-    "gulp-bump": "^2.2.0",
-    "gulp-concat": "^2.6.0",
-    "gulp-conventional-changelog": "^1.1.0",
-    "gulp-eslint": "^3.0.1",
-    "gulp-ignore": "^2.0.1",
-    "gulp-insert": "^0.5.0",
-    "gulp-rename": "^1.2.2",
-    "gulp-typedoc": "^2.0.0",
-    "gulp-typedoc-extractor": "^0.0.8",
-    "gulp-typescript": "^2.13.6",
-    "gulp-util": "^3.0.7",
-    "jasmine-core": "^2.4.1",
-    "karma": "^1.1.2",
-    "karma-babel-preprocessor": "^6.0.1",
-    "karma-chrome-launcher": "^1.0.1",
-    "karma-coverage": "^1.1.1",
-    "karma-jasmine": "^1.0.2",
-    "karma-jspm": "^2.2.0",
-    "merge2": "^1.0.2",
-    "object.assign": "^4.0.4",
-    "require-dir": "^0.3.0",
-    "run-sequence": "^1.2.2",
-    "through2": "^2.0.1",
-    "typedoc": "^0.11.1",
-    "typescript": "^2.7.0",
-    "vinyl": "^1.1.1",
-    "vinyl-paths": "^2.1.0",
+    "dts-bundle-generator": "^2.0.0",
+    "jasmine-core": "^3.3.0",
+    "karma": "^3.1.4",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-coverage": "^1.1.2",
+    "karma-jasmine": "^2.0.1",
+    "karma-mocha-reporter": "^2.2.5",
+    "karma-sourcemap-loader": "^0.3.7",
+    "karma-webpack": "^3.0.5",
+    "rollup": "^1.1.0",
+    "rollup-plugin-typescript2": "^0.18.1",
+    "ts-loader": "^5.3.3",
+    "typescript": "^3.2.2",
+    "webpack": "^4.28.4",
+    "webpack-cli": "^3.2.1",
     "yargs": "^4.8.1"
-  },
-  "aurelia": {
-    "documentation": {
-      "articles": [
-        {
-          "title": "HTTP Services",
-          "href": "doc/article/en-US/http-services.md"
-        }
-      ]
-    }
   }
 }
