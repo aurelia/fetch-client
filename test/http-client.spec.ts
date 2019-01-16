@@ -1094,6 +1094,39 @@ describe('HttpClient', () => {
         done.fail('fetch did error');
       });
     });
+    it('forward requests', (done) => {
+      const path = 'retry';
+      let retry = 3;
+      fetch.and.returnValue(Promise.reject(new Response(null, { status: 500 })));
+      let interceptor: Interceptor = {
+        response(r) { return r; },
+        responseError(r) {
+          if (retry--) {
+            let request = client.buildRequest(path);
+            return request;
+          } else {
+            throw r;
+          }
+        }
+      };
+      spyOn(interceptor, 'response').and.callThrough();
+      spyOn(interceptor, 'responseError').and.callThrough();
+
+      client.interceptors.push(interceptor);
+
+      // add check before fetch, this one passes.
+      expect(client.isRequesting).toBe(false);
+
+      client.fetch(path)
+        .catch(() => {
+          expect(interceptor.response).not.toHaveBeenCalled();
+          expect(interceptor.responseError).toHaveBeenCalledWith(jasmine.any(Response), jasmine.any(Request), client);
+          expect(fetch).toHaveBeenCalledTimes(4);
+          expect(client.activeRequestCount).toBe(0);
+          expect(client.isRequesting).toBe(false);
+          done();
+        });
+    });
   });
 });
 
