@@ -123,29 +123,37 @@ export class HttpClient {
     trackRequestStart(this);
 
     let request = this.buildRequest(input, init);
-    return processRequest(request, this.interceptors, this)
-      .then(result => {
-        let response = null;
+    return processRequest(request, this.interceptors, this).then(result => {
+      let response = null;
 
-        if (Response.prototype.isPrototypeOf(result)) {
-          response = Promise.resolve(result);
-        } else if (Request.prototype.isPrototypeOf(result)) {
-          request = result;
-          response = fetch(result);
-        } else {
-          // tslint:disable-next-line:max-line-length
-          throw new Error(`An invalid result was returned by the interceptor chain. Expected a Request or Response instance, but got [${result}]`);
-        }
+      if (Response.prototype.isPrototypeOf(result)) {
+        response = Promise.resolve(result);
+      } else if (Request.prototype.isPrototypeOf(result)) {
+        request = result;
+        response = fetch(result);
+      } else {
+        // tslint:disable-next-line:max-line-length
+        throw new Error(`An invalid result was returned by the interceptor chain. Expected a Request or Response instance, but got [${result}]`);
+      }
 
-        return processResponse(response, this.interceptors, request, this);
-      })
-      .then(result => {
-        if (Request.prototype.isPrototypeOf(result)) {
-          return this.fetch(result);
-        }
+      return processResponse(response, this.interceptors, request, this);
+    })
+    .then(result => {
+      if (Request.prototype.isPrototypeOf(result)) {
+        return this.fetch(result);
+      }
+      return result;
+    })
+    .then(
+      result => {
         trackRequestEnd(this);
         return result;
-      });
+      },
+      error => {
+        trackRequestEnd(this);
+        throw error;
+      }
+    );
   }
 
   buildRequest(input: string | Request, init: RequestInit): Request {

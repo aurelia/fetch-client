@@ -953,6 +953,181 @@ describe('HttpClient', () => {
           () => done.fail('retry was unsuccessful'));
     });
   });
+
+  describe('isRequesting', () => {
+    it('is set to true when starting a request', (done) => {
+      fetch.and.returnValue(emptyResponse(200));
+
+      expect(client.isRequesting).withContext('Before start').toBe(false);
+      let request = client.fetch('http://example.com/some/cool/path');
+      expect(client.isRequesting).withContext('When started').toBe(true);
+      request.then(() => {
+        expect(fetch).toHaveBeenCalled();
+        done();
+      });
+    });
+    it('is set to false when request is finished', (done) => {
+      fetch.and.returnValue(emptyResponse(200));
+
+      expect(client.isRequesting).withContext('Before start').toBe(false);
+      let request = client.fetch('http://example.com/some/cool/path');
+      expect(client.isRequesting).withContext('When started').toBe(true);
+      request.then(() => {
+        expect(client.isRequesting).withContext('When finished').toBe(false);
+      }).then(() => {
+        expect(fetch).toHaveBeenCalled();
+        done();
+      });
+    });
+    it('is still true when a request is still in progress', (done) => {
+      let firstResponse = emptyResponse(200)
+      let secondResponse = new Promise((resolve) => {
+        setTimeout(() => {
+          resolve(emptyResponse(200));
+        }, 200)
+      });
+
+      fetch.and.returnValues(firstResponse, secondResponse);
+      expect(client.isRequesting).withContext('Before start').toBe(false);
+
+      let request1 = client.fetch('http://example.com/some/cool/path');
+      let request2 = client.fetch('http://example.com/some/cool/path');
+      expect(client.isRequesting).withContext('When started').toBe(true);
+      request1.then(() => {
+        expect(client.isRequesting).withContext('When request 1 is completed').toBe(true);
+      });
+      setTimeout(() => {
+        expect(client.isRequesting).withContext('After 100ms').toBe(true);
+      }, 100);
+      request2.then(() => {
+        expect(client.isRequesting).withContext('When all requests are finished').toBe(false);
+      }).then(() => {
+        expect(fetch).toHaveBeenCalledTimes(2);
+        done();
+      });
+    });
+    it('is set to false when request is rejected', (done) => {
+      fetch.and.returnValue(Promise.reject(new Error('Failed to fetch')));
+
+      expect(client.isRequesting).withContext('Before start').toBe(false);
+      client.fetch('http://example.com/some/cool/path').then(result => {
+        expect(result).not.toBe(result);
+      }).catch((result) => {
+        expect(result instanceof Error).toBe(true);
+        expect(result.message).toBe('Failed to fetch');
+        expect(client.isRequesting).withContext('When finished').toBe(false);
+        return Promise.resolve();
+      }).then(() => {
+        expect(fetch).toHaveBeenCalled();
+        done();
+      })
+    });
+
+    it('stays true during a series of retries', (done) => {
+      let response = new Response(null, { status: 500 });
+      fetch.and.returnValue(Promise.resolve(response));
+
+      client.configure(config => config.rejectErrorResponses().withRetry({
+        maxRetries: 3,
+        interval: 100
+      }));
+
+      expect(client.isRequesting).withContext('Before start').toBe(false);
+      let request = client.fetch('path');
+      expect(client.isRequesting).withContext('When started').toBe(true);
+      setTimeout(() => {
+        expect(client.isRequesting).withContext('After 100ms').toBe(true);
+      }, 100);
+      setTimeout(() => {
+        expect(client.isRequesting).withContext('After 200ms').toBe(true);
+      }, 200);
+      request.then((result) => {
+        done.fail('fetch did not error');
+      }).catch((r) => {
+        // 1 original call plus 3 retries
+        expect(fetch).toHaveBeenCalledTimes(4);
+        done();
+      });
+    });
+    it('is set to false after a series of retry that fail', (done) => {
+      let response = new Response(null, { status: 500 });
+      fetch.and.returnValue(Promise.resolve(response));
+
+      client.configure(config => config.rejectErrorResponses().withRetry({
+        maxRetries: 3,
+        interval: 100
+      }));
+
+      expect(client.isRequesting).withContext('Before start').toBe(false);
+      let request = client.fetch('path');
+      expect(client.isRequesting).withContext('When started').toBe(true);
+      request.then((result) => {
+        done.fail('fetch did not error');
+      }).catch(() => {
+        // 1 original call plus 3 retries
+        expect(fetch).toHaveBeenCalledTimes(4);
+        expect(client.isRequesting).withContext('When finished').toBe(false);
+        done();
+      });
+    });
+    it('is set to false after a series of retry that fail that succeed', (done) => {
+      let firstResponse = new Response(null, { status: 500 });
+      let secondResponse = new Response(null, { status: 200 });
+
+      fetch.and.returnValues(Promise.resolve(firstResponse), Promise.resolve(secondResponse));
+
+      client.configure(config => config.rejectErrorResponses().withRetry({
+        maxRetries: 3,
+        interval: 1,
+        strategy: retryStrategy.fixed
+      }));
+
+      expect(client.isRequesting).withContext('Before start').toBe(false);
+      let request = client.fetch('path');
+      expect(client.isRequesting).withContext('When started').toBe(true);
+      request.then(() => {
+        // 1 original call plus 1 retry
+        expect(fetch).toHaveBeenCalledTimes(2);
+        expect(client.isRequesting).withContext('When finished').toBe(false);
+        done();
+      }).catch((result) => {
+        done.fail('fetch did error');
+      });
+    });
+    it('forward requests', (done) => {
+      const path = 'retry';
+      let retry = 3;
+      fetch.and.returnValue(Promise.reject(new Response(null, { status: 500 })));
+      let interceptor: Interceptor = {
+        response(r) { return r; },
+        responseError(r) {
+          if (retry--) {
+            let request = client.buildRequest(path);
+            return request;
+          } else {
+            throw r;
+          }
+        }
+      };
+      spyOn(interceptor, 'response').and.callThrough();
+      spyOn(interceptor, 'responseError').and.callThrough();
+
+      client.interceptors.push(interceptor);
+
+      // add check before fetch, this one passes.
+      expect(client.isRequesting).toBe(false);
+
+      client.fetch(path)
+        .catch(() => {
+          expect(interceptor.response).not.toHaveBeenCalled();
+          expect(interceptor.responseError).toHaveBeenCalledWith(jasmine.any(Response), jasmine.any(Request), client);
+          expect(fetch).toHaveBeenCalledTimes(4);
+          expect(client.activeRequestCount).toBe(0);
+          expect(client.isRequesting).toBe(false);
+          done();
+        });
+    });
+  });
 });
 
 function emptyResponse(status: number) {
