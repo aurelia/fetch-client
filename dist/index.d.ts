@@ -1,1 +1,0 @@
-export * from 'aurelia-fetch-client/aurelia-fetch-client';

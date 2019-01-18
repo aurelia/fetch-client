@@ -1,3 +1,10 @@
+# [1.8.0](https://github.com/aurelia/fetch-client/compare/1.7.0...1.8.0) (2019-01-18)
+
+### Bug Fixes
+
+* **http-client:** call trackRequestEnd when fetch fails ([cf64989](https://github.com/aurelia/fetch-client/commit/cf64989))
+* Conversion to TypeScript
+
 <a name="1.7.0"></a>
 # [1.7.0](https://github.com/aurelia/fetch-client/compare/1.6.0...1.7.0) (2018-12-01)
 
