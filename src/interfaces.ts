@@ -112,7 +112,7 @@ export interface RequestInit {
   /**
    * An AbortSignal to set request’s signal.
    */
-  signal?: AbortSignal;
+  signal?: AbortSignal | null;
 }
 
 export interface RetryConfiguration {
