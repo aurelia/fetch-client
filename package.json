@@ -36,7 +36,8 @@
     "build": "rollup -c",
     "changelog": "cross-env conventional-changelog -p angular -i doc/CHANGELOG.md -s",
     "postbuild": "dts-bundle-generator -o dist/aurelia-fetch-client.d.ts src/aurelia-fetch-client.ts",
-    "test": "karma start",
+    "test": "karma start --single-run",
+    "test:watch": "karma start",
     "test:debugger": "karma start --browsers ChromeDebugging",
     "rimraf": "rimraf dist",
     "ci": "gulp ci"
