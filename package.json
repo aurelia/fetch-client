@@ -40,7 +40,8 @@
     "test:watch": "karma start",
     "test:debugger": "karma start --browsers ChromeDebugging",
     "rimraf": "rimraf dist",
-    "ci": "gulp ci"
+    "ci": "gulp ci",
+    "cut-release": "npm run test && npm run build && npm run changelog"
   },
   "jspm": {
     "registry": "npm",
