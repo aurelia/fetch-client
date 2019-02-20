@@ -17,7 +17,7 @@
   "main": "dist/commonjs/aurelia-fetch-client.js",
   "module": "dist/es2015/aurelia-fetch-client.js",
   "browser": "dist/umd/aurelia-fetch-client.js",
-  "unpkg": "dist/umd/aurelia-fetch-client.js",
+  "unpkg": "dist/umd-es2015/aurelia-fetch-client.js",
   "typings": "dist/aurelia-fetch-client.d.ts",
   "repository": {
     "type": "git",

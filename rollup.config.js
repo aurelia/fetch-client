@@ -9,7 +9,7 @@ export default [
         format: 'esm'
       },
       {
-        file: 'dist/umd/aurelia-fetch-client.js',
+        file: 'dist/umd-es2015/aurelia-fetch-client.js',
         format: 'umd',
         name: 'au.fetchClient',
         globals: {
@@ -57,6 +57,18 @@ export default [
       { file: 'dist/commonjs/aurelia-fetch-client.js', format: 'cjs' },
       { file: 'dist/system/aurelia-fetch-client.js', format: 'system' },
       { file: 'dist/native-modules/aurelia-fetch-client.js', format: 'esm' },
+      {
+        file: 'dist/umd/aurelia-fetch-client.js',
+        format: 'umd',
+        name: 'au.fetchClient',
+        globals: {
+          'aurelia-binding': 'au',
+          'aurelia-dependency-injection': 'au',
+          'aurelia-pal': 'au',
+          'aurelia-templating': 'au',
+          'aurelia-templating-resources': 'au',
+        }
+      },
     ],
     plugins: [
       typescript({
