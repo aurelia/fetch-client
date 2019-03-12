@@ -45,13 +45,13 @@ export class RetryInterceptor implements Interceptor {
     return request;
   }
 
-  response(response: Response, request: Request): Response {
+  response(response: Response, request?: Request): Response {
     // retry was successful, so clean up after ourselves
     delete (request as any).retryConfig;
     return response;
   }
 
-  responseError(error: Response, request: Request, httpClient: HttpClient) {
+  responseError(error: Response, request?: Request, httpClient?: HttpClient) {
     const { retryConfig } = request as Request & { retryConfig: RetryConfiguration };
     const { requestClone } = retryConfig;
     return Promise.resolve().then(() => {
