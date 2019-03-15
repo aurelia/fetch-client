@@ -41,7 +41,8 @@
     "test:debugger": "karma start --browsers ChromeDebugging",
     "rimraf": "rimraf dist",
     "ci": "gulp ci",
-    "cut-release": "npm run test && npm run build && npm run changelog"
+    "cut-release": "npm run test && npm run build",
+    "postcut-release": "standard-version"
   },
   "jspm": {
     "registry": "npm",
@@ -80,6 +81,7 @@
     "karma-webpack": "^3.0.5",
     "rollup": "^1.1.0",
     "rollup-plugin-typescript2": "^0.18.1",
+    "standard-version": "^5.0.1",
     "ts-loader": "^5.3.3",
     "typescript": "^3.2.2",
     "webpack": "^4.28.4",
