@@ -1,3 +1,19 @@
+# Change Log
+
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+## [1.8.3](https://github.com/aurelia/fetch-client/compare/1.8.0...1.8.3) (2019-03-22)
+
+
+### Bug Fixes
+
+* **all:** change es2015 back to native-modules ([14245e8](https://github.com/aurelia/fetch-client/commit/14245e8))
+* **build:** adjust build script, add umd es2015, fix unpkg field ([b62089f](https://github.com/aurelia/fetch-client/commit/b62089f))
+* **ci:** adjust test scripts, separate single/watch mode ([0309253](https://github.com/aurelia/fetch-client/commit/0309253))
+* **retry-interceptor:** conform to Interceptor interface ([daae14b](https://github.com/aurelia/fetch-client/commit/daae14b))
+
+
+
 ## [1.8.1](https://github.com/aurelia/fetch-client/compare/1.8.0...1.8.1) (2019-03-15)
 
 
