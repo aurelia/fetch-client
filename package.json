@@ -38,8 +38,8 @@
     "test": "karma start --single-run",
     "test:watch": "karma start",
     "test:debugger": "karma start --browsers ChromeDebugging",
-    "cut-release": "npm run test && npm run build",
-    "postcut-release": "standard-version"
+    "precut-release": "npm run test",
+    "cut-release": "standard-version -t \"\" -i doc/CHANGELOG.md && npm run build"
   },
   "jspm": {
     "registry": "npm",
